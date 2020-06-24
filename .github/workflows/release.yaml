@@ -153,7 +153,7 @@ jobs:
       - name: az_login
         run: az login --password ${CLIENT_SECRET} --service-principal --tenant ${TENANT_ID} --username ${CLIENT_ID}
       - name: az_aks
-        run: az aks get-credentials --name rvtr-k8s-azure --overwrite-existing --resource-group rvtr-grp-main
+        run: az aks get-credentials --name rvtr-k8s-main --overwrite-existing --resource-group rvtr-grp-main
       - name: kubectl_apply
         run: kubectl apply --filename ./kubernetes
       - name: az_logout
