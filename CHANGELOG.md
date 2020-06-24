@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning][semver].
 
 ## [unreleased]
 
+### added
+
+- add the project deploy job on release workflow
+
 ## [0.3.0] :: 2020-06-09
 
 ### added
