@@ -8,7 +8,9 @@ spec:
     - http
   routes:
     - kind: Rule
-      match: PathPrefix(`/`)
+      match: PathPrefix(`/`) || PathPrefix(`/booking`)
+      middlewares:
+        - name: booking-stripprefix
       priority: 10
       services:
         - kind: Service

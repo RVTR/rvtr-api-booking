@@ -13,7 +13,7 @@ namespace RVTR.Booking.WebApi.Controllers
   [ApiController]
   [ApiVersion("0.0")]
   [EnableCors("Public")]
-  [Route("api/v{version:apiVersion}/[controller]")]
+  [Route("{version:apiVersion}/[controller]")]
   public class StayController : ControllerBase
   {
     private readonly ILogger<StayController> _logger;
