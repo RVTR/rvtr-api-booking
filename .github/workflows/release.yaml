@@ -145,17 +145,21 @@ jobs:
         run: docker logout
 
   deploy:
+    env:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     needs: pack
     runs-on: ubuntu-18.04
     steps:
       - name: actions_checkout
         uses: actions/checkout@v2.1.0
       - name: az_login
-        run: az login --password ${CLIENT_SECRET} --service-principal --tenant ${TENANT_ID} --username ${CLIENT_ID}
+        run: az login --password ${AZURE_CLIENT_SECRET} --service-principal --tenant ${AZURE_TENANT_ID} --username ${AZURE_CLIENT_ID}
       - name: az_aks
         run: az aks get-credentials --name rvtr-k8s-main --overwrite-existing --resource-group rvtr-grp-main
       - name: kubectl_apply
-        run: kubectl apply --filename ./kubernetes
+        run: kubectl apply --filename .kubernetes/
       - name: az_logout
         run: az logout
 
