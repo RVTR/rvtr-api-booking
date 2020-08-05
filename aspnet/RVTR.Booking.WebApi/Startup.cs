@@ -91,15 +91,15 @@ namespace RVTR.Booking.WebApi
       applicationBuilder.UseRouting();
       applicationBuilder.UseSwagger(options =>
       {
-        options.RouteTemplate = "booking/{documentName}/swagger.json";
+        options.RouteTemplate = "bookingapi/{documentName}/swagger.json";
       });
       applicationBuilder.UseSwaggerUI(options =>
       {
-        options.RoutePrefix = "d/rest/booking";
+        options.RoutePrefix = "rest/bookingapi";
 
         foreach (var description in descriptionProvider.ApiVersionDescriptions)
         {
-          options.SwaggerEndpoint($"/booking/{description.GroupName}/swagger.json", description.GroupName);
+          options.SwaggerEndpoint($"/bookingapi/{description.GroupName}/swagger.json", description.GroupName);
         }
       });
 
