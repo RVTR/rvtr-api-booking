@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning][semver].
 
 ## [unreleased]
 
+- configure the project swagger endpoint definition
+
 ## [0.4.0] :: 2020-06-24
 
 ### added
