@@ -67,7 +67,7 @@ namespace RVTR.Booking.WebApi
       services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ClientSwaggerOptions>();
       services.AddVersionedApiExplorer(options =>
       {
-        options.GroupNameFormat = "'v'V";
+        options.GroupNameFormat = "VV";
         options.SubstituteApiVersionInUrl = true;
       });
     }
