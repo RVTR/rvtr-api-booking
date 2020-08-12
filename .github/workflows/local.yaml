@@ -95,7 +95,7 @@ jobs:
       - name: sonar_scan_pull_request
         run: |
           dotnet sonarscanner begin \
-            -k:${{ github.event.pull_request.base.user.login }}_rvtr_api_lodging \
+            -k:${{ github.event.pull_request.base.user.login }}_${{ github.event.pull_request.base.repo.name }} \
             -o:${{ github.event.pull_request.base.user.login }} \
             -s:$(pwd)/sonar.analysis.xml
           dotnet build
