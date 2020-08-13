@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -105,6 +107,34 @@ namespace RVTR.Booking.WebApi.Controllers
       await _unitOfWork.CommitAsync();
 
       return Accepted(booking);
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="checkIn"></param>
+    /// <param name="checkOut"></param>
+    /// <returns></returns>
+    [HttpGet("getByDate")]
+    public async Task<IActionResult> getBookingsByDates([FromQuery]string checkIn, [FromQuery]string checkOut)
+    {
+
+      DateTime startDate = DateTime.Parse(checkIn);
+      DateTime endDate = DateTime.Parse(checkOut);
+      IEnumerable<BookingModel> bookings;
+
+      try
+      {
+        bookings = await _unitOfWork.bookingRepository.getBookingsByDatesAsync(startDate, endDate);
+      }
+      catch(Exception e)
+      {
+        return (BadRequest(e));
+      }
+
+      return Ok(bookings);
+       
     }
   }
 }
