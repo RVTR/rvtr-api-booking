@@ -30,7 +30,7 @@ namespace RVTR.Booking.UnitTesting.Tests
           var actual = await unitOfWork.CommitAsync();
 
           Assert.NotNull(unitOfWork.Booking);
-          Assert.NotNull(unitOfWork.Stay);
+          
           Assert.Equal(0, actual);
         }
       }
