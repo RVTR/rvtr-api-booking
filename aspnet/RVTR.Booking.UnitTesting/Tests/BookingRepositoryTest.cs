@@ -23,9 +23,41 @@ namespace RVTR.Booking.UnitTesting.Tests
           AccountId = 1,
           LodgingId = 2
         }
-
       }
     };
+
+
+    [Theory]
+    [MemberData(nameof(_records))]
+    public async void Test_GetBookingsById(BookingModel booking)
+    {
+      await _connection.OpenAsync();
+
+      try
+      {
+        using (var ctx = new BookingContext(_options))
+        {
+          await ctx.Database.EnsureCreatedAsync();
+          await ctx.Bookings.AddAsync(booking);
+          await ctx.SaveChangesAsync();
+        }
+
+        using (var ctx = new BookingContext(_options))
+        {
+          var bookings = new BookingRepository(ctx);
+
+          var actual = await bookings.getByAccountId(1);
+
+          Assert.NotEmpty(actual);
+        }
+
+
+      }
+      finally
+      {
+        _connection.Close();
+      }
+    }
 
   }
 }
