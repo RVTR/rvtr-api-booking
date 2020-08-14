@@ -9,7 +9,10 @@ namespace RVTR.Booking.DataContext
   public class BookingContext : DbContext
   {
     public DbSet<BookingModel> Bookings { get; set; }
+<<<<<<< HEAD
     
+=======
+>>>>>>> origin/search-booking-dates
 
     public BookingContext(DbContextOptions<BookingContext> options) : base(options) { }
 
@@ -18,7 +21,10 @@ namespace RVTR.Booking.DataContext
       modelBuilder.Entity<BookingModel>().HasKey(e => e.Id);
       modelBuilder.Entity<GuestModel>().HasKey(e => e.Id);
       modelBuilder.Entity<RentalModel>().HasKey(e => e.Id);
+<<<<<<< HEAD
       
+=======
+>>>>>>> origin/search-booking-dates
     }
   }
 }
