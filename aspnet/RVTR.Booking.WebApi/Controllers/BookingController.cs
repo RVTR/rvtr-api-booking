@@ -76,7 +76,6 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <returns></returns>
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-
     public async Task<IActionResult> Get(int id)
     {
       try
@@ -106,7 +105,6 @@ namespace RVTR.Booking.WebApi.Controllers
       {
         return NotFound(e.Message);
       }
-
     }
 
     /// <summary>
