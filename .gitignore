@@ -12,3 +12,5 @@ appsettings*
 
 # sonarcloud
 .sonarqube/
+
+.vs
