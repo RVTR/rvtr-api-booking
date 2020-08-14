@@ -100,11 +100,11 @@ namespace RVTR.Booking.WebApi.Controllers
     {
       try
       {
-        return Ok(await _unitOfWork.Booking.getByAccountId(id));
+        return Ok(await _unitOfWork.bookingRepository.getByAccountId(id));
       }
-      catch
+      catch(Exception e)
       {
-        return NotFound();
+        return NotFound(e.Message);
       }
 
     }

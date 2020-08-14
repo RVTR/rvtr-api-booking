@@ -23,5 +23,6 @@ namespace RVTR.Booking.DataContext.Repositories
       return bookings;
     }
 
+    public virtual async Task<IEnumerable<BookingModel>> getByAccountId(int id) => await _db.Where(t => t.AccountId == id).ToListAsync();
   }
 }
