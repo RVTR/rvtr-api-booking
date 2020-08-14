@@ -9,7 +9,7 @@ appsettings*
 
 #visual studio
 .vs/
-aspnet/
+**/.vs
 
 # macos
 .DS_Store
