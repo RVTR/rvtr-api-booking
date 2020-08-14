@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVTR.Booking.DataContext.Repositories;
@@ -117,6 +118,8 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="checkOut"></param>
     /// <returns></returns>
     [HttpGet("getByDate")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> getBookingsByDates([FromQuery]string checkIn, [FromQuery]string checkOut)
     {
 
