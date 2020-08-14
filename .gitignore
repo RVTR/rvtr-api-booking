@@ -3,13 +3,16 @@ bin/
 code_coverage/
 obj/
 test_coverage/
+.vs/
 
 appsettings*
 !appsettings.json
 
 #visual studio
 .vs/
-**/.vs
+**/.vs/**
+**/bin
+**/obj
 
 # macos
 .DS_Store
