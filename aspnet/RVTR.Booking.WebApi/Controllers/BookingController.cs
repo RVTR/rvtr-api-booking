@@ -90,6 +90,26 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <summary>
     ///
     /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("getByAccount/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> getByAccountId(int id)
+    {
+      try
+      {
+        return Ok(await _unitOfWork.Booking.getByAccountId(id));
+      }
+      catch
+      {
+        return NotFound();
+      }
+
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
     /// <param name="booking"></param>
     /// <returns></returns>
     [HttpPost]
