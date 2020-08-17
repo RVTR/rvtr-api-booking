@@ -3,7 +3,6 @@ using RVTR.Booking.ObjectModel.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RVTR.Booking.DataContext.Repositories

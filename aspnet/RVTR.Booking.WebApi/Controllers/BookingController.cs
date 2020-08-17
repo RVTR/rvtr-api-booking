@@ -70,11 +70,11 @@ namespace RVTR.Booking.WebApi.Controllers
     }
 
     /// <summary>
-    /// 
+    /// Takes in two dates and retrieves bookings between the two dates.
     /// </summary>
     /// <param name="checkIn"></param>
     /// <param name="checkOut"></param>
-    /// <returns></returns>
+    /// <returns>List of bookings between date range</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
