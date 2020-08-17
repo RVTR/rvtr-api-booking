@@ -10,7 +10,6 @@ namespace RVTR.Booking.DataContext
   {
     public DbSet<BookingModel> Bookings { get; set; }
 
-
     public BookingContext(DbContextOptions<BookingContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
