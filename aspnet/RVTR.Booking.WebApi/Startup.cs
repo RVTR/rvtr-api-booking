@@ -87,7 +87,6 @@ namespace RVTR.Booking.WebApi
 
       applicationBuilder.UseZipkin();
       applicationBuilder.UseTracing("bookingapi.rest");
-      applicationBuilder.UseHttpsRedirection();
       applicationBuilder.UseRouting();
       applicationBuilder.UseSwagger(options =>
       {
