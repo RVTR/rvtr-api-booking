@@ -59,7 +59,7 @@ namespace RVTR.Booking.WebApi.Controllers
     }
 
     /// <summary>
-    ///
+    /// 
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -67,6 +67,47 @@ namespace RVTR.Booking.WebApi.Controllers
     public async Task<IActionResult> Get()
     {
       return Ok(await _unitOfWork.Booking.SelectAsync());
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="checkIn"></param>
+    /// <param name="checkOut"></param>
+    /// <returns></returns>
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Get(DateTime? checkIn, DateTime? checkOut)
+    {
+
+      if (checkIn != null && checkOut != null)
+      {
+        
+        IEnumerable<BookingModel> bookings;
+        try
+        {
+          bookings = await _unitOfWork.bookingRepository.getBookingsByDatesAsync((DateTime)checkIn, (DateTime)checkOut);
+        }
+        catch (Exception e)
+        {
+          return (BadRequest(e));
+        }
+
+        return Ok(bookings);
+
+      }
+      else if ( checkIn == null && checkOut == null)
+      {
+        return Ok(await _unitOfWork.Booking.SelectAsync());
+      }
+      else
+      {
+        return BadRequest();
+      }
+
+
+      
     }
 
     /// <summary>
@@ -119,36 +160,6 @@ namespace RVTR.Booking.WebApi.Controllers
       await _unitOfWork.CommitAsync();
 
       return Accepted(booking);
-    }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="checkIn"></param>
-    /// <param name="checkOut"></param>
-    /// <returns></returns>
-    [HttpGet("getByDate")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> getBookingsByDates([FromQuery]string checkIn, [FromQuery]string checkOut)
-    {
-
-      DateTime startDate = DateTime.Parse(checkIn);
-      DateTime endDate = DateTime.Parse(checkOut);
-      IEnumerable<BookingModel> bookings;
-
-      try
-      {
-        bookings = await _unitOfWork.bookingRepository.getBookingsByDatesAsync(startDate, endDate);
-      }
-      catch(Exception e)
-      {
-        return (BadRequest(e));
-      }
-
-      return Ok(bookings);
-       
     }
   }
 }

@@ -55,13 +55,15 @@ namespace RVTR.Booking.UnitTesting.Tests
     [Fact]
     public async void Test_Controller_Get()
     {
-      var resultMany = await _controller.Get();
+      var resultMany = await _controller.Get(null, null);
       var resultFail = await _controller.Get(0);
       var resultOne = await _controller.Get(1);
+      var resultBookingDates = _controller.Get(new DateTime(2020, 8, 16), new DateTime(2020, 8, 18));
 
       Assert.NotNull(resultMany);
       Assert.NotNull(resultFail);
       Assert.NotNull(resultOne);
+      Assert.NotNull(resultBookingDates);
     }
 
     [Fact]
