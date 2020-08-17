@@ -11,8 +11,7 @@ appsettings*
 #visual studio
 .vs/
 **/.vs/**
-**/bin
-**/obj
+
 
 # macos
 .DS_Store
