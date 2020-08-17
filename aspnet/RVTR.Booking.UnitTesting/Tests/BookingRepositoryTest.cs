@@ -34,8 +34,6 @@ namespace RVTR.Booking.UnitTesting.Tests
     [MemberData(nameof(_records))]
     public async void Test_Repository_GetBookingsAsync_ByDate(BookingModel booking)
     {
-      //DateTime bookingCheckIn = DateTime.Parse(checkIn);
-      //DateTime bookingCheckOut = DateTime.Parse(checkOut);
       await _connection.OpenAsync();
 
       try
@@ -44,13 +42,14 @@ namespace RVTR.Booking.UnitTesting.Tests
         {
           await ctx.Database.EnsureCreatedAsync();
           await ctx.Bookings.AddAsync(booking);
+          await ctx.SaveChangesAsync();
         }
 
         using (var ctx = new BookingContext(_options))
         {
           var bookings = new BookingRepository(ctx);
 
-          var actual = await bookings.SelectAsync();
+          var actual = await bookings.getBookingsByDatesAsync(new DateTime(2020,8,16), new DateTime(2020,8,18));
 
           Assert.NotNull(actual);
         }
