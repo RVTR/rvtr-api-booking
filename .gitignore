@@ -9,7 +9,6 @@ appsettings*
 
 # visual studio
 .vs/
-**/.vs/
 
 # macos
 .DS_Store

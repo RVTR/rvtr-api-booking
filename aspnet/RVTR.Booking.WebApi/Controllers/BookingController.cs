@@ -73,7 +73,7 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="checkOut"></param>
     /// <returns>List of bookings between date range</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<BookingModel>),StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Get(DateTime? checkIn, DateTime? checkOut)
     {
@@ -102,9 +102,6 @@ namespace RVTR.Booking.WebApi.Controllers
       {
         return BadRequest();
       }
-
-
-      
     }
 
     /// <summary>

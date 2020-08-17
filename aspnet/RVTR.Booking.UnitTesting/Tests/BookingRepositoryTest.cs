@@ -25,7 +25,6 @@ namespace RVTR.Booking.UnitTesting.Tests
           CheckIn = new DateTime(2020, 8, 16),
           CheckOut = new DateTime(2010, 8, 18)
         }
-
       }
     };
 
