@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -94,13 +95,23 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
 
     public async Task<IActionResult> Post(BookingModel booking)
     {
-      await _unitOfWork.Booking.InsertAsync(booking);
-      await _unitOfWork.CommitAsync();
+      try
+      {
+        await _unitOfWork.Booking.InsertAsync(booking);
+        await _unitOfWork.CommitAsync();
 
-      return Accepted(booking);
+        return Accepted(booking);
+      }
+      catch (Exception ex)
+      {
+
+        return Conflict(ex.Message);
+      }
+  
     }
 
     /// <summary>
@@ -110,13 +121,24 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <returns></returns>
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
 
     public async Task<IActionResult> Put(BookingModel booking)
     {
-      _unitOfWork.Booking.Update(booking);
-      await _unitOfWork.CommitAsync();
+      try
+      {
+        _unitOfWork.Booking.Update(booking);
+        await _unitOfWork.CommitAsync();
 
-      return Accepted(booking);
+        return Accepted(booking);
+      }
+      catch (Exception ex)
+      {
+        return BadRequest(ex.Message);
+       
+      }
+ 
     }
   }
 }
