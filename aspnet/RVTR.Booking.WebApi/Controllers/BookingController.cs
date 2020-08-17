@@ -47,7 +47,7 @@ namespace RVTR.Booking.WebApi.Controllers
       {
         await _unitOfWork.Booking.DeleteAsync(id);
         await _unitOfWork.CommitAsync();      
-        return Ok();
+        return NoContent();
       }
       catch
       {
@@ -137,7 +137,7 @@ namespace RVTR.Booking.WebApi.Controllers
       _unitOfWork.Booking.Update(booking);
       await _unitOfWork.CommitAsync();
 
-      return Accepted(booking);
+      return NoContent();
     }
   }
 }
