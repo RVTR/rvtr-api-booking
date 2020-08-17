@@ -161,7 +161,7 @@ jobs:
       - name: kubectl_apply
         run: kubectl apply --filename .kubernetes/
       - name: kubectl_rollout
-        run: kubectl rollout restart --filename .kubernetes/
+        run: kubectl rollout restart --filename .kubernetes/k8s_deployment.yaml
       - name: az_logout
         run: az logout
 
