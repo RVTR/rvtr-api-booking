@@ -80,19 +80,10 @@ namespace RVTR.Booking.WebApi.Controllers
 
       if (checkIn != null && checkOut != null)
       {
-        
         IEnumerable<BookingModel> bookings;
-        try
-        {
-          bookings = await _unitOfWork.bookingRepository.GetBookingsByDatesAsync((DateTime)checkIn, (DateTime)checkOut);
-        }
-        catch (Exception e)
-        {
-          return (BadRequest(e));
-        }
+        bookings = await _unitOfWork.bookingRepository.GetBookingsByDatesAsync((DateTime)checkIn, (DateTime)checkOut);
 
         return Ok(bookings);
-
       }
       else if ( checkIn == null && checkOut == null)
       {
