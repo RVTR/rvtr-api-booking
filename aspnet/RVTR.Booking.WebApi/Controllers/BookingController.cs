@@ -67,6 +67,36 @@ namespace RVTR.Booking.WebApi.Controllers
     }
 
     /// <summary>
+    /// Takes in two dates and retrieves bookings between the two dates.
+    /// </summary>
+    /// <param name="checkIn"></param>
+    /// <param name="checkOut"></param>
+    /// <returns>List of bookings between date range</returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Get(DateTime? checkIn, DateTime? checkOut)
+    {
+
+      if (checkIn != null && checkOut != null)
+      {
+        IEnumerable<BookingModel> bookings;
+        bookings = await _unitOfWork.bookingRepository.GetBookingsByDatesAsync((DateTime)checkIn, (DateTime)checkOut);
+
+        return Ok(bookings);
+      }
+      else if ( checkIn == null && checkOut == null)
+      {
+        return Ok(await _unitOfWork.Booking.SelectAsync());
+      }
+      else
+      {
+        return BadRequest();
+      }
+    }
+
+    /// <summary>
+    ///
     /// Action method that returns a single booking by booking id.
     /// </summary>
     /// <param name="id"></param>

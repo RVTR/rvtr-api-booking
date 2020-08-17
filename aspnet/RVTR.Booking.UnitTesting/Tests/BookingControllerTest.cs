@@ -56,6 +56,8 @@ namespace RVTR.Booking.UnitTesting.Tests
     public async void Test_Controller_Get()
     {
       var resultMany = await _controller.Get();
+      var resultAll = await _controller.Get(null, null);
+      var resultBookingDates = _controller.Get(new DateTime(2020, 8, 16), new DateTime(2020, 8, 18));
 
       Assert.NotNull(resultMany);
     }

@@ -4,12 +4,8 @@ code_coverage/
 obj/
 test_coverage/
 .vs/
-
 appsettings*
 !appsettings.json
-
-# visual studio
-.vs/
 
 # macos
 .DS_Store
