@@ -1,3 +1,6 @@
+# from repo root:
+# docker-compose -f .docker/docker_manifest.yaml -p booking up --build
+
 networks:
   locally:
 
@@ -14,7 +17,7 @@ services:
     networks:
       - locally
     ports:
-      - 8000:80
+      - 8001:80
 
   data:
     environment:
@@ -28,6 +31,6 @@ services:
     networks:
       - locally
     ports:
-      - 9411:9411
+      - 9412:9411
 
-version: '3.7'
+version: '3.8'
