@@ -8,6 +8,9 @@ test_coverage/
 appsettings*
 !appsettings.json
 
+# visual studio
+.vs/
+
 # macos
 .DS_Store
 

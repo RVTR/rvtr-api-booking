@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using RVTR.Booking.ObjectModel.Models;
 
@@ -6,19 +7,19 @@ namespace RVTR.Booking.DataContext.Repositories
   /// <summary>
   /// Represents the _UnitOfWork_ repository
   /// </summary>
-  public class UnitOfWork
+  public class UnitOfWork : IDisposable
   {
     private readonly BookingContext _context;
+    public virtual BookingRepository bookingRepository { get; }
 
     public virtual Repository<BookingModel> Booking { get; }
-    public virtual Repository<StayModel> Stay { get; }
 
     public UnitOfWork(BookingContext context)
     {
       _context = context;
 
       Booking = new Repository<BookingModel>(context);
-      Stay = new Repository<StayModel>(context);
+      bookingRepository = new BookingRepository(context);
     }
 
     /// <summary>
@@ -26,5 +27,22 @@ namespace RVTR.Booking.DataContext.Repositories
     /// </summary>
     /// <returns></returns>
     public async Task<int> CommitAsync() => await _context.SaveChangesAsync();
+
+    private bool disposed = false;
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this.disposed && disposing)
+        {
+          _context.Dispose();
+        }
+        this.disposed = true;
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
   }
 }

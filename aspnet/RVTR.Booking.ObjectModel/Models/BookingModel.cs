@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,9 +19,9 @@ namespace RVTR.Booking.ObjectModel.Models
 
     public IEnumerable<RentalModel> Rentals { get; set; }
 
-    public string Status { get; set; }
+    public DateTime CheckIn { get; set; }
 
-    public StayModel Stay { get; set; }
+    public DateTime CheckOut { get; set; }
 
     /// <summary>
     /// Represents the _Booking_ `Validate` method
