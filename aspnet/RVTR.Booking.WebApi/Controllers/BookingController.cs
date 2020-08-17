@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVTR.Booking.DataContext.Repositories;
@@ -36,6 +37,9 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+
     public async Task<IActionResult> Delete(int id)
     {
       try
@@ -47,6 +51,7 @@ namespace RVTR.Booking.WebApi.Controllers
       }
       catch
       {
+        
         return NotFound(id);
       }
     }
@@ -56,6 +61,7 @@ namespace RVTR.Booking.WebApi.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Get()
     {
       return Ok(await _unitOfWork.Booking.SelectAsync());
@@ -67,6 +73,8 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+
     public async Task<IActionResult> Get(int id)
     {
       try
@@ -85,6 +93,8 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="booking"></param>
     /// <returns></returns>
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+
     public async Task<IActionResult> Post(BookingModel booking)
     {
       await _unitOfWork.Booking.InsertAsync(booking);
@@ -99,6 +109,8 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="booking"></param>
     /// <returns></returns>
     [HttpPut]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+
     public async Task<IActionResult> Put(BookingModel booking)
     {
       _unitOfWork.Booking.Update(booking);
