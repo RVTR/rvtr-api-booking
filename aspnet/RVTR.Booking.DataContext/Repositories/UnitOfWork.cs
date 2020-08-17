@@ -32,12 +32,9 @@ namespace RVTR.Booking.DataContext.Repositories
 
     protected virtual void Dispose(bool disposing)
     {
-        if (!this.disposed)
+        if (!this.disposed && disposing)
         {
-            if (disposing)
-            {
-                _context.Dispose();
-            }
+          _context.Dispose();
         }
         this.disposed = true;
     }
