@@ -10,6 +10,7 @@ namespace RVTR.Booking.DataContext.Repositories
   public class UnitOfWork : IDisposable
   {
     private readonly BookingContext _context;
+    public virtual BookingRepository bookingRepository { get; }
 
     public virtual Repository<BookingModel> Booking { get; }
 
@@ -18,6 +19,7 @@ namespace RVTR.Booking.DataContext.Repositories
       _context = context;
 
       Booking = new Repository<BookingModel>(context);
+      bookingRepository = new BookingRepository(context);
     }
 
     /// <summary>
@@ -32,9 +34,7 @@ namespace RVTR.Booking.DataContext.Repositories
     {
         if (!this.disposed && disposing)
         {
-      
-                _context.Dispose();
-            
+          _context.Dispose();
         }
         this.disposed = true;
     }

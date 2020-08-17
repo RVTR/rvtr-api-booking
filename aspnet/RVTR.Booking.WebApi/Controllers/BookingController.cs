@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace RVTR.Booking.WebApi.Controllers
     private readonly UnitOfWork _unitOfWork;
 
     /// <summary>
-    ///
+    /// Constructor of the booking controller.
     /// </summary>
     /// <param name="logger"></param>
     /// <param name="unitOfWork"></param>
@@ -33,50 +34,47 @@ namespace RVTR.Booking.WebApi.Controllers
     }
 
     /// <summary>
-    ///
+    /// Action method for deleting a booking by booking id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-
     public async Task<IActionResult> Delete(int id)
     {
       try
       {
         await _unitOfWork.Booking.DeleteAsync(id);
-        await _unitOfWork.CommitAsync();
-
-        return Ok();
+        await _unitOfWork.CommitAsync();      
+        return NoContent();
       }
       catch
       {
-        
         return NotFound(id);
       }
     }
 
     /// <summary>
-    ///
+    /// Action method that returns a list of all the bookings.
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get()
     {
       return Ok(await _unitOfWork.Booking.SelectAsync());
     }
 
     /// <summary>
-    ///
+    /// Action method that returns a single booking by booking id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-
-    public async Task<IActionResult> Get(int id)
+    [ProducesResponseType(typeof(BookingModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById(int id)
     {
       try
       {
@@ -89,56 +87,57 @@ namespace RVTR.Booking.WebApi.Controllers
     }
 
     /// <summary>
-    ///
+    /// Action method that returns a list of bookings associated with an account id.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("Account/{id}")]
+    [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetByAccountId(int id)
+    {
+      try
+      {
+        return Ok(await _unitOfWork.bookingRepository.GetByAccountId(id));
+      }
+      catch(Exception e)
+      {
+        return NotFound(e.Message);
+      }
+    }
+
+    /// <summary>
+    /// Action method that takes in a booking model and adds it into the database.
     /// </summary>
     /// <param name="booking"></param>
     /// <returns></returns>
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
-
+    [ProducesResponseType(typeof(BookingModel), StatusCodes.Status201Created)]
     public async Task<IActionResult> Post(BookingModel booking)
     {
-      try
-      {
         await _unitOfWork.Booking.InsertAsync(booking);
         await _unitOfWork.CommitAsync();
 
-        return Accepted(booking);
-      }
-      catch (Exception ex)
-      {
-
-        return Conflict(ex.Message);
-      }
-  
+      return CreatedAtAction( 
+        actionName: nameof(Get),
+        routeValues: new { id = booking.Id },
+        value: booking
+      );
     }
 
     /// <summary>
-    ///
+    /// Action method that updates a booking resource in the database.
     /// </summary>
     /// <param name="booking"></param>
     /// <returns></returns>
     [HttpPut]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Put(BookingModel booking)
     {
-      try
-      {
         _unitOfWork.Booking.Update(booking);
         await _unitOfWork.CommitAsync();
 
-        return Accepted(booking);
-      }
-      catch (Exception ex)
-      {
-        return BadRequest(ex.Message);
-       
-      }
- 
+      return NoContent();
     }
   }
 }

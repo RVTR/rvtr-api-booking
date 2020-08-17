@@ -8,7 +8,7 @@ test_coverage/
 appsettings*
 !appsettings.json
 
-#visual studio
+# visual studio
 .vs/
 **/.vs/**
 

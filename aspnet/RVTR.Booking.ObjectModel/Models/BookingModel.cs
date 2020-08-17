@@ -10,13 +10,10 @@ namespace RVTR.Booking.ObjectModel.Models
   /// </summary>
   public class BookingModel : IValidatableObject
   {
-    [Key]
     public int Id { get; set; }
 
-    [ForeignKey("Account")]
     public int AccountId { get; set; }
 
-    [ForeignKey("Lodging")]
     public int LodgingId { get; set; }
 
     public IEnumerable<GuestModel> Guests { get; set; }
@@ -25,7 +22,7 @@ namespace RVTR.Booking.ObjectModel.Models
 
     public DateTime CheckIn { get; set; }
 
-    public DateTime Checkout { get; set; }
+    public DateTime CheckOut { get; set; }
 
     /// <summary>
     /// Represents the _Booking_ `Validate` method
