@@ -39,15 +39,14 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
       try
       {
         await _unitOfWork.Booking.DeleteAsync(id);
-        await _unitOfWork.CommitAsync();
-        
+        await _unitOfWork.CommitAsync();      
         return Ok();
       }
       catch
@@ -113,7 +112,7 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="booking"></param>
     /// <returns></returns>
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(BookingModel), StatusCodes.Status201Created)]
     public async Task<IActionResult> Post(BookingModel booking)
     {
       await _unitOfWork.Booking.InsertAsync(booking);
@@ -132,7 +131,7 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="booking"></param>
     /// <returns></returns>
     [HttpPut]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Put(BookingModel booking)
     {
       _unitOfWork.Booking.Update(booking);
