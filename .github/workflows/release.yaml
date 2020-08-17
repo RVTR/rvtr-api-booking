@@ -160,6 +160,8 @@ jobs:
         run: az aks get-credentials --name rvtr-k8s-main --overwrite-existing --resource-group rvtr-grp-main
       - name: kubectl_apply
         run: kubectl apply --filename .kubernetes/
+      - name: kubectl_rollout
+        run: kubectl rollout restart --filename .kubernetes/
       - name: az_logout
         run: az logout
 
