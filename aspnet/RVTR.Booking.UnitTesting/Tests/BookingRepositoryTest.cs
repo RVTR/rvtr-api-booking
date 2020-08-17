@@ -46,7 +46,7 @@ namespace RVTR.Booking.UnitTesting.Tests
         {
           var bookings = new BookingRepository(ctx);
 
-          var actual = await bookings.getByAccountId(1);
+          var actual = await bookings.GetByAccountId(1);
 
           Assert.NotEmpty(actual);
         }

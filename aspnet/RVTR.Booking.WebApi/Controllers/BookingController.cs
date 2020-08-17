@@ -23,7 +23,7 @@ namespace RVTR.Booking.WebApi.Controllers
     private readonly UnitOfWork _unitOfWork;
 
     /// <summary>
-    ///
+    /// Constructor of the booking controller.
     /// </summary>
     /// <param name="logger"></param>
     /// <param name="unitOfWork"></param>
@@ -34,32 +34,30 @@ namespace RVTR.Booking.WebApi.Controllers
     }
 
     /// <summary>
-    ///
+    /// Action method for deleting a booking by booking id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-
     public async Task<IActionResult> Delete(int id)
     {
       try
       {
         await _unitOfWork.Booking.DeleteAsync(id);
         await _unitOfWork.CommitAsync();
-
+        
         return Ok();
       }
       catch
       {
-        
         return NotFound(id);
       }
     }
 
     /// <summary>
-    ///
+    /// Action method that returns a list of all the bookings.
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -70,12 +68,13 @@ namespace RVTR.Booking.WebApi.Controllers
     }
 
     /// <summary>
-    ///
+    /// Action method that returns a single booking by booking id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
       try
@@ -89,17 +88,18 @@ namespace RVTR.Booking.WebApi.Controllers
     }
 
     /// <summary>
-    ///
+    /// Action method that returns a list of bookings associated with an account id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpGet("getByAccount/{id}")]
+    [HttpGet("Account/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> getByAccountId(int id)
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetByAccountId(int id)
     {
       try
       {
-        return Ok(await _unitOfWork.bookingRepository.getByAccountId(id));
+        return Ok(await _unitOfWork.bookingRepository.GetByAccountId(id));
       }
       catch(Exception e)
       {
@@ -108,63 +108,37 @@ namespace RVTR.Booking.WebApi.Controllers
     }
 
     /// <summary>
-    ///
+    /// Action method that takes in a booking model and adds it into the database.
     /// </summary>
     /// <param name="booking"></param>
     /// <returns></returns>
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
-
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> Post(BookingModel booking)
     {
       await _unitOfWork.Booking.InsertAsync(booking);
       await _unitOfWork.CommitAsync();
 
-      return Accepted(booking);
+      return CreatedAtAction( 
+        actionName: nameof(Get),
+        routeValues: new { id = booking.Id },
+        value: booking
+      );
     }
 
     /// <summary>
-    ///
+    /// Action method that updates a booking resource in the database.
     /// </summary>
     /// <param name="booking"></param>
     /// <returns></returns>
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
-
     public async Task<IActionResult> Put(BookingModel booking)
     {
       _unitOfWork.Booking.Update(booking);
       await _unitOfWork.CommitAsync();
 
       return Accepted(booking);
-    }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="checkIn"></param>
-    /// <param name="checkOut"></param>
-    /// <returns></returns>
-    [HttpGet("getByDate")]
-    public async Task<IActionResult> getBookingsByDates([FromQuery]string checkIn, [FromQuery]string checkOut)
-    {
-
-      DateTime startDate = DateTime.Parse(checkIn);
-      DateTime endDate = DateTime.Parse(checkOut);
-      IEnumerable<BookingModel> bookings;
-
-      try
-      {
-        bookings = await _unitOfWork.bookingRepository.getBookingsByDatesAsync(startDate, endDate);
-      }
-      catch(Exception e)
-      {
-        return (BadRequest(e));
-      }
-
-      return Ok(bookings);
-       
     }
   }
 }

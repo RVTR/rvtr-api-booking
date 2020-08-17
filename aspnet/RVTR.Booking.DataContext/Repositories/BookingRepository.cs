@@ -17,11 +17,13 @@ namespace RVTR.Booking.DataContext.Repositories
 
     public virtual async Task<IEnumerable<BookingModel>> getBookingsByDatesAsync(DateTime checkIn, DateTime checkOut)
     {
-      var bookings = await _db.Where(b => b.CheckIn <= checkIn && b.Checkout >= checkOut).ToListAsync();
+      var bookings = await _db.Where(b => b.CheckIn <= checkIn && b.CheckOut >= checkOut).ToListAsync();
 
       return bookings;
     }
 
-    public virtual async Task<IEnumerable<BookingModel>> getByAccountId(int id) => await _db.Where(t => t.AccountId == id).ToListAsync();
+    public virtual async Task<IEnumerable<BookingModel>> GetByAccountId(int id){ 
+      return await _db.Where(t => t.AccountId == id).ToListAsync();
+    }
   }
 }

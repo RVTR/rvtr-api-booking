@@ -21,7 +21,7 @@ namespace RVTR.Booking.ObjectModel.Models
 
     public DateTime CheckIn { get; set; }
 
-    public DateTime Checkout { get; set; }
+    public DateTime CheckOut { get; set; }
 
     /// <summary>
     /// Represents the _Booking_ `Validate` method
