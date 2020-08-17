@@ -134,13 +134,13 @@ jobs:
       - if: startsWith(github.ref, 'refs/heads/master')
         name: docker_push_head
         run: |
-          docker image tag booking docker.pkg.github.com/rvtr/rvtr-api-booking/booking:master-aspnet-rest
-          docker image push docker.pkg.github.com/rvtr/rvtr-api-booking/booking:master-aspnet-rest
+          docker image tag booking docker.pkg.github.com/rvtr/rvtr-svc-booking/booking:master-aspnet-rest
+          docker image push docker.pkg.github.com/rvtr/rvtr-svc-booking/booking:master-aspnet-rest
       - if: startsWith(github.ref, 'refs/tags/')
         name: docker_push
         run: |
-          docker image tag booking docker.pkg.github.com/rvtr/rvtr-api-booking/booking:aspnet-rest
-          docker image push docker.pkg.github.com/rvtr/rvtr-api-booking/booking:aspnet-rest
+          docker image tag booking docker.pkg.github.com/rvtr/rvtr-svc-booking/booking:aspnet-rest
+          docker image push docker.pkg.github.com/rvtr/rvtr-svc-booking/booking:aspnet-rest
       - name: docker_logout
         run: docker logout
 
