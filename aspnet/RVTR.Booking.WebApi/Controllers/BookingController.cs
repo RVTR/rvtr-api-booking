@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -60,7 +61,7 @@ namespace RVTR.Booking.WebApi.Controllers
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get()
     {
       return Ok(await _unitOfWork.Booking.SelectAsync());
@@ -72,9 +73,9 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BookingModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> GetById(int id)
     {
       try
       {
@@ -92,7 +93,7 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("Account/{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByAccountId(int id)
     {
