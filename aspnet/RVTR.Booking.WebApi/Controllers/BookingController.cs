@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
@@ -92,7 +93,7 @@ namespace RVTR.Booking.WebApi.Controllers
     [ProducesResponseType (StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById (int id)
     {
-      var booking = await _unitOfWork.Booking.SelectAsync (id));
+      var booking = await _unitOfWork.Booking.SelectAsync (id);
       if (booking == null)
       {
         return NotFound(id);
