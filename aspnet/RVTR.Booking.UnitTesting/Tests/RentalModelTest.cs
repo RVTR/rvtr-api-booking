@@ -22,21 +22,21 @@ namespace RVTR.Booking.UnitTesting.Tests
         };
 
     [Theory]
-    [MemberData (nameof (_rentals))]
-    public void Test_Create_RentalModel (RentalModel rental)
+    [MemberData(nameof(_rentals))]
+    public void Test_Create_RentalModel(RentalModel rental)
     {
-      var validationContext = new ValidationContext (rental);
-      var actual = Validator.TryValidateObject (rental, validationContext, null, true);
+      var validationContext = new ValidationContext(rental);
+      var actual = Validator.TryValidateObject(rental, validationContext, null, true);
 
-      Assert.True (actual);
+      Assert.True(actual);
     }
 
     [Theory]
-    [MemberData (nameof (_rentals))]
-    public void Test_Validate_RentalModel (RentalModel rental)
+    [MemberData(nameof(_rentals))]
+    public void Test_Validate_RentalModel(RentalModel rental)
     {
-      var validationContext = new ValidationContext (rental);
-      Assert.Empty (rental.Validate (validationContext));
+      var validationContext = new ValidationContext(rental);
+      Assert.Empty(rental.Validate(validationContext));
     }
   }
 }

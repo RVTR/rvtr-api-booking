@@ -10,13 +10,13 @@ namespace RVTR.Booking.DataContext
   {
     public DbSet<BookingModel> Bookings { get; set; }
 
-    public BookingContext (DbContextOptions<BookingContext> options) : base (options) { }
+    public BookingContext(DbContextOptions<BookingContext> options) : base(options) { }
 
-    protected override void OnModelCreating (ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-      modelBuilder.Entity<BookingModel> ().HasKey (e => e.Id);
-      modelBuilder.Entity<GuestModel> ().HasKey (e => e.Id);
-      modelBuilder.Entity<RentalModel> ().HasKey (e => e.Id);
+      modelBuilder.Entity<BookingModel>().HasKey(e => e.Id);
+      modelBuilder.Entity<GuestModel>().HasKey(e => e.Id);
+      modelBuilder.Entity<RentalModel>().HasKey(e => e.Id);
     }
   }
 }

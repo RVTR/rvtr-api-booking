@@ -9,30 +9,30 @@ namespace RVTR.Booking.WebRpc
 {
   public class Startup
   {
-    public void ConfigureServices (IServiceCollection services)
+    public void ConfigureServices(IServiceCollection services)
     {
-      services.AddGrpc ();
-      services.AddScoped<UnitOfWork> ();
+      services.AddGrpc();
+      services.AddScoped<UnitOfWork>();
     }
 
-    public void Configure (IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-      if (env.IsDevelopment ())
+      if(env.IsDevelopment())
       {
-        app.UseDeveloperExceptionPage ();
+        app.UseDeveloperExceptionPage();
       }
 
-      app.UseRouting ();
+      app.UseRouting();
 
-      app.UseEndpoints (endpoints =>
-      {
-        endpoints.MapGrpcService<BookingService> ();
+      app.UseEndpoints(endpoints =>
+     {
+       endpoints.MapGrpcService<BookingService>();
 
-        endpoints.MapGet ("/", async context =>
-        {
-          await context.Response.WriteAsync ("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
-        });
-      });
+       endpoints.MapGet("/", async context =>
+       {
+         await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+       });
+     });
     }
   }
 }

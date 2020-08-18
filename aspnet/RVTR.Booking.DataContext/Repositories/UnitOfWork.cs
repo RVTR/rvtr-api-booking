@@ -11,33 +11,33 @@ namespace RVTR.Booking.DataContext.Repositories
     private readonly BookingContext _context;
     public virtual BookingRepository Booking { get; }
 
-    public UnitOfWork (BookingContext context)
+    public UnitOfWork(BookingContext context)
     {
       _context = context;
-      Booking = new BookingRepository (context);
+      Booking = new BookingRepository(context);
     }
 
     /// <summary>
     /// Represents the _UnitOfWork_ `Commit` method
     /// </summary>
     /// <returns></returns>
-    public async Task<int> CommitAsync () => await _context.SaveChangesAsync ();
+    public async Task<int> CommitAsync() => await _context.SaveChangesAsync();
 
     private bool disposed = false;
 
-    protected virtual void Dispose (bool disposing)
+    protected virtual void Dispose(bool disposing)
     {
-      if (!this.disposed && disposing)
+      if(!this.disposed && disposing)
       {
-        _context.Dispose ();
+        _context.Dispose();
       }
       this.disposed = true;
     }
 
-    public void Dispose ()
+    public void Dispose()
     {
-      Dispose (true);
-      GC.SuppressFinalize (this);
+      Dispose(true);
+      GC.SuppressFinalize(this);
     }
   }
 }

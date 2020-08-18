@@ -23,7 +23,7 @@ namespace RVTR.Booking.WebApi
     /// </summary>
     /// <param name="provider"></param>
     /// <param name="configuration"></param>
-    public ClientSwaggerOptions (IApiVersionDescriptionProvider provider, IConfiguration configuration)
+    public ClientSwaggerOptions(IApiVersionDescriptionProvider provider, IConfiguration configuration)
     {
       _configuration = configuration;
       _provider = provider;
@@ -33,16 +33,16 @@ namespace RVTR.Booking.WebApi
     ///
     /// </summary>
     /// <param name="options"></param>
-    public void Configure (SwaggerGenOptions options)
+    public void Configure(SwaggerGenOptions options)
     {
-      var xmlFile = $"{Assembly.GetExecutingAssembly ().GetName ().Name}.xml";
-      var xmlPath = Path.Combine (AppContext.BaseDirectory, xmlFile);
+      var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+      var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
-      options.IncludeXmlComments (xmlPath);
+      options.IncludeXmlComments(xmlPath);
 
-      foreach (var description in _provider.ApiVersionDescriptions)
+      foreach(var description in _provider.ApiVersionDescriptions)
       {
-        options.SwaggerDoc (description.GroupName, Create (description));
+        options.SwaggerDoc(description.GroupName, Create(description));
       }
     }
 
@@ -51,18 +51,18 @@ namespace RVTR.Booking.WebApi
     /// </summary>
     /// <param name="description"></param>
     /// <returns></returns>
-    private OpenApiInfo Create (ApiVersionDescription description)
+    private OpenApiInfo Create(ApiVersionDescription description)
     {
-      var info = new OpenApiInfo ()
+      var info = new OpenApiInfo()
       {
-        Contact = new OpenApiContact () { Email = _configuration["Contact:Email"], Name = _configuration["Contact:Name"], Url = new Uri (_configuration["Contact:Url"]) },
+        Contact = new OpenApiContact() { Email = _configuration["Contact:Email"], Name = _configuration["Contact:Name"], Url = new Uri(_configuration["Contact:Url"]) },
         Description = "<em>Built with ASP.NET API Versioning, Swagger, Swashbuckle</em>",
-        License = new OpenApiLicense () { Name = _configuration["License:Name"], Url = new Uri (_configuration["License:Url"]) },
+        License = new OpenApiLicense() { Name = _configuration["License:Name"], Url = new Uri(_configuration["License:Url"]) },
         Title = _configuration["Title"],
-        Version = description.ApiVersion.ToString (),
+        Version = description.ApiVersion.ToString(),
       };
 
-      if (description.IsDeprecated)
+      if(description.IsDeprecated)
       {
         info.Description += "&nbsp;&Colon;&nbsp;<strong>DEPRECATED</strong>";
       }

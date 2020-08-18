@@ -10,15 +10,15 @@ namespace RVTR.Booking.WebRpc
     private readonly ILogger<BookingService> _logger;
     private readonly UnitOfWork _unitOfWork;
 
-    public BookingService (ILogger<BookingService> logger, UnitOfWork unitOfWork)
+    public BookingService(ILogger<BookingService> logger, UnitOfWork unitOfWork)
     {
       _logger = logger;
       _unitOfWork = unitOfWork;
     }
 
-    public override Task<BookingResponse> Book (BookingRequest request, ServerCallContext context)
+    public override Task<BookingResponse> Book(BookingRequest request, ServerCallContext context)
     {
-      return Task.FromResult (new BookingResponse ()
+      return Task.FromResult(new BookingResponse()
       {
         Message = "Hello " + request.Name
       });

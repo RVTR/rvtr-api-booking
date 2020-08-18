@@ -9,33 +9,33 @@ namespace RVTR.Booking.UnitTesting.Tests
 {
   public class UnitOfWorkTest
   {
-    private static readonly SqliteConnection _connection = new SqliteConnection ("Data Source=:memory:");
-    private static readonly DbContextOptions<BookingContext> _options = new DbContextOptionsBuilder<BookingContext> ().UseSqlite (_connection).Options;
+    private static readonly SqliteConnection _connection = new SqliteConnection("Data Source=:memory:");
+    private static readonly DbContextOptions<BookingContext> _options = new DbContextOptionsBuilder<BookingContext>().UseSqlite(_connection).Options;
 
     [Fact]
-    public async void Test_UnitOfWork_CommitAsync ()
+    public async void Test_UnitOfWork_CommitAsync()
     {
-      await _connection.OpenAsync ();
+      await _connection.OpenAsync();
 
       try
       {
-        using (var ctx = new BookingContext (_options))
+        using(var ctx = new BookingContext(_options))
         {
-          await ctx.Database.EnsureCreatedAsync ();
+          await ctx.Database.EnsureCreatedAsync();
         }
 
-        using (var ctx = new BookingContext (_options))
+        using(var ctx = new BookingContext(_options))
         {
-          var unitOfWork = new UnitOfWork (ctx);
-          var actual = await unitOfWork.CommitAsync ();
+          var unitOfWork = new UnitOfWork(ctx);
+          var actual = await unitOfWork.CommitAsync();
 
-          Assert.NotNull (unitOfWork.Booking);
-          Assert.Equal (0, actual);
+          Assert.NotNull(unitOfWork.Booking);
+          Assert.Equal(0, actual);
         }
       }
       finally
       {
-        await _connection.CloseAsync ();
+        await _connection.CloseAsync();
       }
     }
   }

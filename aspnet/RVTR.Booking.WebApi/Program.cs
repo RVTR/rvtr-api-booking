@@ -15,37 +15,37 @@ namespace RVTR.Booking.WebApi
     ///
     /// </summary>
     /// <returns></returns>
-    public static async Task Main ()
+    public static async Task Main()
     {
-      var host = CreateHostBuilder ().Build ();
+      var host = CreateHostBuilder().Build();
 
-      await CreateDbContextAsync (host);
-      await host.RunAsync ();
+      await CreateDbContextAsync(host);
+      await host.RunAsync();
     }
 
     /// <summary>
     ///
     /// </summary>
     /// <returns></returns>
-    public static IHostBuilder CreateHostBuilder () =>
-      Host.CreateDefaultBuilder ().ConfigureWebHostDefaults (webBuilder =>
-        {
-          webBuilder.UseStartup<Startup> ();
-        });
+    public static IHostBuilder CreateHostBuilder() =>
+      Host.CreateDefaultBuilder().ConfigureWebHostDefaults(webBuilder =>
+      {
+        webBuilder.UseStartup<Startup>();
+      });
 
     /// <summary>
     ///
     /// </summary>
     /// <param name="host"></param>
     /// <returns></returns>
-    public static async Task CreateDbContextAsync (IHost host)
+    public static async Task CreateDbContextAsync(IHost host)
     {
-      using (var scope = host.Services.CreateScope ())
+      using(var scope = host.Services.CreateScope())
       {
         var provider = scope.ServiceProvider;
-        var context = provider.GetRequiredService<BookingContext> ();
+        var context = provider.GetRequiredService<BookingContext>();
 
-        await context.Database.EnsureCreatedAsync ();
+        await context.Database.EnsureCreatedAsync();
       }
     }
   }

@@ -24,7 +24,7 @@ namespace RVTR.Booking.WebApi
     /// </summary>
     /// <param name="configuration"></param>
     /// <param name="loggerFactory"></param>
-    public ClientZipkinMiddleware (IConfiguration configuration, ILoggerFactory loggerFactory)
+    public ClientZipkinMiddleware(IConfiguration configuration, ILoggerFactory loggerFactory)
     {
       _configuration = configuration;
       _loggerFactory = loggerFactory;
@@ -36,29 +36,29 @@ namespace RVTR.Booking.WebApi
     /// <param name="context"></param>
     /// <param name="next"></param>
     /// <returns></returns>
-    public async Task InvokeAsync (HttpContext context, RequestDelegate next)
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-      var lifetime = context.RequestServices.GetService<IHostApplicationLifetime> ();
-      var statistics = new Statistics ();
+      var lifetime = context.RequestServices.GetService<IHostApplicationLifetime>();
+      var statistics = new Statistics();
 
-      lifetime.ApplicationStarted.Register (() =>
-       {
-         var logger = new TracingLogger (_loggerFactory, "zipkin.aspnet");
-         var sender = new HttpZipkinSender (_configuration.GetConnectionString ("zipkin"), "application/json");
-         var tracer = new ZipkinTracer (sender, new JSONSpanSerializer (), statistics);
+      lifetime.ApplicationStarted.Register(() =>
+      {
+        var logger = new TracingLogger(_loggerFactory, "zipkin.aspnet");
+        var sender = new HttpZipkinSender(_configuration.GetConnectionString("zipkin"), "application/json");
+        var tracer = new ZipkinTracer(sender, new JSONSpanSerializer(), statistics);
 
-         TraceManager.SamplingRate = 1.0f;
-         TraceManager.Trace128Bits = true;
-         TraceManager.RegisterTracer (tracer);
-         TraceManager.Start (logger);
-       });
+        TraceManager.SamplingRate = 1.0f;
+        TraceManager.Trace128Bits = true;
+        TraceManager.RegisterTracer(tracer);
+        TraceManager.Start(logger);
+      });
 
-      lifetime.ApplicationStopped.Register (() =>
-       {
-         TraceManager.Stop ();
-       });
+      lifetime.ApplicationStopped.Register(() =>
+      {
+        TraceManager.Stop();
+      });
 
-      await next (context);
+      await next(context);
     }
   }
 }

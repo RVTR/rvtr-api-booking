@@ -11,10 +11,10 @@ namespace RVTR.Booking.UnitTesting.Tests
 {
   public class RepositoryTest
   {
-    private static readonly SqliteConnection _connection = new SqliteConnection ("Data Source=:memory:");
-    private static readonly DbContextOptions<BookingContext> _options = new DbContextOptionsBuilder<BookingContext> ().UseSqlite (_connection).Options;
+    private static readonly SqliteConnection _connection = new SqliteConnection("Data Source=:memory:");
+    private static readonly DbContextOptions<BookingContext> _options = new DbContextOptionsBuilder<BookingContext>().UseSqlite(_connection).Options;
 
-    public static readonly IEnumerable<object[]> _records = new List<object[]> ()
+    public static readonly IEnumerable<object[]> _records = new List<object[]>()
         {
             new object[]
             {
@@ -23,155 +23,155 @@ namespace RVTR.Booking.UnitTesting.Tests
         };
 
     [Theory]
-    [MemberData (nameof (_records))]
-    public async void Test_Repository_DeleteAsync (BookingModel booking)
+    [MemberData(nameof(_records))]
+    public async void Test_Repository_DeleteAsync(BookingModel booking)
     {
-      await _connection.OpenAsync ();
+      await _connection.OpenAsync();
 
       try
       {
-        using (var ctx = new BookingContext (_options))
+        using(var ctx = new BookingContext(_options))
         {
-          await ctx.Database.EnsureCreatedAsync ();
-          await ctx.Bookings.AddAsync (booking);
+          await ctx.Database.EnsureCreatedAsync();
+          await ctx.Bookings.AddAsync(booking);
 
-          await ctx.SaveChangesAsync ();
+          await ctx.SaveChangesAsync();
         }
 
-        using (var ctx = new BookingContext (_options))
+        using(var ctx = new BookingContext(_options))
         {
-          var bookings = new Repository<BookingModel> (ctx);
+          var bookings = new Repository<BookingModel>(ctx);
 
-          await bookings.DeleteAsync (1);
-          await ctx.SaveChangesAsync ();
+          await bookings.DeleteAsync(1);
+          await ctx.SaveChangesAsync();
 
-          Assert.Empty (await ctx.Bookings.ToListAsync ());
+          Assert.Empty(await ctx.Bookings.ToListAsync());
         }
 
 
       }
       finally
       {
-        _connection.Close ();
+        _connection.Close();
       }
     }
 
     [Theory]
-    [MemberData (nameof (_records))]
-    public async void Test_Repository_InsertAsync (BookingModel booking)
+    [MemberData(nameof(_records))]
+    public async void Test_Repository_InsertAsync(BookingModel booking)
     {
-      await _connection.OpenAsync ();
+      await _connection.OpenAsync();
 
       try
       {
-        using (var ctx = new BookingContext (_options))
+        using(var ctx = new BookingContext(_options))
         {
-          await ctx.Database.EnsureCreatedAsync ();
+          await ctx.Database.EnsureCreatedAsync();
         }
 
-        using (var ctx = new BookingContext (_options))
+        using(var ctx = new BookingContext(_options))
         {
-          var bookings = new Repository<BookingModel> (ctx);
+          var bookings = new Repository<BookingModel>(ctx);
 
-          await bookings.InsertAsync (booking);
-          await ctx.SaveChangesAsync ();
+          await bookings.InsertAsync(booking);
+          await ctx.SaveChangesAsync();
 
-          Assert.NotEmpty (await ctx.Bookings.ToListAsync ());
+          Assert.NotEmpty(await ctx.Bookings.ToListAsync());
         }
 
 
       }
       finally
       {
-        _connection.Close ();
+        _connection.Close();
       }
     }
 
     [Fact]
-    public async void Test_Repository_SelectAsync ()
+    public async void Test_Repository_SelectAsync()
     {
-      await _connection.OpenAsync ();
+      await _connection.OpenAsync();
 
       try
       {
-        using (var ctx = new BookingContext (_options))
+        using(var ctx = new BookingContext(_options))
         {
-          await ctx.Database.EnsureCreatedAsync ();
+          await ctx.Database.EnsureCreatedAsync();
         }
 
-        using (var ctx = new BookingContext (_options))
+        using(var ctx = new BookingContext(_options))
         {
-          var bookings = new Repository<BookingModel> (ctx);
-          var actual = await bookings.SelectAsync ();
+          var bookings = new Repository<BookingModel>(ctx);
+          var actual = await bookings.SelectAsync();
 
-          Assert.Empty (actual);
+          Assert.Empty(actual);
         }
 
       }
       finally
       {
-        _connection.Close ();
+        _connection.Close();
       }
     }
 
     [Fact]
-    public async void Test_Repository_SelectAsync_ById ()
+    public async void Test_Repository_SelectAsync_ById()
     {
-      await _connection.OpenAsync ();
+      await _connection.OpenAsync();
 
       try
       {
-        using (var ctx = new BookingContext (_options))
+        using(var ctx = new BookingContext(_options))
         {
-          await ctx.Database.EnsureCreatedAsync ();
+          await ctx.Database.EnsureCreatedAsync();
         }
 
-        using (var ctx = new BookingContext (_options))
+        using(var ctx = new BookingContext(_options))
         {
-          var bookings = new Repository<BookingModel> (ctx);
-          var actual = await bookings.SelectAsync (1);
+          var bookings = new Repository<BookingModel>(ctx);
+          var actual = await bookings.SelectAsync(1);
 
-          Assert.Null (actual);
+          Assert.Null(actual);
         }
 
       }
       finally
       {
-        _connection.Close ();
+        _connection.Close();
       }
     }
 
     [Theory]
-    [MemberData (nameof (_records))]
-    public async void Test_Repository_Update (BookingModel booking)
+    [MemberData(nameof(_records))]
+    public async void Test_Repository_Update(BookingModel booking)
     {
-      await _connection.OpenAsync ();
+      await _connection.OpenAsync();
 
       try
       {
-        using (var ctx = new BookingContext (_options))
+        using(var ctx = new BookingContext(_options))
         {
-          await ctx.Database.EnsureCreatedAsync ();
-          await ctx.Bookings.AddAsync (booking);
-          await ctx.SaveChangesAsync ();
+          await ctx.Database.EnsureCreatedAsync();
+          await ctx.Bookings.AddAsync(booking);
+          await ctx.SaveChangesAsync();
         }
 
-        using (var ctx = new BookingContext (_options))
+        using(var ctx = new BookingContext(_options))
         {
-          var bookings = new Repository<BookingModel> (ctx);
-          var expected = await ctx.Bookings.FirstAsync ();
+          var bookings = new Repository<BookingModel>(ctx);
+          var expected = await ctx.Bookings.FirstAsync();
 
-          bookings.Update (expected);
-          await ctx.SaveChangesAsync ();
+          bookings.Update(expected);
+          await ctx.SaveChangesAsync();
 
-          var actual = await ctx.Bookings.FirstAsync ();
+          var actual = await ctx.Bookings.FirstAsync();
 
-          Assert.Equal (expected, actual);
+          Assert.Equal(expected, actual);
         }
       }
       finally
       {
-        _connection.Close ();
+        _connection.Close();
       }
     }
   }

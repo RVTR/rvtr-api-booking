@@ -28,6 +28,6 @@ namespace RVTR.Booking.ObjectModel.Models
     /// </summary>
     /// <param name="validationContext"></param>
     /// <returns></returns>
-    public IEnumerable<ValidationResult> Validate (ValidationContext validationContext) => new List<ValidationResult> ();
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) => new List<ValidationResult>();
   }
 }

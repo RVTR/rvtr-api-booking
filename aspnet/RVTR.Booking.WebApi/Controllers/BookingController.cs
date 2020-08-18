@@ -15,9 +15,9 @@ namespace RVTR.Booking.WebApi.Controllers
   /// Booking controller
   /// </summary>
   [ApiController]
-  [ApiVersion ("0.0")]
-  [EnableCors ("Public")]
-  [Route ("rest/booking/{version:apiVersion}/[controller]")]
+  [ApiVersion("0.0")]
+  [EnableCors("Public")]
+  [Route("rest/booking/{version:apiVersion}/[controller]")]
   public class BookingController : ControllerBase
   {
     private readonly ILogger<BookingController> _logger;
@@ -28,7 +28,7 @@ namespace RVTR.Booking.WebApi.Controllers
     /// </summary>
     /// <param name="logger"></param>
     /// <param name="unitOfWork"></param>
-    public BookingController (ILogger<BookingController> logger, UnitOfWork unitOfWork)
+    public BookingController(ILogger<BookingController> logger, UnitOfWork unitOfWork)
     {
       _logger = logger;
       _unitOfWork = unitOfWork;
@@ -39,14 +39,14 @@ namespace RVTR.Booking.WebApi.Controllers
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpDelete ("{id}")]
-    [ProducesResponseType (StatusCodes.Status204NoContent)]
-    [ProducesResponseType (StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete (int id)
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(int id)
     {
-      await _unitOfWork.Booking.DeleteAsync (id);
-      await _unitOfWork.CommitAsync ();
-      return NoContent ();
+      await _unitOfWork.Booking.DeleteAsync(id);
+      await _unitOfWork.CommitAsync();
+      return NoContent();
     }
 
     /// <summary>
@@ -57,44 +57,44 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="checkOut"></param>
     /// <returns>List of bookings between date range</returns>
     [HttpGet]
-    [ProducesResponseType (typeof (IEnumerable<BookingModel>), StatusCodes.Status200OK)]
-    [ProducesResponseType (StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get (DateTime? checkIn, DateTime? checkOut)
+    [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Get(DateTime? checkIn, DateTime? checkOut)
     {
-      if (checkIn != null && checkOut != null)
+      if(checkIn != null && checkOut != null)
       {
         // Date range sanity check
-        if (checkIn > checkOut)
+        if(checkIn > checkOut)
         {
-          return BadRequest ();
+          return BadRequest();
         }
 
-        var bookings = await _unitOfWork.Booking.GetBookingsByDatesAsync ((DateTime)checkIn, (DateTime)checkOut);
-        return Ok (bookings);
+        var bookings = await _unitOfWork.Booking.GetBookingsByDatesAsync((DateTime)checkIn, (DateTime)checkOut);
+        return Ok(bookings);
       }
-      else if (checkIn == null && checkOut == null)
+      else if(checkIn == null && checkOut == null)
       {
-        return Ok (await _unitOfWork.Booking.SelectAsync ());
+        return Ok(await _unitOfWork.Booking.SelectAsync());
       }
       else
       {
-        return BadRequest ();
+        return BadRequest();
       }
     }
-    
+
     /// <summary>
     ///
     /// Action method that returns a single booking by booking id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpGet ("{id}")]
-    [ProducesResponseType (typeof (BookingModel), StatusCodes.Status200OK)]
-    [ProducesResponseType (StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById (int id)
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(BookingModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById(int id)
     {
-      var booking = await _unitOfWork.Booking.SelectAsync (id);
-      if (booking == null)
+      var booking = await _unitOfWork.Booking.SelectAsync(id);
+      if(booking == null)
       {
         return NotFound(id);
       }
@@ -109,13 +109,13 @@ namespace RVTR.Booking.WebApi.Controllers
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpGet ("Account/{id}")]
-    [ProducesResponseType (typeof (IEnumerable<BookingModel>), StatusCodes.Status200OK)]
-    [ProducesResponseType (StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetByAccountId (int id)
+    [HttpGet("Account/{id}")]
+    [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetByAccountId(int id)
     {
       var bookings = await _unitOfWork.Booking.GetByAccountId(id);
-      if (bookings.Count() == 0)
+      if(bookings.Count() == 0)
       {
         return NotFound();
       }
@@ -131,14 +131,14 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="booking"></param>
     /// <returns></returns>
     [HttpPost]
-    [ProducesResponseType (typeof (BookingModel), StatusCodes.Status201Created)]
-    public async Task<IActionResult> Post (BookingModel booking)
+    [ProducesResponseType(typeof(BookingModel), StatusCodes.Status201Created)]
+    public async Task<IActionResult> Post(BookingModel booking)
     {
-      await _unitOfWork.Booking.InsertAsync (booking);
-      await _unitOfWork.CommitAsync ();
+      await _unitOfWork.Booking.InsertAsync(booking);
+      await _unitOfWork.CommitAsync();
 
-      return CreatedAtAction (
-        actionName: nameof (Get),
+      return CreatedAtAction(
+        actionName: nameof(Get),
         routeValues: new { id = booking.Id },
         value: booking
       );
@@ -150,13 +150,13 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="booking"></param>
     /// <returns></returns>
     [HttpPut]
-    [ProducesResponseType (StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> Put (BookingModel booking)
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Put(BookingModel booking)
     {
-      _unitOfWork.Booking.Update (booking);
-      await _unitOfWork.CommitAsync ();
+      _unitOfWork.Booking.Update(booking);
+      await _unitOfWork.CommitAsync();
 
-      return NoContent ();
+      return NoContent();
     }
   }
 }

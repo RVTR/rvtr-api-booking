@@ -12,9 +12,9 @@ namespace RVTR.Booking.WebApi
     /// </summary>
     /// <param name="applicationBuilder"></param>
     /// <returns></returns>
-    public static IApplicationBuilder UseZipkin (this IApplicationBuilder applicationBuilder)
+    public static IApplicationBuilder UseZipkin(this IApplicationBuilder applicationBuilder)
     {
-      return applicationBuilder.UseMiddleware<ClientZipkinMiddleware> ();
+      return applicationBuilder.UseMiddleware<ClientZipkinMiddleware>();
     }
   }
 }

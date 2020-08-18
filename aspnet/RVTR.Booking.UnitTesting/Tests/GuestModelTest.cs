@@ -22,21 +22,21 @@ namespace RVTR.Booking.UnitTesting.Tests
     };
 
     [Theory]
-    [MemberData (nameof (_guests))]
-    public void Test_Create_GuestModel (GuestModel guest)
+    [MemberData(nameof(_guests))]
+    public void Test_Create_GuestModel(GuestModel guest)
     {
-      var validationContext = new ValidationContext (guest);
-      var actual = Validator.TryValidateObject (guest, validationContext, null, true);
+      var validationContext = new ValidationContext(guest);
+      var actual = Validator.TryValidateObject(guest, validationContext, null, true);
 
-      Assert.True (actual);
+      Assert.True(actual);
     }
 
     [Theory]
-    [MemberData (nameof (_guests))]
-    public void Test_Validate_GuestModel (GuestModel guest)
+    [MemberData(nameof(_guests))]
+    public void Test_Validate_GuestModel(GuestModel guest)
     {
-      var validationContext = new ValidationContext (guest);
-      Assert.Empty (guest.Validate (validationContext));
+      var validationContext = new ValidationContext(guest);
+      Assert.Empty(guest.Validate(validationContext));
     }
   }
 }
