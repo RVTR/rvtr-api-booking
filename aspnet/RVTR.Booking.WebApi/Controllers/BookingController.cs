@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVTR.Booking.DataContext.Repositories;
 using RVTR.Booking.ObjectModel.Models;
+using System.Linq;
 
 namespace RVTR.Booking.WebApi.Controllers
 {
@@ -43,16 +44,10 @@ namespace RVTR.Booking.WebApi.Controllers
         [ProducesResponseType (StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete (int id)
         {
-            try
-            {
-                await _unitOfWork.Booking.DeleteAsync (id);
-                await _unitOfWork.CommitAsync ();
-                return NoContent ();
-            }
-            catch
-            {
-                return NotFound (id);
-            }
+          await _unitOfWork.Booking.DeleteAsync (id);
+          await _unitOfWork.CommitAsync ();
+
+          return NoContent ();
         }
 
         /// <summary>
@@ -98,14 +93,16 @@ namespace RVTR.Booking.WebApi.Controllers
         [ProducesResponseType (StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById (int id)
         {
-            try
-            {
-                return Ok (await _unitOfWork.Booking.SelectAsync (id));
-            }
-            catch
-            {
-                return NotFound (id);
-            }
+          var booking = await _unitOfWork.Booking.SelectAsync(id);
+          if (booking == null)
+          {
+            return NotFound();
+          }
+          else
+          {
+            return Ok(booking);
+          }      
+          
         }
 
         /// <summary>
@@ -118,14 +115,16 @@ namespace RVTR.Booking.WebApi.Controllers
         [ProducesResponseType (StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetByAccountId (int id)
         {
-            try
-            {
-                return Ok (await _unitOfWork.bookingRepository.GetByAccountId (id));
-            }
-            catch (Exception e)
-            {
-                return NotFound (e.Message);
-            }
+          var bookings = await _unitOfWork.bookingRepository.GetByAccountId(id);
+
+          if (bookings.Count() != 0)
+          {
+            return Ok (bookings);
+          }
+          else
+          {
+            return NotFound();
+          }
         }
 
         /// <summary>
