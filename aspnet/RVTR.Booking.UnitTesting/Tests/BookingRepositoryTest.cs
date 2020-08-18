@@ -23,7 +23,7 @@ namespace RVTR.Booking.UnitTesting.Tests
                     AccountId = 1,
                     LodgingId = 2,
                     CheckIn = new DateTime(2020, 8, 16),
-                    CheckOut = new DateTime(2010, 8, 18)
+                    CheckOut = new DateTime(2020, 8, 18)
                 }
             }
         };
@@ -50,8 +50,6 @@ namespace RVTR.Booking.UnitTesting.Tests
 
                     Assert.NotEmpty (actual);
                 }
-
-
             }
             finally
             {
@@ -77,9 +75,9 @@ namespace RVTR.Booking.UnitTesting.Tests
                 using (var ctx = new BookingContext (_options))
                 {
                     var bookings = new BookingRepository (ctx);
-                    var actual = await bookings.GetBookingsByDatesAsync (new DateTime (2020, 8, 16), new DateTime (2020, 8, 18));
+                    var actual = await bookings.GetBookingsByDatesAsync (new DateTime (2020, 8, 17), new DateTime (2020, 8, 19));
 
-                    Assert.NotNull (actual);
+                    Assert.NotEmpty (actual);
                 }
             }
             finally

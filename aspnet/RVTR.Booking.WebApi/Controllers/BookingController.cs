@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
@@ -7,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RVTR.Booking.DataContext.Repositories;
 using RVTR.Booking.ObjectModel.Models;
-using System.Linq;
 
 namespace RVTR.Booking.WebApi.Controllers
 {
@@ -64,12 +64,13 @@ namespace RVTR.Booking.WebApi.Controllers
         {
             if (checkIn != null && checkOut != null)
             {
-                if (checkIn > checkOut) 
+                // Date range sanity check
+                if (checkIn > checkOut)
                 {
-                    // Date range sanity check
                     return BadRequest ();
                 }
-                var bookings = await _unitOfWork.bookingRepository.GetBookingsByDatesAsync ((DateTime)checkIn, (DateTime)checkOut);
+
+                var bookings = await _unitOfWork.Booking.GetBookingsByDatesAsync ((DateTime)checkIn, (DateTime)checkOut);
                 return Ok (bookings);
             }
             else if (checkIn == null && checkOut == null)
@@ -96,7 +97,7 @@ namespace RVTR.Booking.WebApi.Controllers
           var booking = await _unitOfWork.Booking.SelectAsync(id);
           if (booking == null)
           {
-            return NotFound();
+            return NotFound(id);
           }
           else
           {
@@ -115,7 +116,7 @@ namespace RVTR.Booking.WebApi.Controllers
         [ProducesResponseType (StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetByAccountId (int id)
         {
-          var bookings = await _unitOfWork.bookingRepository.GetByAccountId(id);
+          var bookings = await _unitOfWork.Booking.GetByAccountId(id);
 
           if (bookings.Count() != 0)
           {

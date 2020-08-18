@@ -11,24 +11,20 @@ namespace RVTR.Booking.DataContext.Repositories
     {
         public BookingRepository(BookingContext bookingContext): base(bookingContext) {}
 
-        bool _DatesIntersect (DateTime checkIn, DateTime checkOut, DateTime bookingCheckIn, DateTime bookingCheckOut)
-        {
-            bool intersectFront = checkIn <= bookingCheckIn && checkOut >= bookingCheckIn;
-            bool intersectBack = checkIn <= bookingCheckOut && checkOut >= bookingCheckOut;
-            bool intersectOuter = checkIn <= bookingCheckIn && checkOut >= bookingCheckOut;
-            bool intersectInner = checkIn >= bookingCheckIn && checkOut <= bookingCheckOut;
-
-            return intersectFront || intersectBack || intersectInner || intersectOuter;
-        }
-
         public virtual async Task<IEnumerable<BookingModel>> GetBookingsByDatesAsync(DateTime checkIn, DateTime checkOut)
         {
-            var bookings = await _db.Where (b => _DatesIntersect (checkIn, checkOut, b.CheckIn, b.CheckOut)).ToListAsync ();
+            var bookings = await _db.Where (b => 
+                (checkIn <= b.CheckIn && checkOut >= b.CheckIn) ||
+                (checkIn <= b.CheckOut && checkOut >= b.CheckOut) ||
+                (checkIn <= b.CheckIn && checkOut >= b.CheckOut) ||
+                (checkIn >= b.CheckIn && checkOut <= b.CheckOut)
+            ).ToListAsync ();
+
             return bookings;
         }
 
         public virtual async Task<IEnumerable<BookingModel>> GetByAccountId(int id)
-        { 
+        {
             return await _db.Where(t => t.AccountId == id).ToListAsync();
         }
     }

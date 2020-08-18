@@ -10,16 +10,12 @@ namespace RVTR.Booking.DataContext.Repositories
     public class UnitOfWork : IDisposable
     {
         private readonly BookingContext _context;
-        public virtual BookingRepository bookingRepository { get; }
-
-        public virtual Repository<BookingModel> Booking { get; }
+        public virtual BookingRepository Booking { get; }
 
         public UnitOfWork (BookingContext context)
         {
             _context = context;
-
-            Booking = new Repository<BookingModel> (context);
-            bookingRepository = new BookingRepository (context);
+            Booking = new BookingRepository (context);
         }
 
         /// <summary>
