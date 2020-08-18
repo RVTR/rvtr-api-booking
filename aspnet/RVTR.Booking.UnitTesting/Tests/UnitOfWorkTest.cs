@@ -7,36 +7,36 @@ using Xunit;
 
 namespace RVTR.Booking.UnitTesting.Tests
 {
-    public class UnitOfWorkTest
+  public class UnitOfWorkTest
+  {
+    private static readonly SqliteConnection _connection = new SqliteConnection ("Data Source=:memory:");
+    private static readonly DbContextOptions<BookingContext> _options = new DbContextOptionsBuilder<BookingContext> ().UseSqlite (_connection).Options;
+
+    [Fact]
+    public async void Test_UnitOfWork_CommitAsync ()
     {
-        private static readonly SqliteConnection _connection = new SqliteConnection ("Data Source=:memory:");
-        private static readonly DbContextOptions<BookingContext> _options = new DbContextOptionsBuilder<BookingContext> ().UseSqlite (_connection).Options;
+      await _connection.OpenAsync ();
 
-        [Fact]
-        public async void Test_UnitOfWork_CommitAsync ()
+      try
+      {
+        using (var ctx = new BookingContext (_options))
         {
-            await _connection.OpenAsync ();
-
-            try
-            {
-                using (var ctx = new BookingContext (_options))
-                {
-                    await ctx.Database.EnsureCreatedAsync ();
-                }
-
-                using (var ctx = new BookingContext (_options))
-                {
-                    var unitOfWork = new UnitOfWork (ctx);
-                    var actual = await unitOfWork.CommitAsync ();
-
-                    Assert.NotNull (unitOfWork.Booking);
-                    Assert.Equal (0, actual);
-                }
-            }
-            finally
-            {
-                await _connection.CloseAsync ();
-            }
+          await ctx.Database.EnsureCreatedAsync ();
         }
+
+        using (var ctx = new BookingContext (_options))
+        {
+          var unitOfWork = new UnitOfWork (ctx);
+          var actual = await unitOfWork.CommitAsync ();
+
+          Assert.NotNull (unitOfWork.Booking);
+          Assert.Equal (0, actual);
+        }
+      }
+      finally
+      {
+        await _connection.CloseAsync ();
+      }
     }
+  }
 }
