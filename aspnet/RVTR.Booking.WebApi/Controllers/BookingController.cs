@@ -43,16 +43,9 @@ namespace RVTR.Booking.WebApi.Controllers
     [ProducesResponseType (StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete (int id)
     {
-      try
-      {
-        await _unitOfWork.Booking.DeleteAsync (id);
-        await _unitOfWork.CommitAsync ();
-        return NoContent ();
-      }
-      catch
-      {
-        return NotFound (id);
-      }
+      await _unitOfWork.Booking.DeleteAsync (id);
+      await _unitOfWork.CommitAsync ();
+      return NoContent ();
     }
 
     /// <summary>
@@ -87,7 +80,7 @@ namespace RVTR.Booking.WebApi.Controllers
         return BadRequest ();
       }
     }
-
+    
     /// <summary>
     ///
     /// Action method that returns a single booking by booking id.
@@ -99,13 +92,14 @@ namespace RVTR.Booking.WebApi.Controllers
     [ProducesResponseType (StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById (int id)
     {
-      try
+      var booking = await _unitOfWork.Booking.SelectAsync (id));
+      if (booking == null)
       {
-        return Ok (await _unitOfWork.Booking.SelectAsync (id));
+        return NotFound(id);
       }
-      catch
+      else
       {
-        return NotFound (id);
+        return Ok(booking);
       }
     }
 
@@ -119,13 +113,14 @@ namespace RVTR.Booking.WebApi.Controllers
     [ProducesResponseType (StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByAccountId (int id)
     {
-      try
+      var bookings = await _unitOfWork.Booking.GetByAccountId(id);
+      if (bookings.Count() == 0)
       {
-        return Ok (await _unitOfWork.Booking.GetByAccountId (id));
+        return NotFound();
       }
-      catch (Exception e)
+      else
       {
-        return NotFound (e.Message);
+        return Ok(bookings);
       }
     }
 

@@ -30,16 +30,17 @@ namespace RVTR.Booking.UnitTesting.Tests
       var unitOfWorkMock = new Mock<UnitOfWork> (contextMock.Object);
 
       IEnumerable<BookingModel> bookings = new List<BookingModel> { new BookingModel () };
+      BookingModel booking = new BookingModel();
 
-      repositoryMock.Setup (m => m.DeleteAsync (0)).Throws (new Exception ());
+      repositoryMock.Setup (m => m.DeleteAsync (0)).Returns (Task.FromResult<BookingModel> (null));
       repositoryMock.Setup (m => m.DeleteAsync (1)).Returns (Task.FromResult (1));
       repositoryMock.Setup (m => m.InsertAsync (It.IsAny<BookingModel> ())).Returns (Task.FromResult<BookingModel> (null));
       repositoryMock.Setup (m => m.SelectAsync ()).Returns (Task.FromResult<IEnumerable<BookingModel>> (null));
-      repositoryMock.Setup (m => m.SelectAsync (0)).Throws (new Exception ());
-      repositoryMock.Setup (m => m.SelectAsync (1)).Returns (Task.FromResult<BookingModel> (null));
+      repositoryMock.Setup (m => m.SelectAsync (0)).Returns (Task.FromResult<BookingModel> (null));
+      repositoryMock.Setup (m => m.SelectAsync (1)).Returns (Task.FromResult (booking));
       repositoryMock.Setup (m => m.Update (It.IsAny<BookingModel> ()));
       repositoryMock.Setup (m => m.GetBookingsByDatesAsync (It.IsAny<DateTime> (), It.IsAny<DateTime> ())).Returns (Task.FromResult (bookings));
-      repositoryMock.Setup (m => m.GetByAccountId (0)).Throws (new Exception ());
+      repositoryMock.Setup (m => m.GetByAccountId (0)).Returns (Task.FromResult<IEnumerable<BookingModel>> (new List<BookingModel> {}));
       repositoryMock.Setup (m => m.GetByAccountId (1)).Returns (Task.FromResult (bookings));
 
       unitOfWorkMock.Setup (m => m.Booking).Returns (repositoryMock.Object);
