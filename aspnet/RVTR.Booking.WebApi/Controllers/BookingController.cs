@@ -69,9 +69,12 @@ namespace RVTR.Booking.WebApi.Controllers
         {
             if (checkIn != null && checkOut != null)
             {
-                IEnumerable<BookingModel> bookings;
-                bookings = await _unitOfWork.bookingRepository.GetBookingsByDatesAsync ((DateTime)checkIn, (DateTime)checkOut);
-
+                if (checkIn > checkOut) 
+                {
+                    // Date range sanity check
+                    return BadRequest ();
+                }
+                var bookings = await _unitOfWork.bookingRepository.GetBookingsByDatesAsync ((DateTime)checkIn, (DateTime)checkOut);
                 return Ok (bookings);
             }
             else if (checkIn == null && checkOut == null)
