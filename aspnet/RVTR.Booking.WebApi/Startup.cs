@@ -57,8 +57,8 @@ namespace RVTR.Booking.WebApi
       {
         options.UseNpgsql(_configuration.GetConnectionString("pgsql"), options =>
         {
-           options.EnableRetryOnFailure(3);
-         });
+          options.EnableRetryOnFailure(3);
+        });
       });
 
       services.AddScoped<ClientZipkinMiddleware>();
@@ -80,7 +80,7 @@ namespace RVTR.Booking.WebApi
     /// <param name="hostEnvironment"></param>
     public void Configure(IApplicationBuilder applicationBuilder, IApiVersionDescriptionProvider descriptionProvider, IWebHostEnvironment hostEnvironment)
     {
-      if(hostEnvironment.IsDevelopment())
+      if (hostEnvironment.IsDevelopment())
       {
         applicationBuilder.UseDeveloperExceptionPage();
       }
@@ -96,7 +96,7 @@ namespace RVTR.Booking.WebApi
       {
         options.RoutePrefix = "rest/booking";
 
-        foreach(var description in descriptionProvider.ApiVersionDescriptions)
+        foreach (var description in descriptionProvider.ApiVersionDescriptions)
         {
           options.SwaggerEndpoint($"/rest/booking/{description.GroupName}/swagger.json", description.GroupName);
         }

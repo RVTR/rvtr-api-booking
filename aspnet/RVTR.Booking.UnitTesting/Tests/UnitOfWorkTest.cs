@@ -19,12 +19,12 @@ namespace RVTR.Booking.UnitTesting.Tests
 
       try
       {
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           await ctx.Database.EnsureCreatedAsync();
         }
 
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           var unitOfWork = new UnitOfWork(ctx);
           var actual = await unitOfWork.CommitAsync();

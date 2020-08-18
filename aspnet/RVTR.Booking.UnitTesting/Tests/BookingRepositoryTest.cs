@@ -36,14 +36,14 @@ namespace RVTR.Booking.UnitTesting.Tests
 
       try
       {
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           await ctx.Database.EnsureCreatedAsync();
           await ctx.Bookings.AddAsync(booking);
           await ctx.SaveChangesAsync();
         }
 
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           var bookings = new BookingRepository(ctx);
           var actual = await bookings.GetByAccountId(1);
@@ -65,14 +65,14 @@ namespace RVTR.Booking.UnitTesting.Tests
 
       try
       {
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           await ctx.Database.EnsureCreatedAsync();
           await ctx.Bookings.AddAsync(booking);
           await ctx.SaveChangesAsync();
         }
 
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           var bookings = new BookingRepository(ctx);
           var actual = await bookings.GetBookingsByDatesAsync(new DateTime(2020, 8, 17), new DateTime(2020, 8, 19));

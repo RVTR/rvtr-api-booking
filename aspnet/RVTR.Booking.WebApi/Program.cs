@@ -40,7 +40,7 @@ namespace RVTR.Booking.WebApi
     /// <returns></returns>
     public static async Task CreateDbContextAsync(IHost host)
     {
-      using(var scope = host.Services.CreateScope())
+      using (var scope = host.Services.CreateScope())
       {
         var provider = scope.ServiceProvider;
         var context = provider.GetRequiredService<BookingContext>();

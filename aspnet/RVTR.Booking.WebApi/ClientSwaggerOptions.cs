@@ -40,7 +40,7 @@ namespace RVTR.Booking.WebApi
 
       options.IncludeXmlComments(xmlPath);
 
-      foreach(var description in _provider.ApiVersionDescriptions)
+      foreach (var description in _provider.ApiVersionDescriptions)
       {
         options.SwaggerDoc(description.GroupName, Create(description));
       }
@@ -62,7 +62,7 @@ namespace RVTR.Booking.WebApi
         Version = description.ApiVersion.ToString(),
       };
 
-      if(description.IsDeprecated)
+      if (description.IsDeprecated)
       {
         info.Description += "&nbsp;&Colon;&nbsp;<strong>DEPRECATED</strong>";
       }

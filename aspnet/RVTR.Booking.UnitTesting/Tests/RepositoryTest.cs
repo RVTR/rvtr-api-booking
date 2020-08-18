@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +29,7 @@ namespace RVTR.Booking.UnitTesting.Tests
 
       try
       {
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           await ctx.Database.EnsureCreatedAsync();
           await ctx.Bookings.AddAsync(booking);
@@ -38,7 +37,7 @@ namespace RVTR.Booking.UnitTesting.Tests
           await ctx.SaveChangesAsync();
         }
 
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           var bookings = new Repository<BookingModel>(ctx);
 
@@ -64,12 +63,12 @@ namespace RVTR.Booking.UnitTesting.Tests
 
       try
       {
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           await ctx.Database.EnsureCreatedAsync();
         }
 
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           var bookings = new Repository<BookingModel>(ctx);
 
@@ -94,12 +93,12 @@ namespace RVTR.Booking.UnitTesting.Tests
 
       try
       {
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           await ctx.Database.EnsureCreatedAsync();
         }
 
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           var bookings = new Repository<BookingModel>(ctx);
           var actual = await bookings.SelectAsync();
@@ -121,12 +120,12 @@ namespace RVTR.Booking.UnitTesting.Tests
 
       try
       {
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           await ctx.Database.EnsureCreatedAsync();
         }
 
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           var bookings = new Repository<BookingModel>(ctx);
           var actual = await bookings.SelectAsync(1);
@@ -149,14 +148,14 @@ namespace RVTR.Booking.UnitTesting.Tests
 
       try
       {
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           await ctx.Database.EnsureCreatedAsync();
           await ctx.Bookings.AddAsync(booking);
           await ctx.SaveChangesAsync();
         }
 
-        using(var ctx = new BookingContext(_options))
+        using (var ctx = new BookingContext(_options))
         {
           var bookings = new Repository<BookingModel>(ctx);
           var expected = await ctx.Bookings.FirstAsync();
