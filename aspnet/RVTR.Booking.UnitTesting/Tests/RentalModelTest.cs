@@ -9,17 +9,17 @@ namespace RVTR.Booking.UnitTesting.Tests
   public class RentalModelTest
   {
     public static readonly IEnumerable<Object[]> _rentals = new List<Object[]>
+    {
+      new object[]
+      {
+        new RentalModel()
         {
-            new object[]
-            {
-                new RentalModel()
-                {
-                    Id = 0,
-                    BookingId = 0,
-                    Booking = null
-                }
-            }
-        };
+          Id = 0,
+          BookingId = 0,
+          Booking = null
+        }
+      }
+    };
 
     [Theory]
     [MemberData(nameof(_rentals))]

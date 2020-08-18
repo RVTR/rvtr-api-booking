@@ -14,12 +14,12 @@ namespace RVTR.Booking.UnitTesting.Tests
     private static readonly DbContextOptions<BookingContext> _options = new DbContextOptionsBuilder<BookingContext>().UseSqlite(_connection).Options;
 
     public static readonly IEnumerable<object[]> _records = new List<object[]>()
-        {
-            new object[]
-            {
-                new BookingModel() { Id = 1 }
-            }
-        };
+    {
+      new object[]
+      {
+        new BookingModel() { Id = 1 }
+      }
+    };
 
     [Theory]
     [MemberData(nameof(_records))]
