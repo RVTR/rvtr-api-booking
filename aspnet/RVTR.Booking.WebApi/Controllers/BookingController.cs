@@ -56,18 +56,8 @@ namespace RVTR.Booking.WebApi.Controllers
     }
 
     /// <summary>
-    /// Action method that returns a list of all the bookings.
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get()
-    {
-      return Ok(await _unitOfWork.Booking.SelectAsync());
-    }
-
-    /// <summary>
-    /// Takes in two dates and retrieves bookings between the two dates.
+    /// Takes in two dates and retrieves bookings between the two dates,
+    /// returns all bookings if no checkin/checkout date specified.
     /// </summary>
     /// <param name="checkIn"></param>
     /// <param name="checkOut"></param>
@@ -77,7 +67,6 @@ namespace RVTR.Booking.WebApi.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Get(DateTime? checkIn, DateTime? checkOut)
     {
-
       if (checkIn != null && checkOut != null)
       {
         IEnumerable<BookingModel> bookings;
@@ -85,7 +74,7 @@ namespace RVTR.Booking.WebApi.Controllers
 
         return Ok(bookings);
       }
-      else if ( checkIn == null && checkOut == null)
+      else if (checkIn == null && checkOut == null)
       {
         return Ok(await _unitOfWork.Booking.SelectAsync());
       }
