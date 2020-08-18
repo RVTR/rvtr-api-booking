@@ -26,8 +26,10 @@ namespace RVTR.Booking.UnitTesting.Tests
         {
             var contextMock = new Mock<BookingContext> (_options);
             var loggerMock = new Mock<ILogger<BookingController>> ();
-            var repositoryMock = new Mock<Repository<BookingModel>> (new BookingContext (_options));
+            var repositoryMock = new Mock<BookingRepository> (new BookingContext (_options));
             var unitOfWorkMock = new Mock<UnitOfWork> (contextMock.Object);
+
+            IEnumerable<BookingModel> bookings = new List<BookingModel> { new BookingModel () };
 
             repositoryMock.Setup (m => m.DeleteAsync (0)).Throws (new Exception ());
             repositoryMock.Setup (m => m.DeleteAsync (1)).Returns (Task.FromResult (1));
@@ -36,6 +38,10 @@ namespace RVTR.Booking.UnitTesting.Tests
             repositoryMock.Setup (m => m.SelectAsync (0)).Throws (new Exception ());
             repositoryMock.Setup (m => m.SelectAsync (1)).Returns (Task.FromResult<BookingModel> (null));
             repositoryMock.Setup (m => m.Update (It.IsAny<BookingModel> ()));
+            repositoryMock.Setup (m => m.GetBookingsByDatesAsync (It.IsAny<DateTime> (), It.IsAny<DateTime> ())).Returns (Task.FromResult (bookings));
+            repositoryMock.Setup (m => m.GetByAccountId (0)).Throws (new Exception ());
+            repositoryMock.Setup (m => m.GetByAccountId (1)).Returns (Task.FromResult (bookings));
+
             unitOfWorkMock.Setup (m => m.Booking).Returns (repositoryMock.Object);
 
             _logger = loggerMock.Object;
@@ -65,17 +71,10 @@ namespace RVTR.Booking.UnitTesting.Tests
         }
 
         [Fact]
-        public async void Test_Controller_Get_DateRange () 
+        public async void Test_Controller_Get_By_DateRange () 
         {
             OkObjectResult resultBookingDates = await _controller.Get (new DateTime (2020, 8, 16), new DateTime (2020, 8, 18)) as OkObjectResult;
             Assert.NotNull (resultBookingDates);
-        }
-
-        [Fact]
-        public async void Test_Controller_Get_Fail () 
-        {
-            BadRequestResult resultFail = await _controller.Get (new DateTime (2021, 1, 1), new DateTime (2021, 1, 1)) as BadRequestResult;
-            Assert.NotNull (resultFail);
         }
 
         [Fact]
@@ -88,7 +87,7 @@ namespace RVTR.Booking.UnitTesting.Tests
         [Fact]
         public async void Test_Controller_GetById_Fail () 
         {
-            NotFoundResult resultFail = await _controller.GetById (0) as NotFoundResult;
+            NotFoundObjectResult resultFail = await _controller.GetById (0) as NotFoundObjectResult;
             Assert.NotNull (resultFail);
         }
 

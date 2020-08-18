@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
@@ -69,12 +70,13 @@ namespace RVTR.Booking.WebApi.Controllers
         {
             if (checkIn != null && checkOut != null)
             {
-                if (checkIn > checkOut) 
+                // Date range sanity check
+                if (checkIn > checkOut)
                 {
-                    // Date range sanity check
                     return BadRequest ();
                 }
-                var bookings = await _unitOfWork.bookingRepository.GetBookingsByDatesAsync ((DateTime)checkIn, (DateTime)checkOut);
+
+                var bookings = await _unitOfWork.Booking.GetBookingsByDatesAsync ((DateTime)checkIn, (DateTime)checkOut);
                 return Ok (bookings);
             }
             else if (checkIn == null && checkOut == null)
@@ -120,7 +122,7 @@ namespace RVTR.Booking.WebApi.Controllers
         {
             try
             {
-                return Ok (await _unitOfWork.bookingRepository.GetByAccountId (id));
+                return Ok (await _unitOfWork.Booking.GetByAccountId (id));
             }
             catch (Exception e)
             {
