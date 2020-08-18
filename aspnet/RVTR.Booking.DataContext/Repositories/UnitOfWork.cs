@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using RVTR.Booking.ObjectModel.Models;
 
 namespace RVTR.Booking.DataContext.Repositories
 {
