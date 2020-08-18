@@ -7,37 +7,36 @@ using Xunit;
 
 namespace RVTR.Booking.UnitTesting.Tests
 {
-  public class UnitOfWorkTest
-  {
-    private static readonly SqliteConnection _connection = new SqliteConnection("Data Source=:memory:");
-    private static readonly DbContextOptions<BookingContext> _options = new DbContextOptionsBuilder<BookingContext>().UseSqlite(_connection).Options;
-
-    [Fact]
-    public async void Test_UnitOfWork_CommitAsync()
+    public class UnitOfWorkTest
     {
-      await _connection.OpenAsync();
+        private static readonly SqliteConnection _connection = new SqliteConnection ("Data Source=:memory:");
+        private static readonly DbContextOptions<BookingContext> _options = new DbContextOptionsBuilder<BookingContext> ().UseSqlite (_connection).Options;
 
-      try
-      {
-        using (var ctx = new BookingContext(_options))
+        [Fact]
+        public async void Test_UnitOfWork_CommitAsync ()
         {
-          await ctx.Database.EnsureCreatedAsync();
-        }
+            await _connection.OpenAsync ();
 
-        using (var ctx = new BookingContext(_options))
-        {
-          var unitOfWork = new UnitOfWork(ctx);
-          var actual = await unitOfWork.CommitAsync();
+            try
+            {
+                using (var ctx = new BookingContext (_options))
+                {
+                    await ctx.Database.EnsureCreatedAsync ();
+                }
 
-          Assert.NotNull(unitOfWork.Booking);
-          
-          Assert.Equal(0, actual);
+                using (var ctx = new BookingContext (_options))
+                {
+                    var unitOfWork = new UnitOfWork (ctx);
+                    var actual = await unitOfWork.CommitAsync ();
+
+                    Assert.NotNull (unitOfWork.Booking);
+                    Assert.Equal (0, actual);
+                }
+            }
+            finally
+            {
+                await _connection.CloseAsync ();
+            }
         }
-      }
-      finally
-      {
-        await _connection.CloseAsync();
-      }
     }
-  }
 }
