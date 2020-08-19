@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +18,6 @@ namespace RVTR.Booking.UnitTesting.Tests
       new object[]
       {
         new BookingModel() { Id = 1 }
-        
       }
     };
 
@@ -35,7 +33,7 @@ namespace RVTR.Booking.UnitTesting.Tests
         {
           await ctx.Database.EnsureCreatedAsync();
           await ctx.Bookings.AddAsync(booking);
-          
+
           await ctx.SaveChangesAsync();
         }
 
@@ -103,7 +101,6 @@ namespace RVTR.Booking.UnitTesting.Tests
         using (var ctx = new BookingContext(_options))
         {
           var bookings = new Repository<BookingModel>(ctx);
-
           var actual = await bookings.SelectAsync();
 
           Assert.Empty(actual);
@@ -131,7 +128,6 @@ namespace RVTR.Booking.UnitTesting.Tests
         using (var ctx = new BookingContext(_options))
         {
           var bookings = new Repository<BookingModel>(ctx);
-
           var actual = await bookings.SelectAsync(1);
 
           Assert.Null(actual);
@@ -164,7 +160,6 @@ namespace RVTR.Booking.UnitTesting.Tests
           var bookings = new Repository<BookingModel>(ctx);
           var expected = await ctx.Bookings.FirstAsync();
 
-          
           bookings.Update(expected);
           await ctx.SaveChangesAsync();
 
@@ -172,8 +167,6 @@ namespace RVTR.Booking.UnitTesting.Tests
 
           Assert.Equal(expected, actual);
         }
-
-
       }
       finally
       {

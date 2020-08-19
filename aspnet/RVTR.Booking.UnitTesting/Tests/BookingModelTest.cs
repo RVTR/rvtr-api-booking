@@ -38,7 +38,6 @@ namespace RVTR.Booking.UnitTesting.Tests
     public void Test_Validate_BookingModel(BookingModel booking)
     {
       var validationContext = new ValidationContext(booking);
-
       Assert.Empty(booking.Validate(validationContext));
     }
   }

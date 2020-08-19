@@ -1,6 +1,7 @@
 using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ using RVTR.Booking.ObjectModel.Models;
 namespace RVTR.Booking.WebApi.Controllers
 {
   /// <summary>
-  ///
+  /// Booking controller
   /// </summary>
   [ApiController]
   [ApiVersion("0.0")]
@@ -43,31 +44,14 @@ namespace RVTR.Booking.WebApi.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
-      try
-      {
-        await _unitOfWork.Booking.DeleteAsync(id);
-        await _unitOfWork.CommitAsync();      
-        return NoContent();
-      }
-      catch
-      {
-        return NotFound(id);
-      }
+      await _unitOfWork.Booking.DeleteAsync(id);
+      await _unitOfWork.CommitAsync();
+      return NoContent();
     }
 
     /// <summary>
-    /// Action method that returns a list of all the bookings.
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get()
-    {
-      return Ok(await _unitOfWork.Booking.SelectAsync());
-    }
-
-    /// <summary>
-    /// Takes in two dates and retrieves bookings between the two dates.
+    /// Takes in two dates and retrieves bookings between the two dates,
+    /// returns all bookings if no checkin/checkout date specified.
     /// </summary>
     /// <param name="checkIn"></param>
     /// <param name="checkOut"></param>
@@ -77,15 +61,18 @@ namespace RVTR.Booking.WebApi.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Get(DateTime? checkIn, DateTime? checkOut)
     {
-
       if (checkIn != null && checkOut != null)
       {
-        IEnumerable<BookingModel> bookings;
-        bookings = await _unitOfWork.bookingRepository.GetBookingsByDatesAsync((DateTime)checkIn, (DateTime)checkOut);
+        // Date range sanity check
+        if (checkIn > checkOut)
+        {
+          return BadRequest();
+        }
 
+        var bookings = await _unitOfWork.Booking.GetBookingsByDatesAsync((DateTime)checkIn, (DateTime)checkOut);
         return Ok(bookings);
       }
-      else if ( checkIn == null && checkOut == null)
+      else if (checkIn == null && checkOut == null)
       {
         return Ok(await _unitOfWork.Booking.SelectAsync());
       }
@@ -106,13 +93,14 @@ namespace RVTR.Booking.WebApi.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(int id)
     {
-      try
-      {
-        return Ok(await _unitOfWork.Booking.SelectAsync(id));
-      }
-      catch
+      var booking = await _unitOfWork.Booking.SelectAsync(id);
+      if (booking == null)
       {
         return NotFound(id);
+      }
+      else
+      {
+        return Ok(booking);
       }
     }
 
@@ -123,17 +111,10 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <returns></returns>
     [HttpGet("Account/{id}")]
     [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByAccountId(int id)
     {
-      try
-      {
-        return Ok(await _unitOfWork.bookingRepository.GetByAccountId(id));
-      }
-      catch(Exception e)
-      {
-        return NotFound(e.Message);
-      }
+      var bookings = await _unitOfWork.Booking.GetByAccountId(id);
+      return Ok(bookings);
     }
 
     /// <summary>
@@ -148,7 +129,7 @@ namespace RVTR.Booking.WebApi.Controllers
       await _unitOfWork.Booking.InsertAsync(booking);
       await _unitOfWork.CommitAsync();
 
-      return CreatedAtAction( 
+      return CreatedAtAction(
         actionName: nameof(Get),
         routeValues: new { id = booking.Id },
         value: booking
