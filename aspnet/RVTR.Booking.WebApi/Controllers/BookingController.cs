@@ -111,18 +111,10 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <returns></returns>
     [HttpGet("Account/{id}")]
     [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByAccountId(int id)
     {
       var bookings = await _unitOfWork.Booking.GetByAccountId(id);
-      if (bookings.Count() == 0)
-      {
-        return NotFound();
-      }
-      else
-      {
-        return Ok(bookings);
-      }
+      return Ok(bookings);
     }
 
     /// <summary>
