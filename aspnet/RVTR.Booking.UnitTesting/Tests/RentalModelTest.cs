@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using RVTR.Booking.ObjectModel.Models;
@@ -8,7 +7,7 @@ namespace RVTR.Booking.UnitTesting.Tests
 {
   public class RentalModelTest
   {
-    public static readonly IEnumerable<Object[]> _rentals = new List<Object[]>
+    public static readonly IEnumerable<object[]> _rentals = new List<object[]>
     {
       new object[]
       {

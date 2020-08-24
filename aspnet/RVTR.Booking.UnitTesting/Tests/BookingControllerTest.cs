@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Mvc;
+using Moq;
 using RVTR.Booking.DataContext;
 using RVTR.Booking.DataContext.Repositories;
 using RVTR.Booking.ObjectModel.Models;
 using RVTR.Booking.WebApi.Controllers;
 using Xunit;
-using Moq;
 
 namespace RVTR.Booking.UnitTesting.Tests
 {
