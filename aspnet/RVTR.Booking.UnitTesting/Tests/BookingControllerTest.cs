@@ -30,7 +30,7 @@ namespace RVTR.Booking.UnitTesting.Tests
       var unitOfWorkMock = new Mock<UnitOfWork>(contextMock.Object);
 
       IEnumerable<BookingModel> bookings = new List<BookingModel> { new BookingModel() };
-      BookingModel booking = new BookingModel();
+      var booking = new BookingModel();
 
       repositoryMock.Setup(m => m.DeleteAsync(0)).Returns(Task.FromResult<BookingModel>(null));
       repositoryMock.Setup(m => m.DeleteAsync(1)).Returns(Task.FromResult(1));
