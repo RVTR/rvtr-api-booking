@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Mvc;
+using Moq;
 using RVTR.Booking.DataContext;
 using RVTR.Booking.DataContext.Repositories;
 using RVTR.Booking.ObjectModel.Models;
 using RVTR.Booking.WebApi.Controllers;
 using Xunit;
-using Moq;
 
 namespace RVTR.Booking.UnitTesting.Tests
 {
@@ -30,7 +30,7 @@ namespace RVTR.Booking.UnitTesting.Tests
       var unitOfWorkMock = new Mock<UnitOfWork>(contextMock.Object);
 
       IEnumerable<BookingModel> bookings = new List<BookingModel> { new BookingModel() };
-      BookingModel booking = new BookingModel();
+      var booking = new BookingModel();
 
       repositoryMock.Setup(m => m.DeleteAsync(0)).Returns(Task.FromResult<BookingModel>(null));
       repositoryMock.Setup(m => m.DeleteAsync(1)).Returns(Task.FromResult(1));
