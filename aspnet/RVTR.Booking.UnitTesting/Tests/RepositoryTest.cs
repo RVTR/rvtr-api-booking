@@ -44,7 +44,7 @@ namespace RVTR.Booking.UnitTesting.Tests
           await bookings.DeleteAsync(1);
           await ctx.SaveChangesAsync();
 
-          Assert.Empty(await ctx.Bookings.ToListAsync());
+          Assert.DoesNotContain(new BookingModel(){Id = 1},await ctx.Bookings.ToListAsync());
         }
 
 
@@ -75,7 +75,7 @@ namespace RVTR.Booking.UnitTesting.Tests
           await bookings.InsertAsync(booking);
           await ctx.SaveChangesAsync();
 
-          Assert.NotEmpty(await ctx.Bookings.ToListAsync());
+          Assert.Contains(booking,await ctx.Bookings.ToListAsync());
         }
 
 
@@ -103,7 +103,7 @@ namespace RVTR.Booking.UnitTesting.Tests
           var bookings = new Repository<BookingModel>(ctx);
           var actual = await bookings.SelectAsync();
 
-          Assert.Empty(actual);
+          Assert.NotEmpty(actual);
         }
 
       }
