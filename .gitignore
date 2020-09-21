@@ -6,6 +6,7 @@ test_coverage/
 .vs/
 appsettings*
 !appsettings.json
+.vscode/
 
 # macos
 .DS_Store
