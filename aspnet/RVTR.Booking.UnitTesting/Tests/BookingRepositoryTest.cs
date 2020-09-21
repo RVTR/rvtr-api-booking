@@ -18,19 +18,12 @@ namespace RVTR.Booking.UnitTesting.Tests
     {
       new object[]
       {
-        new BookingModel() {
-          Id = 1,
-          AccountId = 1,
-          LodgingId = 2,
-          CheckIn = new DateTime(2020, 8, 16),
-          CheckOut = new DateTime(2020, 8, 18)
-        }
+        
       }
     };
 
-    [Theory]
-    [MemberData(nameof(_records))]
-    public async void Test_GetBookingsById(BookingModel booking)
+    [Fact]
+    public async void Test_GetBookingsById()
     {
       await _connection.OpenAsync();
 
@@ -39,8 +32,6 @@ namespace RVTR.Booking.UnitTesting.Tests
         using (var ctx = new BookingContext(_options))
         {
           await ctx.Database.EnsureCreatedAsync();
-          await ctx.Bookings.AddAsync(booking);
-          await ctx.SaveChangesAsync();
         }
 
         using (var ctx = new BookingContext(_options))
@@ -57,9 +48,8 @@ namespace RVTR.Booking.UnitTesting.Tests
       }
     }
 
-    [Theory]
-    [MemberData(nameof(_records))]
-    public async void Test_Repository_GetBookingsAsync_ByDate(BookingModel booking)
+    [Fact]
+    public async void Test_Repository_GetBookingsAsync_ByDate()
     {
       await _connection.OpenAsync();
 
@@ -68,8 +58,6 @@ namespace RVTR.Booking.UnitTesting.Tests
         using (var ctx = new BookingContext(_options))
         {
           await ctx.Database.EnsureCreatedAsync();
-          await ctx.Bookings.AddAsync(booking);
-          await ctx.SaveChangesAsync();
         }
 
         using (var ctx = new BookingContext(_options))

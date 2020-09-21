@@ -12,18 +12,10 @@ namespace RVTR.Booking.UnitTesting.Tests
   {
     private static readonly SqliteConnection _connection = new SqliteConnection("Data Source=:memory:");
     private static readonly DbContextOptions<BookingContext> _options = new DbContextOptionsBuilder<BookingContext>().UseSqlite(_connection).Options;
+    private BookingModel booking = new BookingModel(){Id = 3,AccountId =1, LodgingId = 1};
 
-    public static readonly IEnumerable<object[]> _records = new List<object[]>()
-    {
-      new object[]
-      {
-        new BookingModel() { Id = 1 }
-      }
-    };
-
-    [Theory]
-    [MemberData(nameof(_records))]
-    public async void Test_Repository_DeleteAsync(BookingModel booking)
+    [Fact]
+    public async void Test_Repository_DeleteAsync()
     {
       await _connection.OpenAsync();
 
@@ -32,19 +24,16 @@ namespace RVTR.Booking.UnitTesting.Tests
         using (var ctx = new BookingContext(_options))
         {
           await ctx.Database.EnsureCreatedAsync();
-          await ctx.Bookings.AddAsync(booking);
-
-          await ctx.SaveChangesAsync();
         }
 
         using (var ctx = new BookingContext(_options))
         {
           var bookings = new Repository<BookingModel>(ctx);
-
+          var sut = await ctx.Bookings.FirstAsync();
           await bookings.DeleteAsync(1);
           await ctx.SaveChangesAsync();
 
-          Assert.Empty(await ctx.Bookings.ToListAsync());
+          Assert.DoesNotContain(sut,await ctx.Bookings.ToListAsync());
         }
 
 
@@ -55,9 +44,8 @@ namespace RVTR.Booking.UnitTesting.Tests
       }
     }
 
-    [Theory]
-    [MemberData(nameof(_records))]
-    public async void Test_Repository_InsertAsync(BookingModel booking)
+    [Fact]
+    public async void Test_Repository_InsertAsync()
     {
       await _connection.OpenAsync();
 
@@ -71,11 +59,11 @@ namespace RVTR.Booking.UnitTesting.Tests
         using (var ctx = new BookingContext(_options))
         {
           var bookings = new Repository<BookingModel>(ctx);
-
+          
           await bookings.InsertAsync(booking);
           await ctx.SaveChangesAsync();
 
-          Assert.NotEmpty(await ctx.Bookings.ToListAsync());
+          Assert.Contains(booking,await ctx.Bookings.ToListAsync());
         }
 
 
@@ -103,7 +91,7 @@ namespace RVTR.Booking.UnitTesting.Tests
           var bookings = new Repository<BookingModel>(ctx);
           var actual = await bookings.SelectAsync();
 
-          Assert.Empty(actual);
+          Assert.NotEmpty(actual);
         }
 
       }
@@ -130,7 +118,7 @@ namespace RVTR.Booking.UnitTesting.Tests
           var bookings = new Repository<BookingModel>(ctx);
           var actual = await bookings.SelectAsync(1);
 
-          Assert.Null(actual);
+          Assert.NotNull(actual);
         }
 
       }
@@ -140,9 +128,8 @@ namespace RVTR.Booking.UnitTesting.Tests
       }
     }
 
-    [Theory]
-    [MemberData(nameof(_records))]
-    public async void Test_Repository_Update(BookingModel booking)
+    [Fact]
+    public async void Test_Repository_Update()
     {
       await _connection.OpenAsync();
 
@@ -151,8 +138,6 @@ namespace RVTR.Booking.UnitTesting.Tests
         using (var ctx = new BookingContext(_options))
         {
           await ctx.Database.EnsureCreatedAsync();
-          await ctx.Bookings.AddAsync(booking);
-          await ctx.SaveChangesAsync();
         }
 
         using (var ctx = new BookingContext(_options))
