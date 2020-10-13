@@ -69,7 +69,7 @@ namespace RVTR.Booking.DataContext
             BookingId = 2
           }
       );
-        
+
     }
   }
 }

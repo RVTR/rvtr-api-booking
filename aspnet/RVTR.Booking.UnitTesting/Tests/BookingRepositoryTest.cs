@@ -18,7 +18,7 @@ namespace RVTR.Booking.UnitTesting.Tests
     {
       new object[]
       {
-        
+
       }
     };
 
