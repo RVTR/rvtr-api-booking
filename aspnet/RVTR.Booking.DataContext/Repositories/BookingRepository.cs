@@ -7,7 +7,7 @@ using RVTR.Booking.ObjectModel.Models;
 
 namespace RVTR.Booking.DataContext.Repositories
 {
-  public class BookingRepository : Repository<BookingModel>
+  public class BookingRepository : Repository<BookingModel>, IBookingRepository
   {
     public BookingRepository(BookingContext bookingContext) : base(bookingContext) { }
 

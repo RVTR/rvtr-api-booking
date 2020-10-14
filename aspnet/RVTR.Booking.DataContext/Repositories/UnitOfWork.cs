@@ -6,10 +6,12 @@ namespace RVTR.Booking.DataContext.Repositories
   /// <summary>
   /// Represents the _UnitOfWork_ repository
   /// </summary>
-  public class UnitOfWork : IDisposable
+  public class UnitOfWork : IUnitOfWork, IDisposable
   {
     private readonly BookingContext _context;
-    public virtual BookingRepository Booking { get; }
+    private bool _disposedValue;
+
+    public IBookingRepository Booking { get; }
 
     public UnitOfWork(BookingContext context)
     {
@@ -23,20 +25,21 @@ namespace RVTR.Booking.DataContext.Repositories
     /// <returns></returns>
     public async Task<int> CommitAsync() => await _context.SaveChangesAsync();
 
-    private bool disposed = false;
-
     protected virtual void Dispose(bool disposing)
     {
-      if (!disposed && disposing)
+      if (!_disposedValue)
       {
-        _context.Dispose();
+        if (disposing)
+        {
+          _context.Dispose();
+        }
+        _disposedValue = true;
       }
-      disposed = true;
     }
 
     public void Dispose()
     {
-      Dispose(true);
+      Dispose(disposing: true);
       GC.SuppressFinalize(this);
     }
   }

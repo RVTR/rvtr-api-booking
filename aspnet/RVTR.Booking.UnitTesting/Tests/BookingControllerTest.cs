@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
-using RVTR.Booking.DataContext;
 using RVTR.Booking.DataContext.Repositories;
 using RVTR.Booking.ObjectModel.Models;
 using RVTR.Booking.WebApi.Controllers;
@@ -16,35 +14,29 @@ namespace RVTR.Booking.UnitTesting.Tests
 {
   public class BookingControllerTest
   {
-    private readonly SqliteConnection _connection;
-    private readonly DbContextOptions<BookingContext> _options;
     private readonly BookingController _controller;
     private readonly ILogger<BookingController> _logger;
-    private readonly UnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public BookingControllerTest()
     {
-      _connection = new SqliteConnection("Data Source=:memory:");
-      _options = new DbContextOptionsBuilder<BookingContext>().UseSqlite(_connection).Options;
-
-      var contextMock = new Mock<BookingContext>(_options);
       var loggerMock = new Mock<ILogger<BookingController>>();
-      var repositoryMock = new Mock<BookingRepository>(new BookingContext(_options));
-      var unitOfWorkMock = new Mock<UnitOfWork>(contextMock.Object);
+      var repositoryMock = new Mock<IBookingRepository>();
+      var unitOfWorkMock = new Mock<IUnitOfWork>();
 
       IEnumerable<BookingModel> bookings = new List<BookingModel> { new BookingModel() };
       var booking = new BookingModel();
 
-      repositoryMock.Setup(m => m.DeleteAsync(0)).Returns(Task.FromResult<BookingModel>(null));
-      repositoryMock.Setup(m => m.DeleteAsync(1)).Returns(Task.FromResult(1));
-      repositoryMock.Setup(m => m.InsertAsync(It.IsAny<BookingModel>())).Returns(Task.FromResult<BookingModel>(null));
-      repositoryMock.Setup(m => m.SelectAsync()).Returns(Task.FromResult<IEnumerable<BookingModel>>(null));
-      repositoryMock.Setup(m => m.SelectAsync(0)).Returns(Task.FromResult<BookingModel>(null));
-      repositoryMock.Setup(m => m.SelectAsync(1)).Returns(Task.FromResult(booking));
+      repositoryMock.Setup(m => m.DeleteAsync(0)).Returns(Task.CompletedTask);
+      repositoryMock.Setup(m => m.DeleteAsync(1)).Returns(Task.CompletedTask);
+      repositoryMock.Setup(m => m.InsertAsync(It.IsAny<BookingModel>())).Returns(Task.CompletedTask);
+      repositoryMock.Setup(m => m.SelectAsync()).ReturnsAsync((IEnumerable<BookingModel>)null);
+      repositoryMock.Setup(m => m.SelectAsync(0)).ReturnsAsync((BookingModel)null);
+      repositoryMock.Setup(m => m.SelectAsync(1)).ReturnsAsync(booking);
       repositoryMock.Setup(m => m.Update(It.IsAny<BookingModel>()));
-      repositoryMock.Setup(m => m.GetBookingsByDatesAsync(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(Task.FromResult(bookings));
-      repositoryMock.Setup(m => m.GetByAccountId(0)).Returns(Task.FromResult<IEnumerable<BookingModel>>(new List<BookingModel> { }));
-      repositoryMock.Setup(m => m.GetByAccountId(1)).Returns(Task.FromResult(bookings));
+      repositoryMock.Setup(m => m.GetBookingsByDatesAsync(It.IsAny<DateTime>(), It.IsAny<DateTime>())).ReturnsAsync(bookings);
+      repositoryMock.Setup(m => m.GetByAccountId(0)).ReturnsAsync(Enumerable.Empty<BookingModel>());
+      repositoryMock.Setup(m => m.GetByAccountId(1)).ReturnsAsync(bookings);
 
       unitOfWorkMock.Setup(m => m.Booking).Returns(repositoryMock.Object);
 

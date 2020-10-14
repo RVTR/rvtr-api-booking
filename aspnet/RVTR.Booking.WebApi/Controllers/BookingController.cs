@@ -21,14 +21,14 @@ namespace RVTR.Booking.WebApi.Controllers
   public class BookingController : ControllerBase
   {
     private readonly ILogger<BookingController> _logger;
-    private readonly UnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
     /// Constructor of the booking controller.
     /// </summary>
     /// <param name="logger"></param>
     /// <param name="unitOfWork"></param>
-    public BookingController(ILogger<BookingController> logger, UnitOfWork unitOfWork)
+    public BookingController(ILogger<BookingController> logger, IUnitOfWork unitOfWork)
     {
       _logger = logger;
       _unitOfWork = unitOfWork;

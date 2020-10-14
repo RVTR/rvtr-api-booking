@@ -59,10 +59,10 @@ namespace RVTR.Booking.WebApi
         {
           options.EnableRetryOnFailure(3);
         });
-      });
+      }, ServiceLifetime.Transient);
 
       services.AddScoped<ClientZipkinMiddleware>();
-      services.AddScoped<UnitOfWork>();
+      services.AddTransient<IUnitOfWork, UnitOfWork>();
       services.AddSwaggerGen();
       services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ClientSwaggerOptions>();
       services.AddVersionedApiExplorer(options =>
