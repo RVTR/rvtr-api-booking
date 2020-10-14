@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
-using RVTR.Booking.DataContext.Repositories;
+using RVTR.Booking.ObjectModel.Interfaces;
 
 namespace RVTR.Booking.WebRpc
 {

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RVTR.Booking.DataContext.Repositories;
+using RVTR.Booking.ObjectModel.Interfaces;
 
 namespace RVTR.Booking.WebRpc
 {
@@ -12,7 +13,7 @@ namespace RVTR.Booking.WebRpc
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddGrpc();
-      services.AddTransient<UnitOfWork>();
+      services.AddTransient<IUnitOfWork, UnitOfWork>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

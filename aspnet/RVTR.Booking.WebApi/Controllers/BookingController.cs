@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using RVTR.Booking.DataContext.Repositories;
+using RVTR.Booking.ObjectModel.Interfaces;
 using RVTR.Booking.ObjectModel.Models;
 
 namespace RVTR.Booking.WebApi.Controllers

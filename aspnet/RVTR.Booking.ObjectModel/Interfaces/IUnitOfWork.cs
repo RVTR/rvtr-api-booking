@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace RVTR.Booking.DataContext.Repositories
+namespace RVTR.Booking.ObjectModel.Interfaces
 {
   public interface IUnitOfWork
   {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using RVTR.Booking.ObjectModel.Models;
 
-namespace RVTR.Booking.DataContext.Repositories
+namespace RVTR.Booking.ObjectModel.Interfaces
 {
   public interface IBookingRepository : IRepository<BookingModel>
   {

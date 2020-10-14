@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using RVTR.Booking.DataContext.Repositories;
+using RVTR.Booking.ObjectModel.Interfaces;
 using RVTR.Booking.ObjectModel.Models;
 using RVTR.Booking.WebApi.Controllers;
 using Xunit;

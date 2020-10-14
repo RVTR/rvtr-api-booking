@@ -11,7 +11,7 @@ namespace RVTR.Booking.UnitTesting
     protected readonly DbContextOptions<BookingContext> Options;
     private bool _disposedValue;
 
-    public DataTest()
+    protected DataTest()
     {
       _connection = new SqliteConnection("Data Source=:memory:");
       _connection.Open();

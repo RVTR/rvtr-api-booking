@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using RVTR.Booking.ObjectModel.Interfaces;
 
 namespace RVTR.Booking.DataContext.Repositories
 {

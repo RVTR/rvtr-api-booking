@@ -63,7 +63,9 @@ namespace RVTR.Booking.UnitTesting.Tests
       booking.CheckOut = DateTime.Now;
       bookings.Update(booking);
 
-      Assert.Equal(booking.CheckOut, (await ctx.Bookings.FindAsync(booking.Id)).CheckOut);
+      var result = ctx.Bookings.Find(booking.Id);
+      Assert.Equal(booking.CheckOut, result.CheckOut);
+      Assert.Equal(EntityState.Modified, ctx.Entry(result).State);
     }
   }
 }

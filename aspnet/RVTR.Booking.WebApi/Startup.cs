@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using RVTR.Booking.DataContext;
 using RVTR.Booking.DataContext.Repositories;
+using RVTR.Booking.ObjectModel.Interfaces;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using zipkin4net.Middleware;
 
