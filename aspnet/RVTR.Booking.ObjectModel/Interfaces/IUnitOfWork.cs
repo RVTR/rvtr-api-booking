@@ -7,6 +7,5 @@ namespace RVTR.Booking.ObjectModel.Interfaces
     IBookingRepository Booking { get; }
 
     Task<int> CommitAsync();
-    void Dispose();
   }
 }
