@@ -30,4 +30,4 @@ RVTR Servicehub Booking API
 
 The project is made available under the terms of the [MIT License][license_mit].
 
-[license_mit]: https://github.com/rvtr/rvtr-svc-booking/blob/master/LICENSE 'mit license'
+[license_mit]: https://github.com/rvtr/rvtr-svc-booking/blob/main/LICENSE 'mit license'
