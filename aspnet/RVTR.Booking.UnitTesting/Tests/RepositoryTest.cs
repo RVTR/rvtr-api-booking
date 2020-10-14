@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using RVTR.Booking.DataContext;
@@ -12,7 +11,7 @@ namespace RVTR.Booking.UnitTesting.Tests
   {
     private static readonly SqliteConnection _connection = new SqliteConnection("Data Source=:memory:");
     private static readonly DbContextOptions<BookingContext> _options = new DbContextOptionsBuilder<BookingContext>().UseSqlite(_connection).Options;
-    private BookingModel booking = new BookingModel(){Id = 3,AccountId =1, LodgingId = 1};
+    private readonly BookingModel booking = new BookingModel() { Id = 3, AccountId = 1, LodgingId = 1 };
 
     [Fact]
     public async void Test_Repository_DeleteAsync()
@@ -33,7 +32,7 @@ namespace RVTR.Booking.UnitTesting.Tests
           await bookings.DeleteAsync(1);
           await ctx.SaveChangesAsync();
 
-          Assert.DoesNotContain(sut,await ctx.Bookings.ToListAsync());
+          Assert.DoesNotContain(sut, await ctx.Bookings.ToListAsync());
         }
 
 
@@ -63,7 +62,7 @@ namespace RVTR.Booking.UnitTesting.Tests
           await bookings.InsertAsync(booking);
           await ctx.SaveChangesAsync();
 
-          Assert.Contains(booking,await ctx.Bookings.ToListAsync());
+          Assert.Contains(booking, await ctx.Bookings.ToListAsync());
         }
 
 

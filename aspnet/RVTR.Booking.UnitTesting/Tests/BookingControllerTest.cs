@@ -16,14 +16,17 @@ namespace RVTR.Booking.UnitTesting.Tests
 {
   public class BookingControllerTest
   {
-    private static readonly SqliteConnection _connection = new SqliteConnection("Data Source=:memory:");
-    private static readonly DbContextOptions<BookingContext> _options = new DbContextOptionsBuilder<BookingContext>().UseSqlite(_connection).Options;
+    private readonly SqliteConnection _connection;
+    private readonly DbContextOptions<BookingContext> _options;
     private readonly BookingController _controller;
     private readonly ILogger<BookingController> _logger;
     private readonly UnitOfWork _unitOfWork;
 
     public BookingControllerTest()
     {
+      _connection = new SqliteConnection("Data Source=:memory:");
+      _options = new DbContextOptionsBuilder<BookingContext>().UseSqlite(_connection).Options;
+
       var contextMock = new Mock<BookingContext>(_options);
       var loggerMock = new Mock<ILogger<BookingController>>();
       var repositoryMock = new Mock<BookingRepository>(new BookingContext(_options));
@@ -53,50 +56,50 @@ namespace RVTR.Booking.UnitTesting.Tests
     [Fact]
     public async void Test_Controller_Delete()
     {
-      NoContentResult resultPass = await _controller.Delete(1) as NoContentResult;
-      Assert.NotNull(resultPass);
+      IActionResult resultPass = await _controller.Delete(1);
+      Assert.IsAssignableFrom<NoContentResult>(resultPass);
     }
 
     [Fact]
     public async void Test_Controller_Get()
     {
-      OkObjectResult resultAll = await _controller.Get(null, null) as OkObjectResult;
-      Assert.NotNull(resultAll);
+      IActionResult resultAll = await _controller.Get(null, null);
+      Assert.IsAssignableFrom<OkObjectResult>(resultAll);
     }
 
     [Fact]
     public async void Test_Controller_Get_By_DateRange()
     {
-      OkObjectResult resultBookingDates = await _controller.Get(new DateTime(2020, 8, 16), new DateTime(2020, 8, 18)) as OkObjectResult;
-      Assert.NotNull(resultBookingDates);
+      IActionResult resultBookingDates = await _controller.Get(new DateTime(2020, 8, 16), new DateTime(2020, 8, 18));
+      Assert.IsAssignableFrom<OkObjectResult>(resultBookingDates);
     }
 
     [Fact]
     public async void Test_Controller_GetById()
     {
-      OkObjectResult resultOne = await _controller.GetById(1) as OkObjectResult;
-      Assert.NotNull(resultOne);
+      IActionResult resultOne = await _controller.GetById(1);
+      Assert.IsAssignableFrom<OkObjectResult>(resultOne);
     }
 
     [Fact]
     public async void Test_Controller_GetById_Fail()
     {
-      NotFoundObjectResult resultFail = await _controller.GetById(0) as NotFoundObjectResult;
-      Assert.NotNull(resultFail);
+      IActionResult resultFail = await _controller.GetById(0);
+      Assert.IsAssignableFrom<NotFoundObjectResult>(resultFail);
     }
 
     [Fact]
     public async void Test_Controller_Post()
     {
-      CreatedAtActionResult resultPass = await _controller.Post(new BookingModel()) as CreatedAtActionResult;
-      Assert.NotNull(resultPass);
+      IActionResult resultPass = await _controller.Post(new BookingModel());
+      Assert.IsAssignableFrom<CreatedAtActionResult>(resultPass);
     }
 
     [Fact]
     public async void Test_Controller_Put()
     {
-      NoContentResult resultPass = await _controller.Put(new BookingModel()) as NoContentResult;
-      Assert.NotNull(resultPass);
+      IActionResult resultPass = await _controller.Put(new BookingModel());
+      Assert.IsAssignableFrom<NoContentResult>(resultPass);
     }
   }
 }

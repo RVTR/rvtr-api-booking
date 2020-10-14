@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using RVTR.Booking.ObjectModel.Models;
 
@@ -24,17 +23,17 @@ namespace RVTR.Booking.DataContext
         Id = 1,
         AccountId = 1,
         LodgingId = 1,
-        CheckIn = new System.DateTime(2020,08,21),
-        CheckOut = new System.DateTime(2020,08,24)
-        },
+        CheckIn = new System.DateTime(2020, 08, 21),
+        CheckOut = new System.DateTime(2020, 08, 24)
+      },
       new BookingModel
       {
         Id = 2,
         AccountId = 1,
         LodgingId = 2,
-        CheckIn = new System.DateTime(2020,08,18),
-        CheckOut = new System.DateTime(2020,08,21)
-        });
+        CheckIn = new System.DateTime(2020, 08, 18),
+        CheckOut = new System.DateTime(2020, 08, 21)
+      });
       modelBuilder.Entity<GuestModel>().HasData(
           new GuestModel
           {
@@ -69,7 +68,6 @@ namespace RVTR.Booking.DataContext
             BookingId = 2
           }
       );
-
     }
   }
 }
