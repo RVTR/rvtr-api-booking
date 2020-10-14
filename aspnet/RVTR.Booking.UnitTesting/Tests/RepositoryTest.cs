@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using RVTR.Booking.DataContext;
 using RVTR.Booking.DataContext.Repositories;
@@ -15,11 +16,10 @@ namespace RVTR.Booking.UnitTesting.Tests
     {
       using var ctx = new BookingContext(Options);
       var bookings = new Repository<BookingModel>(ctx);
-      var sut = await ctx.Bookings.FirstAsync();
-      await bookings.DeleteAsync(1);
+      var booking = await ctx.Bookings.FirstAsync();
+      await bookings.DeleteAsync(booking.Id);
 
-
-      Assert.DoesNotContain(sut, await ctx.Bookings.ToListAsync());
+      Assert.Equal(EntityState.Deleted, ctx.Entry(booking).State);
     }
 
     [Fact]
@@ -30,7 +30,7 @@ namespace RVTR.Booking.UnitTesting.Tests
 
       await bookings.InsertAsync(_booking);
 
-      Assert.Contains(_booking, await ctx.Bookings.ToListAsync());
+      Assert.Equal(EntityState.Added, ctx.Entry(_booking).State);
     }
 
     [Fact]
@@ -58,13 +58,12 @@ namespace RVTR.Booking.UnitTesting.Tests
     {
       using var ctx = new BookingContext(Options);
       var bookings = new Repository<BookingModel>(ctx);
-      var expected = await ctx.Bookings.FirstAsync();
+      var booking = await ctx.Bookings.FirstAsync();
 
-      bookings.Update(expected);
+      booking.CheckOut = DateTime.Now;
+      bookings.Update(booking);
 
-      var actual = await ctx.Bookings.FirstAsync();
-
-      Assert.Equal(expected, actual);
+      Assert.Equal(booking.CheckOut, (await ctx.Bookings.FindAsync(booking.Id)).CheckOut);
     }
   }
 }
