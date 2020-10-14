@@ -7,7 +7,7 @@ namespace RVTR.Booking.UnitTesting.Tests
 {
   public class BookingModelTest
   {
-    public static readonly IEnumerable<object[]> _bookings = new List<object[]>
+    public static readonly IEnumerable<object[]> Bookings = new List<object[]>
     {
       new object[]
       {
@@ -23,7 +23,7 @@ namespace RVTR.Booking.UnitTesting.Tests
     };
 
     [Theory]
-    [MemberData(nameof(_bookings))]
+    [MemberData(nameof(Bookings))]
     public void Test_Create_BookingModel(BookingModel booking)
     {
       var validationContext = new ValidationContext(booking);
@@ -33,7 +33,7 @@ namespace RVTR.Booking.UnitTesting.Tests
     }
 
     [Theory]
-    [MemberData(nameof(_bookings))]
+    [MemberData(nameof(Bookings))]
     public void Test_Validate_BookingModel(BookingModel booking)
     {
       var validationContext = new ValidationContext(booking);
