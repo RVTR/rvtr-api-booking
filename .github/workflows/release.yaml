@@ -33,7 +33,7 @@ jobs:
       - name: dotnet_build
         run: dotnet build
         working-directory: ${{ env.WORKING_DIRECTORY }}
-      - if: startsWith(github.ref, 'refs/heads/master')
+      - if: startsWith(github.ref, 'refs/heads/main')
         name: dotnet_publish_head
         run: dotnet publish --configuration Debug --output drop RVTR.Booking.WebApi/*.csproj
         working-directory: ${{ env.WORKING_DIRECTORY }}
@@ -131,7 +131,7 @@ jobs:
         run: echo ${GITHUB_TOKEN} | docker login --username ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
       - name: docker_build
         run: docker image build --file .docker/aspnet.dockerfile --tag booking drop
-      - if: startsWith(github.ref, 'refs/heads/master')
+      - if: startsWith(github.ref, 'refs/heads/main')
         name: docker_push_head
         run: |
           docker image tag booking docker.pkg.github.com/rvtr/rvtr-svc-booking/booking:master-aspnet-rest
@@ -170,6 +170,6 @@ name: release
 on:
   push:
     branches:
-      - master
+      - main
     tags:
       - '*'
