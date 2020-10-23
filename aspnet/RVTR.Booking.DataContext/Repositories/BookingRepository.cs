@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using RVTR.Booking.ObjectModel.Interfaces;
 using RVTR.Booking.ObjectModel.Models;
 
 namespace RVTR.Booking.DataContext.Repositories
 {
-  public class BookingRepository : Repository<BookingModel>
+  public class BookingRepository : Repository<BookingModel>, IBookingRepository
   {
     public BookingRepository(BookingContext bookingContext) : base(bookingContext) { }
 
@@ -17,7 +18,7 @@ namespace RVTR.Booking.DataContext.Repositories
     /// </summary>
     public virtual async Task<IEnumerable<BookingModel>> GetBookingsByDatesAsync(DateTime checkIn, DateTime checkOut)
     {
-      var bookings = await _db.Where(b =>
+      var bookings = await Db.Where(b =>
         (checkIn <= b.CheckIn && checkOut >= b.CheckIn) || // Intersects left
         (checkIn <= b.CheckOut && checkOut >= b.CheckOut) || // Intersects right
         (checkIn <= b.CheckIn && checkOut >= b.CheckOut) || // Intersects inner
@@ -29,7 +30,7 @@ namespace RVTR.Booking.DataContext.Repositories
 
     public virtual async Task<IEnumerable<BookingModel>> GetByAccountId(int id)
     {
-      return await _db.Where(t => t.AccountId == id).ToListAsync();
+      return await Db.Where(t => t.AccountId == id).ToListAsync();
     }
   }
 }

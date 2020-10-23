@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using RVTR.Booking.DataContext.Repositories;
+using RVTR.Booking.ObjectModel.Interfaces;
 using RVTR.Booking.ObjectModel.Models;
 
 namespace RVTR.Booking.WebApi.Controllers
@@ -21,14 +21,14 @@ namespace RVTR.Booking.WebApi.Controllers
   public class BookingController : ControllerBase
   {
     private readonly ILogger<BookingController> _logger;
-    private readonly UnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
     /// Constructor of the booking controller.
     /// </summary>
     /// <param name="logger"></param>
     /// <param name="unitOfWork"></param>
-    public BookingController(ILogger<BookingController> logger, UnitOfWork unitOfWork)
+    public BookingController(ILogger<BookingController> logger, IUnitOfWork unitOfWork)
     {
       _logger = logger;
       _unitOfWork = unitOfWork;
