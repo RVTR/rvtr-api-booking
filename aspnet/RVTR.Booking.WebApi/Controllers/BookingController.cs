@@ -143,7 +143,7 @@ namespace RVTR.Booking.WebApi.Controllers
     {
       _logger.LogDebug("Getting a booking by account ID..");
       var bookings = await _unitOfWork.Booking.GetByAccountId(id);
-      if (bookings == null)
+      if (bookings.Count() == 0)
       {
         _logger.LogInformation($"Could not find bookings to get @ account id = {id}.");
         return NotFound(id);

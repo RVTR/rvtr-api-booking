@@ -166,5 +166,19 @@ namespace RVTR.Booking.UnitTesting.Tests
       IActionResult resultFail = await _controller.Put(b_null);
       Assert.IsAssignableFrom<BadRequestObjectResult>(resultFail);
     }
+
+    [Fact]
+    public async void Test_Controller_GetByAccountId()
+    {
+      IActionResult resultOk = await _controller.GetByAccountId(1);
+      Assert.IsAssignableFrom<OkObjectResult>(resultOk);
+    }
+
+    [Fact]
+    public async void Test_Controller_GetByAccountId_NotFound()
+    {
+      IActionResult resultNotFound = await _controller.GetByAccountId(-10);
+      Assert.IsAssignableFrom<NotFoundObjectResult>(resultNotFound);
+    }
   }
 }
