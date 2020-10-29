@@ -32,12 +32,21 @@ namespace RVTR.Booking.UnitTesting.Tests
       Assert.True(actual);
     }
 
-    [Theory]
-    [MemberData(nameof(Bookings))]
-    public void Test_Validate_BookingModel(BookingModel booking)
+    [Fact]
+    public void Test_Create_BookingModel_Fail()
     {
+      BookingModel booking = new BookingModel()
+      {
+        Id = 0,
+        AccountId = 0,
+        LodgingId = 0,
+        Guests = null,
+        Rentals = null
+      };
       var validationContext = new ValidationContext(booking);
-      Assert.Empty(booking.Validate(validationContext));
+      var actual = Validator.TryValidateObject(booking, validationContext, null, true);
+
+      Assert.False(actual);
     }
   }
 }
