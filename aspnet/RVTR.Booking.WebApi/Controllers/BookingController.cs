@@ -162,28 +162,17 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(typeof(BookingModel), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Post(BookingModel booking)
     {
-      _logger.LogDebug("Adding a booking...");
-      var context = new ValidationContext(booking);
-      if (!Validator.TryValidateObject(booking, context, null, true))
-      {
-        _logger.LogInformation($"Invalid booking '{booking}'.");
-        return BadRequest(ModelState);
-      }
-      else
-      {
-        _logger.LogInformation($"Successfully added the booking '{booking}'.");
-        await _unitOfWork.Booking.InsertAsync(booking);
-        await _unitOfWork.CommitAsync();
+      _logger.LogInformation($"Successfully added the booking '{booking}'.");
+      await _unitOfWork.Booking.InsertAsync(booking);
+      await _unitOfWork.CommitAsync();
 
-        return CreatedAtAction(
-          actionName: nameof(Get),
-          routeValues: new { id = booking.Id },
-          value: booking
-        );
-      }
+      return CreatedAtAction(
+        actionName: nameof(Get),
+        routeValues: new { id = booking.Id },
+        value: booking
+      );
     }
 
     /// <summary>
@@ -193,23 +182,12 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <returns></returns>
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Put(BookingModel booking)
     {
-      _logger.LogDebug("Updating a booking...");
-      var context = new ValidationContext(booking);
-      if (!Validator.TryValidateObject(booking, context, null, true))
-      {
-        _logger.LogInformation($"Invalid booking '{booking}'.");
-        return BadRequest(ModelState);
-      }
-      else
-      {
-        _logger.LogInformation($"Successfully added the booking '{booking}'.");
-        _unitOfWork.Booking.Update(booking);
-        await _unitOfWork.CommitAsync();
-        return NoContent();
-      }
+      _logger.LogInformation($"Successfully added the booking '{booking}'.");
+      _unitOfWork.Booking.Update(booking);
+      await _unitOfWork.CommitAsync();
+      return NoContent();
     }
   }
 }
