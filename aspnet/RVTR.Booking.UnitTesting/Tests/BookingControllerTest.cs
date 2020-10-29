@@ -53,17 +53,42 @@ namespace RVTR.Booking.UnitTesting.Tests
     }
 
     [Fact]
-    public async void Test_Controller_Get()
+    public async void Test_Controller_Delete_NotFound()
+    {
+      IActionResult resultNotFound = await _controller.Delete(-1);
+      Assert.IsAssignableFrom<NotFoundObjectResult>(resultNotFound);
+    }
+
+    [Fact]
+    public async void Test_Controller_Get_Null_DateRange()
     {
       IActionResult resultAll = await _controller.Get(null, null);
-      Assert.IsAssignableFrom<OkObjectResult>(resultAll);
+      Assert.IsAssignableFrom<BadRequestResult>(resultAll);
     }
 
     [Fact]
     public async void Test_Controller_Get_By_DateRange()
     {
-      IActionResult resultBookingDates = await _controller.Get(new DateTime(2020, 8, 16), new DateTime(2020, 8, 18));
+      // This test will only work up to January 1, 2021, because the current Get method returns a
+      // BadRequestResult if the check in date is earlier than the current date (today's date)
+      IActionResult resultBookingDates = await _controller.Get(new DateTime(2021, 1, 1), new DateTime(2021, 1, 2));
       Assert.IsAssignableFrom<OkObjectResult>(resultBookingDates);
+    }
+
+    [Fact]
+    public async void Test_Controller_Get_By_Invalid_DateRange1()
+    {
+      // Returns Bad Request because the check in date is earlier than the current date (today's date)
+      IActionResult resultBookingDates = await _controller.Get(new DateTime(2020, 10, 28), new DateTime(2020, 12, 31));
+      Assert.IsAssignableFrom<BadRequestResult>(resultBookingDates);
+    }
+
+    [Fact]
+    public async void Test_Controller_Get_By_Invalid_DateRange2()
+    {
+      // Returns Bad Request because the check out date is earlier than the check in date
+      IActionResult resultBookingDates = await _controller.Get(new DateTime(2021, 1, 2), new DateTime(2021, 1, 1));
+      Assert.IsAssignableFrom<BadRequestResult>(resultBookingDates);
     }
 
     [Fact]
@@ -83,15 +108,77 @@ namespace RVTR.Booking.UnitTesting.Tests
     [Fact]
     public async void Test_Controller_Post()
     {
-      IActionResult resultPass = await _controller.Post(new BookingModel());
+      BookingModel booking = new BookingModel()
+      {
+        Id = 0,
+        AccountId = 0,
+        LodgingId = 0,
+        Guests = new List<GuestModel>(),
+        Rentals = new List<RentalModel>()
+
+      };
+      IActionResult resultPass = await _controller.Post(booking);
       Assert.IsAssignableFrom<CreatedAtActionResult>(resultPass);
+    }
+
+    [Fact]
+    public async void Test_Controller_Post_Invalid()
+    {
+      BookingModel booking_null = new BookingModel()
+      {
+        Id = 0,
+        AccountId = 0,
+        LodgingId = 0,
+        Guests = null,
+        Rentals = null
+      };
+      IActionResult resultFail = await _controller.Post(booking_null);
+      Assert.IsAssignableFrom<BadRequestObjectResult>(resultFail);
     }
 
     [Fact]
     public async void Test_Controller_Put()
     {
-      IActionResult resultPass = await _controller.Put(new BookingModel());
+      BookingModel booking = new BookingModel()
+      {
+        Id = 0,
+        AccountId = 0,
+        LodgingId = 0,
+        Guests = new List<GuestModel>(),
+        Rentals = new List<RentalModel>()
+
+      };
+      IActionResult resultPass = await _controller.Put(booking);
       Assert.IsAssignableFrom<NoContentResult>(resultPass);
+    }
+
+    [Fact]
+    public async void Test_Controller_Put_Invalid()
+    {
+      BookingModel b_null = new BookingModel()
+      {
+        Id = 0,
+        AccountId = 0,
+        LodgingId = 0,
+        Guests = null,
+        Rentals = null
+      };
+      IActionResult resultFail = await _controller.Put(b_null);
+      Assert.IsAssignableFrom<BadRequestObjectResult>(resultFail);
+    }
+
+    [Fact]
+    public async void Test_Controller_GetByAccountId()
+    {
+      IActionResult resultOk = await _controller.GetByAccountId(1);
+      Assert.IsAssignableFrom<OkObjectResult>(resultOk);
+    }
+
+    [Fact]
+    public async void Test_Controller_GetByAccountId_NotFound()
+    {
+      IActionResult resultNotFound = await _controller.GetByAccountId(-10);
+      Assert.IsAssignableFrom<NotFoundObjectResult>(resultNotFound);
     }
   }
 }

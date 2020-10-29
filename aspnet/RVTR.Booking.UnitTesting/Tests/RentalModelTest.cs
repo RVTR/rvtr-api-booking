@@ -15,7 +15,7 @@ namespace RVTR.Booking.UnitTesting.Tests
         {
           Id = 0,
           BookingId = 0,
-          Booking = null
+          Booking = new BookingModel()
         }
       }
     };
@@ -30,12 +30,19 @@ namespace RVTR.Booking.UnitTesting.Tests
       Assert.True(actual);
     }
 
-    [Theory]
-    [MemberData(nameof(Rentals))]
-    public void Test_Validate_RentalModel(RentalModel rental)
+    [Fact]
+    public void Test_Create_RentalModel_Fail()
     {
+      RentalModel rental = new RentalModel()
+      {
+        Id = 0,
+        BookingId = 0,
+        Booking = null
+      };
       var validationContext = new ValidationContext(rental);
-      Assert.Empty(rental.Validate(validationContext));
+      var actual = Validator.TryValidateObject(rental, validationContext, null, true);
+
+      Assert.False(actual);
     }
   }
 }
