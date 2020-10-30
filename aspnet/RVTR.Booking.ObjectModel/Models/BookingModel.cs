@@ -20,10 +20,8 @@ namespace RVTR.Booking.ObjectModel.Models
 
     public IEnumerable<RentalModel> Rentals { get; set; }
 
-    [Required(ErrorMessage = "CheckIn is required")]
     public DateTime CheckIn { get; set; }
 
-    [Required(ErrorMessage = "CheckOut is required")]
     public DateTime CheckOut { get; set; }
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
