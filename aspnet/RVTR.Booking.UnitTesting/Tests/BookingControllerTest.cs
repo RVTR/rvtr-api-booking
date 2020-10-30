@@ -63,7 +63,7 @@ namespace RVTR.Booking.UnitTesting.Tests
     public async void Test_Controller_Get_Null_DateRange()
     {
       IActionResult resultAll = await _controller.Get(null, null);
-      Assert.IsAssignableFrom<BadRequestResult>(resultAll);
+      Assert.IsAssignableFrom<OkObjectResult>(resultAll);
     }
 
     [Fact]
@@ -118,7 +118,7 @@ namespace RVTR.Booking.UnitTesting.Tests
 
       };
       IActionResult resultPass = await _controller.Post(booking);
-      Assert.IsAssignableFrom<CreatedAtActionResult>(resultPass);
+      Assert.IsAssignableFrom<OkObjectResult>(resultPass);
     }
 
     [Fact]

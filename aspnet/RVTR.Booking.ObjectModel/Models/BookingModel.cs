@@ -10,15 +10,14 @@ namespace RVTR.Booking.ObjectModel.Models
   public class BookingModel : IValidatableObject
   {
     public int Id { get; set; }
-
+    [Required(ErrorMessage = "AccountID is required")]
     public int AccountId { get; set; }
 
+    [Required(ErrorMessage = "Rentals object is required")]
     public int LodgingId { get; set; }
 
-    [Required (ErrorMessage = "Guests object is required")]
     public IEnumerable<GuestModel> Guests { get; set; }
 
-    [Required (ErrorMessage = "Rentals object is required")]
     public IEnumerable<RentalModel> Rentals { get; set; }
 
     [Required(ErrorMessage = "CheckIn is required")]
@@ -30,14 +29,7 @@ namespace RVTR.Booking.ObjectModel.Models
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
       DateTime todaysDate = DateTime.Now.Date;
-      if (Guests == null)
-      {
-        yield return new ValidationResult("Guests cannot be null.");
-      }
-      if (Rentals == null)
-      {
-        yield return new ValidationResult("Rentals cannot be null.");
-      }
+
       if(CheckIn < todaysDate)
       {
         yield return new ValidationResult("CheckIn cannot be earlier than today's date.");

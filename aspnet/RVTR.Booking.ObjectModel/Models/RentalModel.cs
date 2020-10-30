@@ -7,15 +7,8 @@ namespace RVTR.Booking.ObjectModel.Models
   {
     public int Id { get; set; }
     public int? BookingId { get; set; }
-    [Required(ErrorMessage = "Guests object is required")]
     public virtual BookingModel Booking { get; set; }
 
-    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-    {
-      if (Booking == null)
-      {
-        yield return new ValidationResult("Guests cannot be null.");
-      }
-    }
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) => new List<ValidationResult>();
   }
 }
