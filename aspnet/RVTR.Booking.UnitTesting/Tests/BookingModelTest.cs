@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using RVTR.Booking.ObjectModel.Models;
@@ -11,13 +12,17 @@ namespace RVTR.Booking.UnitTesting.Tests
     {
       new object[]
       {
+        // This model will need to be updated on January 1st, 2021, becasue the BookingModel class checks
+      // to make sure that the check in date is not earlier than "today's date"
         new BookingModel()
         {
           Id = 0,
           AccountId = 0,
           LodgingId = 0,
           Guests = new List<GuestModel>(),
-          Rentals = new List<RentalModel>()
+          Rentals = new List<RentalModel>(),
+          CheckIn = new DateTime(2021, 1, 1),
+          CheckOut = new DateTime(2021, 1, 2)
         }
       }
     };
@@ -60,15 +65,31 @@ namespace RVTR.Booking.UnitTesting.Tests
     [Fact]
     public void Test_Validate_BookingModel_Fail()
     {
+      // This test method will need to be updated on January 1st, 2021, becasue the BookingModel class checks
+      // to make sure that the check in date is not earlier than "today's date"
       BookingModel booking = new BookingModel()
       {
         Id = 0,
         AccountId = 0,
         LodgingId = 0,
         Guests = null,
-        Rentals = null
+        Rentals = null,
+        CheckIn = new DateTime(2020, 1, 1),
+        CheckOut = new DateTime(2021, 1, 2)
       };
       var validationContext = new ValidationContext(booking);
+      Assert.NotEmpty(booking.Validate(validationContext));
+
+      booking.Guests = new List<GuestModel>();
+      validationContext = new ValidationContext(booking);
+      Assert.NotEmpty(booking.Validate(validationContext));
+
+      booking.Rentals = new List<RentalModel>();
+      validationContext = new ValidationContext(booking);
+      Assert.NotEmpty(booking.Validate(validationContext));
+
+      booking.CheckIn = new System.DateTime(2021, 1, 2);
+      validationContext = new ValidationContext(booking);
       Assert.NotEmpty(booking.Validate(validationContext));
     }
   }

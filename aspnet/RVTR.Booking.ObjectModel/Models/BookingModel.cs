@@ -29,6 +29,7 @@ namespace RVTR.Booking.ObjectModel.Models
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
+      DateTime todaysDate = DateTime.Now.Date;
       if (Guests == null)
       {
         yield return new ValidationResult("Guests cannot be null.");
@@ -37,13 +38,13 @@ namespace RVTR.Booking.ObjectModel.Models
       {
         yield return new ValidationResult("Rentals cannot be null.");
       }
-      if (CheckIn == null)
+      if(CheckIn < todaysDate)
       {
-        yield return new ValidationResult("CheckIn cannot be null.");
+        yield return new ValidationResult("CheckIn cannot be earlier than today's date.");
       }
-      if (CheckOut == null)
+      if (CheckIn >= CheckOut)
       {
-        yield return new ValidationResult("Checkout cannot be null.");
+        yield return new ValidationResult("CheckIn cannot be earlier than or equal to CheckOut.");
       }
     }
   }
