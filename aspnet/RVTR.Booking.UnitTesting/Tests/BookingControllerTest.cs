@@ -63,7 +63,7 @@ namespace RVTR.Booking.UnitTesting.Tests
     public async void Test_Controller_Get_Null_DateRange()
     {
       IActionResult resultAll = await _controller.Get(null, null);
-      Assert.IsAssignableFrom<BadRequestResult>(resultAll);
+      Assert.IsAssignableFrom<OkObjectResult>(resultAll);
     }
 
     [Fact]
@@ -118,22 +118,7 @@ namespace RVTR.Booking.UnitTesting.Tests
 
       };
       IActionResult resultPass = await _controller.Post(booking);
-      Assert.IsAssignableFrom<CreatedAtActionResult>(resultPass);
-    }
-
-    [Fact]
-    public async void Test_Controller_Post_Invalid()
-    {
-      BookingModel booking_null = new BookingModel()
-      {
-        Id = 0,
-        AccountId = 0,
-        LodgingId = 0,
-        Guests = null,
-        Rentals = null
-      };
-      IActionResult resultFail = await _controller.Post(booking_null);
-      Assert.IsAssignableFrom<BadRequestObjectResult>(resultFail);
+      Assert.IsAssignableFrom<OkObjectResult>(resultPass);
     }
 
     [Fact]
@@ -150,21 +135,6 @@ namespace RVTR.Booking.UnitTesting.Tests
       };
       IActionResult resultPass = await _controller.Put(booking);
       Assert.IsAssignableFrom<NoContentResult>(resultPass);
-    }
-
-    [Fact]
-    public async void Test_Controller_Put_Invalid()
-    {
-      BookingModel b_null = new BookingModel()
-      {
-        Id = 0,
-        AccountId = 0,
-        LodgingId = 0,
-        Guests = null,
-        Rentals = null
-      };
-      IActionResult resultFail = await _controller.Put(b_null);
-      Assert.IsAssignableFrom<BadRequestObjectResult>(resultFail);
     }
 
     [Fact]

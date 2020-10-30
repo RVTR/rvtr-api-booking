@@ -96,8 +96,8 @@ namespace RVTR.Booking.WebApi.Controllers
       }
       else if (checkIn == null && checkOut == null)
       {
-        _logger.LogInformation($"Check In Date and Check Out Date cannot be null.");
-        return BadRequest();
+        _logger.LogInformation($"Returning bookings with null Check In and Check Out");
+        return Ok(await _unitOfWork.Booking.SelectAsync());
       }
       else
       {
@@ -161,29 +161,14 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <param name="booking"></param>
     /// <returns></returns>
     [HttpPost]
-    [ProducesResponseType(typeof(BookingModel), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(BookingModel), StatusCodes.Status200OK)]
     public async Task<IActionResult> Post(BookingModel booking)
     {
-      _logger.LogDebug("Adding a booking...");
-      var context = new ValidationContext(booking);
-      if (!Validator.TryValidateObject(booking, context, null, true))
-      {
-        _logger.LogInformation($"Invalid booking '{booking}'.");
-        return BadRequest(ModelState);
-      }
-      else
-      {
-        _logger.LogInformation($"Successfully added the booking '{booking}'.");
-        await _unitOfWork.Booking.InsertAsync(booking);
-        await _unitOfWork.CommitAsync();
+      _logger.LogInformation($"Successfully added the booking with accountID: '{booking.AccountId}' and lodgingID: {booking.LodgingId}'.");
+      await _unitOfWork.Booking.InsertAsync(booking);
+      await _unitOfWork.CommitAsync();
 
-        return CreatedAtAction(
-          actionName: nameof(Get),
-          routeValues: new { id = booking.Id },
-          value: booking
-        );
-      }
+      return Ok(booking);
     }
 
     /// <summary>
@@ -193,23 +178,12 @@ namespace RVTR.Booking.WebApi.Controllers
     /// <returns></returns>
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Put(BookingModel booking)
     {
-      _logger.LogDebug("Updating a booking...");
-      var context = new ValidationContext(booking);
-      if (!Validator.TryValidateObject(booking, context, null, true))
-      {
-        _logger.LogInformation($"Invalid booking '{booking}'.");
-        return BadRequest(ModelState);
-      }
-      else
-      {
-        _logger.LogInformation($"Successfully added the booking '{booking}'.");
-        _unitOfWork.Booking.Update(booking);
-        await _unitOfWork.CommitAsync();
-        return NoContent();
-      }
+      _logger.LogInformation($"Successfully updated the booking with accountID: '{booking.AccountId}' and lodgingID: '{booking.LodgingId}'.");
+      _unitOfWork.Booking.Update(booking);
+      await _unitOfWork.CommitAsync();
+      return NoContent();
     }
   }
 }

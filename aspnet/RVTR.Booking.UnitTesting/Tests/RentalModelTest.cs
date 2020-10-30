@@ -30,19 +30,12 @@ namespace RVTR.Booking.UnitTesting.Tests
       Assert.True(actual);
     }
 
-    [Fact]
-    public void Test_Create_RentalModel_Fail()
+    [Theory]
+    [MemberData(nameof(Rentals))]
+    public void Test_Validate_RentalModel(RentalModel rental)
     {
-      RentalModel rental = new RentalModel()
-      {
-        Id = 0,
-        BookingId = 0,
-        Booking = null
-      };
       var validationContext = new ValidationContext(rental);
-      var actual = Validator.TryValidateObject(rental, validationContext, null, true);
-
-      Assert.False(actual);
+      Assert.Empty(rental.Validate(validationContext));
     }
   }
 }
