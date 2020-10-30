@@ -44,5 +44,26 @@ namespace RVTR.Booking.UnitTesting.Tests
 
       Assert.False(actual);
     }
+
+    [Theory]
+    [MemberData(nameof(Rentals))]
+    public void Test_Validate_RentalModel(RentalModel rental)
+    {
+      var validationContext = new ValidationContext(rental);
+      Assert.Empty(rental.Validate(validationContext));
+    }
+
+    [Fact]
+    public void Test_Validate_RentalModel_Fail()
+    {
+      RentalModel rental = new RentalModel()
+      {
+        Id = 0,
+        BookingId = 0,
+        Booking = null
+      };
+      var validationContext = new ValidationContext(rental);
+      Assert.NotEmpty(rental.Validate(validationContext));
+    }
   }
 }

@@ -7,10 +7,10 @@ namespace RVTR.Booking.ObjectModel.Models
   {
     public int Id { get; set; }
     public int? BookingId { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Booking object is required")]
     public virtual BookingModel Booking { get; set; }
 
-    IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
       if (Booking == null)
       {

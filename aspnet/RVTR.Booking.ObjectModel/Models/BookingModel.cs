@@ -15,16 +15,19 @@ namespace RVTR.Booking.ObjectModel.Models
 
     public int LodgingId { get; set; }
 
-    [Required]
+    [Required (ErrorMessage = "Guests object is required")]
     public IEnumerable<GuestModel> Guests { get; set; }
-    [Required]
+
+    [Required (ErrorMessage = "Rentals object is required")]
     public IEnumerable<RentalModel> Rentals { get; set; }
-    [Required]
+
+    [Required(ErrorMessage = "CheckIn is required")]
     public DateTime CheckIn { get; set; }
-    [Required]
+
+    [Required(ErrorMessage = "CheckOut is required")]
     public DateTime CheckOut { get; set; }
 
-    IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
       if (Guests == null)
       {
