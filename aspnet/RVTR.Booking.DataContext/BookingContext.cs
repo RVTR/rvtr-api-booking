@@ -22,14 +22,6 @@ namespace RVTR.Booking.DataContext
       {
         Id = 1,
         AccountId = 1,
-        LodgingId = 1,
-        CheckIn = new System.DateTime(2020, 08, 21),
-        CheckOut = new System.DateTime(2020, 08, 24)
-      },
-      new BookingModel
-      {
-        Id = 2,
-        AccountId = 1,
         LodgingId = 2,
         CheckIn = new System.DateTime(2020, 08, 18),
         CheckOut = new System.DateTime(2020, 08, 21)
@@ -38,34 +30,37 @@ namespace RVTR.Booking.DataContext
           new GuestModel
           {
             Id = 1,
-            BookingId = 2
+            BookingId = 1
           },
           new GuestModel
           {
             Id = 2,
-            BookingId = 2
+            BookingId = 1
           },
           new GuestModel
           {
             Id = 3,
-            BookingId = 2
+            BookingId = 1
           }
       );
       modelBuilder.Entity<RentalModel>().HasData(
           new RentalModel
           {
             Id = 1,
-            BookingId = 2
+            BookingId = 1,
+            LodgingRentalId = 5
           },
           new RentalModel
           {
             Id = 2,
-            BookingId = 2
+            BookingId = 1,
+            LodgingRentalId = 6
           },
           new RentalModel
           {
             Id = 3,
-            BookingId = 2
+            BookingId = 1,
+            LodgingRentalId = 7
           }
       );
     }
