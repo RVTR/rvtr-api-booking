@@ -14,8 +14,7 @@ namespace RVTR.Booking.UnitTesting.Tests
         new RentalModel()
         {
           Id = 0,
-          BookingId = 0,
-          Booking = new BookingModel()
+          BookingModelId = 0,
         }
       }
     };

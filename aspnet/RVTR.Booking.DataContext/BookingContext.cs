@@ -30,36 +30,36 @@ namespace RVTR.Booking.DataContext
           new GuestModel
           {
             Id = 1,
-            BookingId = 1
+            BookingModelId = 1
           },
           new GuestModel
           {
             Id = 2,
-            BookingId = 1
+            BookingModelId = 1
           },
           new GuestModel
           {
             Id = 3,
-            BookingId = 1
+            BookingModelId = 1
           }
       );
       modelBuilder.Entity<RentalModel>().HasData(
           new RentalModel
           {
             Id = 1,
-            BookingId = 1,
+            BookingModelId = 1,
             LodgingRentalId = 5
           },
           new RentalModel
           {
             Id = 2,
-            BookingId = 1,
+            BookingModelId = 1,
             LodgingRentalId = 6
           },
           new RentalModel
           {
             Id = 3,
-            BookingId = 1,
+            BookingModelId = 1,
             LodgingRentalId = 7
           }
       );

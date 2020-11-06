@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using RVTR.Booking.DataContext;
 using RVTR.Booking.DataContext.Repositories;
 using Xunit;
@@ -25,6 +26,30 @@ namespace RVTR.Booking.UnitTesting.Tests
       var actual = await bookings.GetBookingsByDatesAsync(new DateTime(2020, 8, 17), new DateTime(2020, 8, 19));
 
       Assert.NotEmpty(actual);
+    }
+
+    [Fact]
+    public async void Test_Repository_GetBookingsWithRentalsAsync_ByDates()
+    {
+      using var ctx = new BookingContext(Options);
+      var bookings = new BookingRepository(ctx);
+      var actual = await bookings.GetBookingsByDatesAsync(new DateTime(2020, 8, 17), new DateTime(2020, 8, 19));
+
+      Assert.NotEmpty(actual.ToList()[0].Rentals);
+    }
+
+    /// <summary>
+    /// Tests that a selecting all bookings .includes the rental list as well
+    /// </summary>
+    [Fact]
+    public async void Test_Repository_SelectAsync_HasRentals()
+    {
+
+      using var ctx = new BookingContext(Options);
+      var bookings = new BookingRepository(ctx);
+      var actual = await bookings.SelectAsync();
+
+      Assert.NotEmpty(actual.ToList()[0].Rentals);
     }
   }
 }

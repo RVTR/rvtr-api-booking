@@ -23,9 +23,42 @@ namespace RVTR.Booking.DataContext.Repositories
         (checkIn <= b.CheckOut && checkOut >= b.CheckOut) || // Intersects right
         (checkIn <= b.CheckIn && checkOut >= b.CheckOut) || // Intersects inner
         (checkIn >= b.CheckIn && checkOut <= b.CheckOut) // Intersects outer
-      ).ToListAsync();
+      )
+      .Include(x => x.Rentals)
+      .Include(x => x.Guests)
+      .ToListAsync();
 
       return bookings;
+    }
+
+    /// <summary>
+    /// Selects all booking models and .incldudes the attached rental and guest lists
+    /// </summary>
+    /// <returns></returns>
+    public override async Task<IEnumerable<BookingModel>> SelectAsync()
+    {
+      var bookings =
+        await Db
+        .Include(x => x.Rentals)
+        .Include(x => x.Guests)
+        .ToListAsync();
+      return bookings;
+    }
+
+    /// <summary>
+    /// Selects a booking model by id and .include the attached rental and guest lists
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public override async Task<BookingModel> SelectAsync(int id)
+    {
+      var booking =
+        await Db
+        .Include(x => x.Rentals)
+        .Include(x => x.Guests)
+        .Where(x => x.Id == id)
+        .FirstOrDefaultAsync();
+      return booking;
     }
 
     public virtual async Task<IEnumerable<BookingModel>> GetByAccountId(int id)
