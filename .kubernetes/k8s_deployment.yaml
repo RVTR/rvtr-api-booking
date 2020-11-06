@@ -24,7 +24,7 @@ spec:
               value: 'Host=localhost;Database=BookingData;Username=postgres;Password=BookingData@2020;'
             - name: ConnectionStrings__zipkin
               value: 'http://zipkin:9411/'
-          image: docker.pkg.github.com/rvtr/rvtr-svc-booking/booking:master-aspnet-rest
+          image: docker.pkg.github.com/rvtr/rvtrx-api-booking/booking:master-aspnet-rest
           imagePullPolicy: Always
           name: booking
           ports:
