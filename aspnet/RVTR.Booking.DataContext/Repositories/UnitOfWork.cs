@@ -13,14 +13,11 @@ namespace RVTR.Booking.DataContext.Repositories
     private bool _disposedValue;
 
     public IBookingRepository Booking { get; }
-    public IRentalRepository Rental { get; }
-
 
     public UnitOfWork(BookingContext context)
     {
       _context = context;
       Booking = new BookingRepository(context);
-      Rental = new RentalRepository(context);
     }
 
     /// <summary>
