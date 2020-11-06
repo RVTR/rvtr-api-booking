@@ -39,7 +39,7 @@ namespace RVTR.Booking.UnitTesting.Tests
     }
 
     /// <summary>
-    /// Tests that a selecting all bookings .includes the rental list as well
+    /// Tests that a selecting all bookings db.includes the rental list as well
     /// </summary>
     [Fact]
     public async void Test_Repository_SelectAsync_HasRentals()
@@ -50,6 +50,20 @@ namespace RVTR.Booking.UnitTesting.Tests
       var actual = await bookings.SelectAsync();
 
       Assert.NotEmpty(actual.ToList()[0].Rentals);
+    }
+
+    /// <summary>
+    /// Tests that a selecting a single booking db.includes the rental list as well
+    /// </summary>
+    [Fact]
+    public async void Test_Repository_SelectAsyncById_HasRentals()
+    {
+
+      using var ctx = new BookingContext(Options);
+      var bookings = new BookingRepository(ctx);
+      var actual = await bookings.SelectAsync(1);
+
+      Assert.NotEmpty(actual.Rentals);
     }
   }
 }
