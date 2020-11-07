@@ -23,7 +23,7 @@ namespace RVTR.Booking.UnitTesting.Tests
     {
       using var ctx = new BookingContext(Options);
       var bookings = new BookingRepository(ctx);
-      var actual = await bookings.GetBookingsByDatesAsync(new DateTime(2020, 8, 17), new DateTime(2020, 8, 19));
+      var actual = await bookings.GetBookingsByDatesAsync(DateTime.Now.Date, DateTime.Now.AddDays(3).Date);
 
       Assert.NotEmpty(actual);
     }
@@ -33,7 +33,7 @@ namespace RVTR.Booking.UnitTesting.Tests
     {
       using var ctx = new BookingContext(Options);
       var bookings = new BookingRepository(ctx);
-      var actual = await bookings.GetBookingsByDatesAsync(new DateTime(2020, 8, 17), new DateTime(2020, 8, 19));
+      var actual = await bookings.GetBookingsByDatesAsync(DateTime.Now.Date, DateTime.Now.AddDays(3).Date);
 
       Assert.NotEmpty(actual.ToList()[0].Rentals);
     }

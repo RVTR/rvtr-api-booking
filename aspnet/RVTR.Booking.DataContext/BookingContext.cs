@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using RVTR.Booking.ObjectModel.Models;
 
@@ -23,8 +24,8 @@ namespace RVTR.Booking.DataContext
         Id = 1,
         AccountId = 1,
         LodgingId = 2,
-        CheckIn = new System.DateTime(2020, 08, 18),
-        CheckOut = new System.DateTime(2020, 08, 21)
+        CheckIn = DateTime.Now.Date,
+        CheckOut = DateTime.Now.AddDays(3).Date
       });
       modelBuilder.Entity<GuestModel>().HasData(
           new GuestModel
