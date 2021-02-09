@@ -35,11 +35,11 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
       - if: startsWith(github.ref, 'refs/heads/main')
         name: dotnet_publish_head
-        run: dotnet publish --configuration Debug --output drop RVTR.Booking.WebApi/*.csproj
+        run: dotnet publish --configuration Debug --output drop RVTR.Booking.Service/*.csproj
         working-directory: ${{ env.WORKING_DIRECTORY }}
       - if: startsWith(github.ref, 'refs/tags/')
         name: dotnet_publish
-        run: dotnet publish --configuration Release --output drop RVTR.Booking.WebApi/*.csproj
+        run: dotnet publish --configuration Release --output drop RVTR.Booking.Service/*.csproj
         working-directory: ${{ env.WORKING_DIRECTORY }}
       - name: drop_upload
         uses: actions/upload-artifact@v1.0.0
@@ -130,7 +130,7 @@ jobs:
       - name: docker_login
         run: echo ${GITHUB_TOKEN} | docker login --username ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
       - name: docker_build
-        run: docker image build --file .docker/aspnet.dockerfile --tag booking drop
+        run: docker image build --file .docker/pipeline.dockerfile --tag booking drop
       - if: startsWith(github.ref, 'refs/heads/main')
         name: docker_push_head
         run: |
