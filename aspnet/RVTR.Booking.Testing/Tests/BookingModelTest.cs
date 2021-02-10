@@ -74,7 +74,7 @@ namespace RVTR.Booking.Testing.Tests
         LodgingId = 0,
         Guests = null,
         Rentals = null,
-        CheckIn = new DateTime(2021, 12, 1),
+        CheckIn = new DateTime(2020, 12, 1),
         CheckOut = new DateTime(2021, 12, 2)
       };
       var validationContext = new ValidationContext(booking);
