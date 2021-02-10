@@ -21,8 +21,8 @@ namespace RVTR.Booking.Testing.Tests
           LodgingId = 0,
           Guests = new List<GuestModel>(),
           Rentals = new List<RentalModel>(),
-          CheckIn = new DateTime(2021, 1, 1),
-          CheckOut = new DateTime(2021, 1, 2)
+          CheckIn = new DateTime(2022, 1, 1),
+          CheckOut = new DateTime(2022, 1, 2)
         }
       }
     };
@@ -74,8 +74,8 @@ namespace RVTR.Booking.Testing.Tests
         LodgingId = 0,
         Guests = null,
         Rentals = null,
-        CheckIn = new DateTime(2020, 1, 1),
-        CheckOut = new DateTime(2021, 1, 2)
+        CheckIn = new DateTime(2022, 1, 1),
+        CheckOut = new DateTime(2022, 1, 2)
       };
       var validationContext = new ValidationContext(booking);
       Assert.NotEmpty(booking.Validate(validationContext));
@@ -88,7 +88,7 @@ namespace RVTR.Booking.Testing.Tests
       validationContext = new ValidationContext(booking);
       Assert.NotEmpty(booking.Validate(validationContext));
 
-      booking.CheckIn = new System.DateTime(2021, 1, 2);
+      booking.CheckIn = new System.DateTime(2022, 1, 2);
       validationContext = new ValidationContext(booking);
       Assert.NotEmpty(booking.Validate(validationContext));
     }
