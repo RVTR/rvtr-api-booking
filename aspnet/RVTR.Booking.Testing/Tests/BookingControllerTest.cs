@@ -71,7 +71,7 @@ namespace RVTR.Booking.Testing.Tests
     {
       // This test will only work up to January 1, 2021, because the current Get method returns a
       // BadRequestResult if the check in date is earlier than the current date (today's date)
-      IActionResult resultBookingDates = await _controller.Get(new DateTime(2021, 1, 1), new DateTime(2021, 1, 2));
+      IActionResult resultBookingDates = await _controller.Get(new DateTime(2021, 12, 1), new DateTime(2021, 12, 2));
       Assert.IsAssignableFrom<OkObjectResult>(resultBookingDates);
     }
 
