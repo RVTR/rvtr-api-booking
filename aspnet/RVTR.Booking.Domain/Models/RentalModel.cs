@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RVTR.Booking.Domain.Models
 {
-  public class RentalModel : IValidatableObject
+  public class RentalModel : AEntity, IValidatableObject
   {
-    public int Id { get; set; }
     public int BookingModelId { get; set; }
     public int LodgingRentalId { get; set; }
 

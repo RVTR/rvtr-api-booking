@@ -110,7 +110,7 @@ namespace RVTR.Booking.Testing.Tests
     {
       BookingModel booking = new BookingModel()
       {
-        Id = 0,
+        EntityId = 0,
         AccountId = 0,
         LodgingId = 0,
         Guests = new List<GuestModel>(),
@@ -126,7 +126,7 @@ namespace RVTR.Booking.Testing.Tests
     {
       BookingModel booking = new BookingModel()
       {
-        Id = 0,
+        EntityId = 0,
         AccountId = 0,
         LodgingId = 0,
         Guests = new List<GuestModel>(),

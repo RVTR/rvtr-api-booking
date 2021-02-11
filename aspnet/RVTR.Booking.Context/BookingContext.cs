@@ -14,9 +14,9 @@ namespace RVTR.Booking.Context
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-      modelBuilder.Entity<BookingModel>().HasKey(e => e.Id);
-      modelBuilder.Entity<GuestModel>().HasKey(e => e.Id);
-      modelBuilder.Entity<RentalModel>().HasKey(e => e.Id);
+      modelBuilder.Entity<BookingModel>().HasKey(e => e.EntityId);
+      modelBuilder.Entity<GuestModel>().HasKey(e => e.EntityId);
+      modelBuilder.Entity<RentalModel>().HasKey(e => e.EntityId);
     }
   }
 }

@@ -7,9 +7,8 @@ namespace RVTR.Booking.Domain.Models
   /// <summary>
   /// Represents the _Booking_ model
   /// </summary>
-  public class BookingModel : IValidatableObject
+  public class BookingModel : AEntity, IValidatableObject
   {
-    public int Id { get; set; }
     [Required(ErrorMessage = "AccountID is required")]
     public int AccountId { get; set; }
 
