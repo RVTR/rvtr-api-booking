@@ -5,11 +5,11 @@
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
     <RestoreLockedMode>true</RestoreLockedMode>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="system.componentmodel.annotations" Version="4.7.0" />
+    <PackageReference Include="system.componentmodel.annotations" Version="5.0.0" />
   </ItemGroup>
 
 </Project>
