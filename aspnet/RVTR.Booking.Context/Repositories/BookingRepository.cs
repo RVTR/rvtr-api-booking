@@ -56,7 +56,7 @@ namespace RVTR.Booking.Context.Repositories
         await Db
         .Include(x => x.Rentals)
         .Include(x => x.Guests)
-        .Where(x => x.Id == id)
+        .Where(x => x.EntityId == id)
         .FirstOrDefaultAsync();
       return booking;
     }
