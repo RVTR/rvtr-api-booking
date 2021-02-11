@@ -1,6 +1,3 @@
-# from repo root:
-# docker-compose -f .docker/docker_manifest.yaml -p booking up --build
-
 networks:
   locally:
 
