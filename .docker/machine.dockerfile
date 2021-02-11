@@ -1,5 +1,5 @@
 # stage - base
-FROM mcr.microsoft.com/dotnet/core/sdk:5.0 as base
+FROM mcr.microsoft.com/dotnet/sdk:5.0 as base
 
 WORKDIR /workspace
 
@@ -10,7 +10,7 @@ RUN dotnet build --no-restore
 RUN dotnet publish --configuration Debug --no-build --output out RVTR.Booking.Service/*.csproj
 
 # stage - final
-FROM mcr.microsoft.com/dotnet/core/aspnet:5.0
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
 
 WORKDIR /workspace
 
