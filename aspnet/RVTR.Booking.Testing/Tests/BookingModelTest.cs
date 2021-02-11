@@ -17,7 +17,7 @@ namespace RVTR.Booking.Testing.Tests
         new BookingModel()
         {
           Id = 0,
-          AccountId = 0,
+          AccountEmail = "",
           LodgingId = 0,
           Guests = new List<GuestModel>(),
           Rentals = new List<RentalModel>(),
@@ -43,7 +43,7 @@ namespace RVTR.Booking.Testing.Tests
       BookingModel booking = new BookingModel()
       {
         Id = 0,
-        AccountId = 0,
+        AccountEmail = "",
         LodgingId = 0,
         Guests = null,
         Rentals = null
@@ -70,7 +70,7 @@ namespace RVTR.Booking.Testing.Tests
       BookingModel booking = new BookingModel()
       {
         Id = 0,
-        AccountId = 0,
+        AccountEmail = "",
         LodgingId = 0,
         Guests = null,
         Rentals = null,

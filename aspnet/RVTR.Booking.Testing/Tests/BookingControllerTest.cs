@@ -35,8 +35,8 @@ namespace RVTR.Booking.Testing.Tests
       repositoryMock.Setup(m => m.SelectAsync(1)).ReturnsAsync(booking);
       repositoryMock.Setup(m => m.Update(It.IsAny<BookingModel>()));
       repositoryMock.Setup(m => m.GetBookingsByDatesAsync(It.IsAny<DateTime>(), It.IsAny<DateTime>())).ReturnsAsync(bookings);
-      repositoryMock.Setup(m => m.GetByAccountId(0)).ReturnsAsync(Enumerable.Empty<BookingModel>());
-      repositoryMock.Setup(m => m.GetByAccountId(1)).ReturnsAsync(bookings);
+      repositoryMock.Setup(m => m.GetByAccountEmail("")).ReturnsAsync(Enumerable.Empty<BookingModel>());
+      repositoryMock.Setup(m => m.GetByAccountEmail("")).ReturnsAsync(bookings);
 
       unitOfWorkMock.Setup(m => m.Booking).Returns(repositoryMock.Object);
 
@@ -111,7 +111,7 @@ namespace RVTR.Booking.Testing.Tests
       BookingModel booking = new BookingModel()
       {
         Id = 0,
-        AccountId = 0,
+        AccountEmail = "",
         LodgingId = 0,
         Guests = new List<GuestModel>(),
         Rentals = new List<RentalModel>()
@@ -127,7 +127,7 @@ namespace RVTR.Booking.Testing.Tests
       BookingModel booking = new BookingModel()
       {
         Id = 0,
-        AccountId = 0,
+        AccountEmail = "",
         LodgingId = 0,
         Guests = new List<GuestModel>(),
         Rentals = new List<RentalModel>()
@@ -140,14 +140,14 @@ namespace RVTR.Booking.Testing.Tests
     [Fact]
     public async void Test_Controller_GetByAccountId()
     {
-      IActionResult resultOk = await _controller.GetByAccountId(1);
+      IActionResult resultOk = await _controller.GetByAccountEmail("");
       Assert.IsAssignableFrom<OkObjectResult>(resultOk);
     }
 
     [Fact]
     public async void Test_Controller_GetByAccountId_NotFound()
     {
-      IActionResult resultNotFound = await _controller.GetByAccountId(-10);
+      IActionResult resultNotFound = await _controller.GetByAccountEmail("NotEmail");
       Assert.IsAssignableFrom<NotFoundObjectResult>(resultNotFound);
     }
   }

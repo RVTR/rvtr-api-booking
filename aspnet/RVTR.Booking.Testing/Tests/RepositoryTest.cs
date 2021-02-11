@@ -10,7 +10,7 @@ namespace RVTR.Booking.Testing.Tests
 {
   public class RepositoryTest : DataTest
   {
-    private readonly BookingModel _booking = new BookingModel { Id = 3, AccountId = 1, LodgingId = 1 };
+    private readonly BookingModel _booking = new BookingModel { Id = 3, AccountEmail = "", LodgingId = 1 };
 
     [Fact]
     public async void Test_Repository_DeleteAsync()
@@ -21,7 +21,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
-          AccountId = 1,
+          AccountEmail = "",
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
@@ -57,7 +57,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
-          AccountId = 1,
+          AccountEmail = "",
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
@@ -81,7 +81,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
-          AccountId = 1,
+         AccountEmail = "",
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
@@ -105,7 +105,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
-          AccountId = 1,
+          AccountEmail = "",
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,

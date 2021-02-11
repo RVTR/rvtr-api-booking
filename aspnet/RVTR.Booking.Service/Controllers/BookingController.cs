@@ -138,10 +138,10 @@ namespace RVTR.Booking.Service.Controllers
     [HttpGet("Account/{id}")]
     [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetByAccountId(int id)
+    public async Task<IActionResult> GetByAccountEmail(string id)
     {
       _logger.LogDebug("Getting a booking by account ID..");
-      var bookings = await _unitOfWork.Booking.GetByAccountId(id);
+      var bookings = await _unitOfWork.Booking.GetByAccountEmail(id);
       if (bookings.Count() == 0)
       {
         _logger.LogInformation($"Could not find bookings to get @ account id = {id}.");
@@ -163,7 +163,7 @@ namespace RVTR.Booking.Service.Controllers
     [ProducesResponseType(typeof(BookingModel), StatusCodes.Status200OK)]
     public async Task<IActionResult> Post(BookingModel booking)
     {
-      _logger.LogInformation($"Successfully added the booking with accountID: '{booking.AccountId}' and lodgingID: {booking.LodgingId}'.");
+      _logger.LogInformation($"Successfully added the booking with account email: '{booking.AccountEmail}' and lodgingID: {booking.LodgingId}'.");
       await _unitOfWork.Booking.InsertAsync(booking);
       await _unitOfWork.CommitAsync();
 
@@ -179,7 +179,7 @@ namespace RVTR.Booking.Service.Controllers
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Put(BookingModel booking)
     {
-      _logger.LogInformation($"Successfully updated the booking with accountID: '{booking.AccountId}' and lodgingID: '{booking.LodgingId}'.");
+      _logger.LogInformation($"Successfully updated the booking with email: '{booking.AccountEmail}' and lodgingID: '{booking.LodgingId}'.");
       _unitOfWork.Booking.Update(booking);
       await _unitOfWork.CommitAsync();
       return NoContent();

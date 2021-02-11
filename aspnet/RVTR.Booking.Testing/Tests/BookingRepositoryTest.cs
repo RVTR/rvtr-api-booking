@@ -19,7 +19,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
-          AccountId = 1,
+          AccountEmail = "",
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
@@ -29,7 +29,7 @@ namespace RVTR.Booking.Testing.Tests
       );
       await ctx.SaveChangesAsync();
 
-      var actual = await bookings.GetByAccountId(1);
+      var actual = await bookings.GetByAccountEmail("");
 
       Assert.NotEmpty(actual);
     }
@@ -43,7 +43,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
-          AccountId = 1,
+         AccountEmail = "",
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
@@ -67,7 +67,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
-          AccountId = 1,
+          AccountEmail = "",
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
@@ -95,7 +95,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
-          AccountId = 1,
+          AccountEmail = "",
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
@@ -123,7 +123,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
-          AccountId = 1,
+          AccountEmail = "",
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,

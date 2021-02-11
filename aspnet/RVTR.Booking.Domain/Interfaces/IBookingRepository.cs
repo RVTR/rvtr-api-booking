@@ -8,6 +8,6 @@ namespace RVTR.Booking.Domain.Interfaces
   public interface IBookingRepository : IRepository<BookingModel>
   {
     Task<IEnumerable<BookingModel>> GetBookingsByDatesAsync(DateTime checkIn, DateTime checkOut);
-    Task<IEnumerable<BookingModel>> GetByAccountId(int id);
+    Task<IEnumerable<BookingModel>> GetByAccountEmail(string id);
   }
 }

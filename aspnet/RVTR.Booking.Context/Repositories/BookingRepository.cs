@@ -61,9 +61,10 @@ namespace RVTR.Booking.Context.Repositories
       return booking;
     }
 
-    public virtual async Task<IEnumerable<BookingModel>> GetByAccountId(string email)
+    public virtual async Task<IEnumerable<BookingModel>> GetByAccountEmail(string email)
     {
       return await Db.Where(t => t.AccountEmail == email).ToListAsync();
     }
+
   }
 }
