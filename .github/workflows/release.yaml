@@ -116,7 +116,7 @@ jobs:
 
   pack:
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
     name: pack_aspnet
     needs: analyze
     runs-on: ubuntu-20.04
@@ -129,19 +129,19 @@ jobs:
           name: drop
           path: drop
       - name: docker_login
-        run: echo ${GITHUB_TOKEN} | docker login --username ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
+        run: echo ${REGISTRY_TOKEN} | docker login --username ${GITHUB_ACTOR} --password-stdin ghcr.io
       - name: docker_build
         run: docker image build --file .docker/pipeline.dockerfile --tag booking drop
       - if: startsWith(github.ref, 'refs/heads/main')
         name: docker_push_head
         run: |
-          docker image tag booking docker.pkg.github.com/rvtr/rvtrx-api-booking/booking:master-aspnet-rest
-          docker image push docker.pkg.github.com/rvtr/rvtrx-api-booking/booking:master-aspnet-rest
+          docker image tag booking ghcr.io/rvtr/rvtrx-api-booking:main-aspnet-rest
+          docker image push ghcr.io/rvtr/rvtrx-api-booking:main-aspnet-rest
       - if: startsWith(github.ref, 'refs/tags/')
         name: docker_push
         run: |
-          docker image tag booking docker.pkg.github.com/rvtr/rvtrx-api-booking/booking:aspnet-rest
-          docker image push docker.pkg.github.com/rvtr/rvtrx-api-booking/booking:aspnet-rest
+          docker image tag booking ghcr.io/rvtr/rvtrx-api-booking:aspnet-rest
+          docker image push ghcr.io/rvtr/rvtrx-api-booking:aspnet-rest
       - name: docker_logout
         run: docker logout
 
