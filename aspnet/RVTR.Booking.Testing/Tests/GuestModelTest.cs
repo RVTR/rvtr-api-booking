@@ -13,9 +13,13 @@ namespace RVTR.Booking.Testing.Tests
       {
         new GuestModel()
         {
+          FirstName = "First Name Test",
+          LastName = "Last Name Test",
           EntityId = 0,
           BookingModelId = 0,
-        }
+          IsMinor = false,
+        },
+
       }
     };
 
