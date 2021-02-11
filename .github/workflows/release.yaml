@@ -5,12 +5,12 @@ env:
 jobs:
   restore:
     name: restore_aspnet
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: actions_checkout
-        uses: actions/checkout@v2.1.0
+        uses: actions/checkout@v2.3.4
       - name: dotnet_cache
-        uses: actions/cache@v1.1.2
+        uses: actions/cache@v2.1.4
         with:
           path: ~/.nuget/packages
           key: ${{ env.CACHE_KEY_PREFIX }}-${{ hashFiles('**/packages.lock.json') }}
@@ -21,12 +21,12 @@ jobs:
   build:
     name: build_aspnet
     needs: restore
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: actions_checkout
-        uses: actions/checkout@v2.1.0
+        uses: actions/checkout@v2.3.4
       - name: dotnet_cache
-        uses: actions/cache@v1.1.2
+        uses: actions/cache@v2.1.4
         with:
           path: ~/.nuget/packages
           key: ${{ env.CACHE_KEY_PREFIX }}-${{ hashFiles('**/packages.lock.json') }}
@@ -35,14 +35,14 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
       - if: startsWith(github.ref, 'refs/heads/main')
         name: dotnet_publish_head
-        run: dotnet publish --configuration Debug --output drop RVTR.Booking.WebApi/*.csproj
+        run: dotnet publish --configuration Debug --output drop RVTR.Booking.Service/*.csproj
         working-directory: ${{ env.WORKING_DIRECTORY }}
       - if: startsWith(github.ref, 'refs/tags/')
         name: dotnet_publish
-        run: dotnet publish --configuration Release --output drop RVTR.Booking.WebApi/*.csproj
+        run: dotnet publish --configuration Release --output drop RVTR.Booking.Service/*.csproj
         working-directory: ${{ env.WORKING_DIRECTORY }}
       - name: drop_upload
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v2
         with:
           name: drop
           path: ${{ env.WORKING_DIRECTORY }}/drop
@@ -50,12 +50,12 @@ jobs:
   test:
     name: test_aspnet
     needs: restore
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: actions_checkout
-        uses: actions/checkout@v2.1.0
+        uses: actions/checkout@v2.3.4
       - name: dotnet_cache
-        uses: actions/cache@v1.1.2
+        uses: actions/cache@v2.1.4
         with:
           path: ~/.nuget/packages
           key: ${{ env.CACHE_KEY_PREFIX }}-${{ hashFiles('**/packages.lock.json') }}
@@ -69,12 +69,12 @@ jobs:
           --results-directory ./test_coverage/
         working-directory: ${{ env.WORKING_DIRECTORY }}
       - name: opencover_upload
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v2
         with:
           name: code_coverage
           path: ${{ env.WORKING_DIRECTORY }}/code_coverage
       - name: trx_upload
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v2
         with:
           name: test_coverage
           path: ${{ env.WORKING_DIRECTORY }}/test_coverage
@@ -84,26 +84,26 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     name: analyze_aspnet
     needs: [build, test]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: actions_checkout
-        uses: actions/checkout@v2.1.0
+        uses: actions/checkout@v2.3.4
       - name: git_fetch
         run: git fetch --unshallow
       - name: opencover_download
-        uses: actions/download-artifact@v1.0.0
+        uses: actions/download-artifact@v2
         with:
           name: code_coverage
           path: ${{ env.WORKING_DIRECTORY }}/code_coverage
       - name: trx_download
-        uses: actions/download-artifact@v1.0.0
+        uses: actions/download-artifact@v2
         with:
           name: test_coverage
           path: ${{ env.WORKING_DIRECTORY }}/test_coverage
       - name: sonar_install
         run: dotnet tool install --global dotnet-sonarscanner
       - name: dotnet_cache
-        uses: actions/cache@v1.1.2
+        uses: actions/cache@v2.1.4
         with:
           path: ~/.nuget/packages
           key: ${{ env.CACHE_KEY_PREFIX }}-${{ hashFiles('**/packages.lock.json') }}
@@ -119,18 +119,19 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     name: pack_aspnet
     needs: analyze
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: actions_checkout
-        uses: actions/checkout@v2.1.0
+        uses: actions/checkout@v2.3.4
       - name: drop_download
-        uses: actions/download-artifact@v1.0.0
+        uses: actions/download-artifact@v2
         with:
           name: drop
+          path: drop
       - name: docker_login
         run: echo ${GITHUB_TOKEN} | docker login --username ${GITHUB_ACTOR} --password-stdin docker.pkg.github.com
       - name: docker_build
-        run: docker image build --file .docker/aspnet.dockerfile --tag booking drop
+        run: docker image build --file .docker/pipeline.dockerfile --tag booking drop
       - if: startsWith(github.ref, 'refs/heads/main')
         name: docker_push_head
         run: |
@@ -150,10 +151,10 @@ jobs:
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     needs: pack
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: actions_checkout
-        uses: actions/checkout@v2.1.0
+        uses: actions/checkout@v2.3.4
       - name: az_login
         run: az login --password ${AZURE_CLIENT_SECRET} --service-principal --tenant ${AZURE_TENANT_ID} --username ${AZURE_CLIENT_ID}
       - name: az_aks

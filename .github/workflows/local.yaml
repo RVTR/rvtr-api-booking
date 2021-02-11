@@ -5,12 +5,12 @@ env:
 jobs:
   restore:
     name: restore_aspnet
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: actions_checkout
-        uses: actions/checkout@v2.1.0
+        uses: actions/checkout@v2.3.4
       - name: dotnet_cache
-        uses: actions/cache@v1.1.2
+        uses: actions/cache@v2.1.4
         with:
           path: ~/.nuget/packages
           key: ${{ env.CACHE_KEY_PREFIX }}-${{ hashFiles('**/packages.lock.json') }}
@@ -21,12 +21,12 @@ jobs:
   build:
     name: build_aspnet
     needs: restore
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: actions_checkout
-        uses: actions/checkout@v2.1.0
+        uses: actions/checkout@v2.3.4
       - name: dotnet_cache
-        uses: actions/cache@v1.1.2
+        uses: actions/cache@v2.1.4
         with:
           path: ~/.nuget/packages
           key: ${{ env.CACHE_KEY_PREFIX }}-${{ hashFiles('**/packages.lock.json') }}
@@ -37,12 +37,12 @@ jobs:
   test:
     name: test_aspnet
     needs: restore
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: actions_checkout
-        uses: actions/checkout@v2.1.0
+        uses: actions/checkout@v2.3.4
       - name: dotnet_cache
-        uses: actions/cache@v1.1.2
+        uses: actions/cache@v2.1.4
         with:
           path: ~/.nuget/packages
           key: ${{ env.CACHE_KEY_PREFIX }}-${{ hashFiles('**/packages.lock.json') }}
@@ -56,12 +56,12 @@ jobs:
           --results-directory ./test_coverage/
         working-directory: ${{ env.WORKING_DIRECTORY }}
       - name: opencover_upload
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v2
         with:
           name: code_coverage
           path: ${{ env.WORKING_DIRECTORY }}/code_coverage
       - name: trx_upload
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v2
         with:
           name: test_coverage
           path: ${{ env.WORKING_DIRECTORY }}/test_coverage
@@ -69,26 +69,26 @@ jobs:
   analyze:
     name: analyze_aspnet
     needs: [build, test]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: actions_checkout
-        uses: actions/checkout@v2.1.0
+        uses: actions/checkout@v2.3.4
       - name: git_fetch
         run: git fetch --unshallow
       - name: opencover_download
-        uses: actions/download-artifact@v1.0.0
+        uses: actions/download-artifact@v2
         with:
           name: code_coverage
           path: ${{ env.WORKING_DIRECTORY }}/code_coverage
       - name: trx_download
-        uses: actions/download-artifact@v1.0.0
+        uses: actions/download-artifact@v2
         with:
           name: test_coverage
           path: ${{ env.WORKING_DIRECTORY }}/test_coverage
       - name: sonar_install
         run: dotnet tool install --global dotnet-sonarscanner
       - name: dotnet_cache
-        uses: actions/cache@v1.1.2
+        uses: actions/cache@v2.1.4
         with:
           path: ~/.nuget/packages
           key: ${{ env.CACHE_KEY_PREFIX }}-${{ hashFiles('**/packages.lock.json') }}
