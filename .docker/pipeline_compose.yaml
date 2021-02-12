@@ -3,9 +3,7 @@ networks:
 
 services:
   rest:
-    build:
-      context: ../aspnet
-      dockerfile: ../.docker/machine.dockerfile
+    image: ghcr.io/rvtr/rvtrx-api-booking:main-aspnet-rest
     depends_on:
       - data
     environment:
@@ -14,7 +12,7 @@ services:
     networks:
       - locally
     ports:
-      - 8000:80
+      - 8002:80
 
   data:
     environment:
@@ -28,6 +26,6 @@ services:
     networks:
       - locally
     ports:
-      - 9411:9411
+      - 9002:9411
 
 version: '3.8'
