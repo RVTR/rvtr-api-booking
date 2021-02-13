@@ -5,10 +5,10 @@ namespace RVTR.Booking.Domain.Interfaces
 {
   public interface IRepository<TEntity> where TEntity : class
   {
-    Task DeleteAsync(int id);
+  //  Task DeleteAsync(int id);
     Task InsertAsync(TEntity entry);
-    Task<IEnumerable<TEntity>> SelectAsync();
-    Task<TEntity> SelectAsync(int id);
+    Task<IEnumerable<TEntity>> SelectAsync(string input);
+
     void Update(TEntity entry);
   }
 }

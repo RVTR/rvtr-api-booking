@@ -105,7 +105,7 @@ namespace RVTR.Booking.Testing.Tests
       );
       await ctx.SaveChangesAsync();
 
-      var actual = await bookings.SelectAsync();
+      var actual = await bookings.SelectAsync("1");
 
       Assert.NotEmpty(actual.ToList()[0].Rentals);
     }
@@ -133,9 +133,9 @@ namespace RVTR.Booking.Testing.Tests
       );
       await ctx.SaveChangesAsync();
 
-      var actual = await bookings.SelectAsync(1);
+      var actual = await bookings.SelectAsync("1");
 
-      Assert.NotEmpty(actual.Rentals);
+      Assert.NotEmpty(actual.First().Rentals);
     }
   }
 }

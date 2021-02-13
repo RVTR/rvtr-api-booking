@@ -12,6 +12,8 @@ namespace RVTR.Booking.Testing.Tests
   {
     private readonly BookingModel _booking = new BookingModel { Id = 3, AccountEmail = "", LodgingId = 1 };
 
+    /*
+    Will add testing for deleteAsync once DeleteAsyncIsFixed
     [Fact]
     public async void Test_Repository_DeleteAsync()
     {
@@ -36,6 +38,7 @@ namespace RVTR.Booking.Testing.Tests
 
       Assert.Equal(EntityState.Deleted, ctx.Entry(booking).State);
     }
+    */
 
     [Fact]
     public async void Test_Repository_InsertAsync()
@@ -49,7 +52,7 @@ namespace RVTR.Booking.Testing.Tests
     }
 
     [Fact]
-    public async void Test_Repository_SelectAsync()
+    public async void Test_Repository_SelectAsync_ByEmailExists()
     {
       using var ctx = new BookingContext(Options);
       var bookings = new Repository<BookingModel>(ctx);
@@ -57,7 +60,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
-          AccountEmail = "",
+          AccountEmail = "Test1",
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
@@ -67,13 +70,36 @@ namespace RVTR.Booking.Testing.Tests
       );
       await ctx.SaveChangesAsync();
 
-      var actual = await bookings.SelectAsync();
+      var actual = await bookings.SelectAsync("Test1");
 
       Assert.NotEmpty(actual);
     }
+     [Fact]
+    public async void Test_Repository_SelectAsync_ByEmailNotExists()
+    {
+      using var ctx = new BookingContext(Options);
+      var bookings = new Repository<BookingModel>(ctx);
+
+      ctx.Bookings.Add(
+        new BookingModel()
+        {
+          AccountEmail = "Test1",
+          LodgingId = 1,
+          CheckIn = DateTime.Now.Date,
+          CheckOut = DateTime.Now.AddDays(3).Date,
+          Guests = new List<GuestModel>() { new GuestModel() },
+          Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
+        }
+      );
+      await ctx.SaveChangesAsync();
+
+      var actual = await bookings.SelectAsync("NOTTHERE");
+
+      Assert.Empty(actual);
+    }
 
     [Fact]
-    public async void Test_Repository_SelectAsync_ById()
+    public async void Test_Repository_SelectAsync_ByLodgingIdExists()
     {
       using var ctx = new BookingContext(Options);
       var bookings = new Repository<BookingModel>(ctx);
@@ -91,9 +117,33 @@ namespace RVTR.Booking.Testing.Tests
       );
       await ctx.SaveChangesAsync();
 
-      var actual = await bookings.SelectAsync(1);
+      var actual = await bookings.SelectAsync("1");
 
-      Assert.NotNull(actual);
+      Assert.NotEmpty(actual);
+    }
+
+    [Fact]
+    public async void Test_Repository_SelectAsync_ByLodgingIdNotExists()
+    {
+      using var ctx = new BookingContext(Options);
+      var bookings = new Repository<BookingModel>(ctx);
+
+      ctx.Bookings.Add(
+        new BookingModel()
+        {
+         AccountEmail = "",
+          LodgingId = 1,
+          CheckIn = DateTime.Now.Date,
+          CheckOut = DateTime.Now.AddDays(3).Date,
+          Guests = new List<GuestModel>() { new GuestModel() },
+          Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
+        }
+      );
+      await ctx.SaveChangesAsync();
+
+      var actual = await bookings.SelectAsync("2");
+
+      Assert.Empty(actual);
     }
 
     [Fact]

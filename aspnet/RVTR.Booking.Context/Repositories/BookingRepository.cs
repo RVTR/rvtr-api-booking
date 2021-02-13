@@ -35,16 +35,36 @@ namespace RVTR.Booking.Context.Repositories
     /// Selects all booking models and .incldudes the attached rental and guest lists
     /// </summary>
     /// <returns></returns>
-    public override async Task<IEnumerable<BookingModel>> SelectAsync()
+    public override async Task<IEnumerable<BookingModel>> SelectAsync(string input)
     {
-      var bookings =
+      //Search for all bookings with account email == input
+      IEnumerable<BookingModel> bookingsByEmail =
         await Db
         .Include(x => x.Rentals)
         .Include(x => x.Guests)
+        .Where(x => x.AccountEmail == input)
         .ToListAsync();
-      return bookings;
-    }
 
+      //Search for all bookings with bookingnumber == input
+
+      //SEARCH FOR ALL Bookings with lodgingnumber == input
+        IEnumerable<BookingModel> bookingsByBookingNumber =
+        await Db
+        .Include(x => x.Rentals)
+        .Include(x => x.Guests)
+        .Where(x => x.LodgingId.ToString() == input)
+        .ToListAsync();
+
+
+      // return the collection with values, otherwise return bookingsByEmail
+        if(bookingsByBookingNumber.Count() >= 1){
+          return bookingsByBookingNumber;
+        }
+        return bookingsByEmail;
+
+
+    }
+/*
     /// <summary>
     /// Selects a booking model by id and .include the attached rental and guest lists
     /// </summary>
@@ -60,9 +80,10 @@ namespace RVTR.Booking.Context.Repositories
         .FirstOrDefaultAsync();
       return booking;
     }
-
+*/
     public virtual async Task<IEnumerable<BookingModel>> GetByAccountEmail(string email)
     {
+
       return await Db.Where(t => t.AccountEmail == email).ToListAsync();
     }
 

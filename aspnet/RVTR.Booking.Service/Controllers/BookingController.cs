@@ -37,26 +37,27 @@ namespace RVTR.Booking.Service.Controllers
 
     /// <summary>
     /// Action method for deleting a booking by booking id.
+    /// Needs to be refactored to account for changes to select Async
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(string input)
     {
       _logger.LogDebug("Deleting a booking by its ID...");
-      var booking = await _unitOfWork.Booking.SelectAsync(id);
+      var booking = await _unitOfWork.Booking.SelectAsync(input);
       if (booking == null)
       {
-        _logger.LogInformation($"Could not find booking to delete @ id = {id}.");
-        return NotFound(id);
+        _logger.LogInformation($"Could not find booking to delete @ id = {input}.");
+        return NotFound(input);
       }
       else
       {
-        await _unitOfWork.Booking.DeleteAsync(id);
+    //  await _unitOfWork.Booking.DeleteAsync(id);
         await _unitOfWork.CommitAsync();
-        _logger.LogInformation($"Succesfully deleted booking @ id = {id}.");
+        _logger.LogInformation($"Succesfully deleted booking @ id = {input}.");
         return NoContent();
       }
     }
@@ -64,6 +65,7 @@ namespace RVTR.Booking.Service.Controllers
     /// <summary>
     /// Takes in two dates and retrieves bookings between the two dates,
     /// returns all bookings if no checkin/checkout date specified.
+    /// NEEDS TO BE DEPRICATED IN A LATER ISSUE
     /// </summary>
     /// <param name="checkIn"></param>
     /// <param name="checkOut"></param>
@@ -71,7 +73,7 @@ namespace RVTR.Booking.Service.Controllers
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get(DateTime? checkIn, DateTime? checkOut)
+    public async Task<IActionResult> GetByDates(DateTime? checkIn, DateTime? checkOut)
     {
       _logger.LogDebug("Getting a booking between dates...");
       DateTime todaysDate = DateTime.Now.Date;
@@ -95,8 +97,8 @@ namespace RVTR.Booking.Service.Controllers
       }
       else if (checkIn == null && checkOut == null)
       {
-        _logger.LogInformation($"Returning bookings with null Check In and Check Out");
-        return Ok(await _unitOfWork.Booking.SelectAsync());
+       // _logger.LogInformation($"Returning bookings with null Check In and Check Out");
+       return Ok(await _unitOfWork.Booking.SelectAsync(""));
       }
       else
       {
@@ -106,50 +108,26 @@ namespace RVTR.Booking.Service.Controllers
     }
 
     /// <summary>
-    ///
-    /// Action method that returns a single booking by booking id.
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    [HttpGet("{id}")]
-    [ProducesResponseType(typeof(BookingModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById(int id)
-    {
-      _logger.LogDebug("Getting a booking by booking ID..");
-      var booking = await _unitOfWork.Booking.SelectAsync(id);
-      if (booking == null)
-      {
-        _logger.LogInformation($"Could not find booking to get @ id = {id}.");
-        return NotFound(id);
-      }
-      else
-      {
-        _logger.LogInformation($"Succesfully found booking to get @ id = {id}.");
-        return Ok(booking);
-      }
-    }
-
-    /// <summary>
     /// Action method that returns a list of bookings associated with an account id.
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="input"></param>
     /// <returns></returns>
-    [HttpGet("Account/{id}")]
+    [HttpGet("Account/{input}")]
     [ProducesResponseType(typeof(IEnumerable<BookingModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetByAccountEmail(string id)
+    public async Task<IActionResult> Get(string input)
     {
-      _logger.LogDebug("Getting a booking by account ID..");
-      var bookings = await _unitOfWork.Booking.GetByAccountEmail(id);
+      _logger.LogDebug("Getting a booking by either account email, or lodgingId..");
+      var bookings = await _unitOfWork.Booking.SelectAsync(input);
+
       if (bookings.Count() == 0)
       {
-        _logger.LogInformation($"Could not find bookings to get @ account id = {id}.");
-        return NotFound(id);
+        _logger.LogInformation($"Could not find bookings with either account email or lodgingId = {input}.");
+        return NotFound(input);
       }
       else
       {
-        _logger.LogInformation($"Succesfully found bookings to get @ account id = {id}.");
+        _logger.LogInformation($"Succesfully found bookings using input = {input}.");
         return Ok(bookings);
       }
     }
