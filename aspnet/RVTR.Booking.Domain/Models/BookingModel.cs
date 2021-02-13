@@ -23,6 +23,7 @@ namespace RVTR.Booking.Domain.Models
     public DateTime CheckIn { get; set; }
 
     public DateTime CheckOut { get; set; }
+    public string BookingNumber { get; set; }
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
