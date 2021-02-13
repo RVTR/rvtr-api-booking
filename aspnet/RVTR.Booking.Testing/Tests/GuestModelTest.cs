@@ -16,7 +16,7 @@ namespace RVTR.Booking.Testing.Tests
           Id = 0,
           BookingModelId = 0,
           FirstName = "First Name User",
-          LasstName = "Last Name User",
+          LastName = "Last Name User",
           IsMinor = false
         }
       }
