@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using RVTR.Booking.Context;
 using RVTR.Booking.Context.Repositories;
@@ -73,77 +74,6 @@ namespace RVTR.Booking.Testing.Tests
       var actual = await bookings.SelectAsync("Test1");
 
       Assert.NotEmpty(actual);
-    }
-     [Fact]
-    public async void Test_Repository_SelectAsync_ByEmailNotExists()
-    {
-      using var ctx = new BookingContext(Options);
-      var bookings = new Repository<BookingModel>(ctx);
-
-      ctx.Bookings.Add(
-        new BookingModel()
-        {
-          AccountEmail = "Test1",
-          LodgingId = 1,
-          CheckIn = DateTime.Now.Date,
-          CheckOut = DateTime.Now.AddDays(3).Date,
-          Guests = new List<GuestModel>() { new GuestModel() },
-          Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
-        }
-      );
-      await ctx.SaveChangesAsync();
-
-      var actual = await bookings.SelectAsync("NOTTHERE");
-
-      Assert.Empty(actual);
-    }
-
-    [Fact]
-    public async void Test_Repository_SelectAsync_ByLodgingIdExists()
-    {
-      using var ctx = new BookingContext(Options);
-      var bookings = new Repository<BookingModel>(ctx);
-
-      ctx.Bookings.Add(
-        new BookingModel()
-        {
-         AccountEmail = "",
-          LodgingId = 1,
-          CheckIn = DateTime.Now.Date,
-          CheckOut = DateTime.Now.AddDays(3).Date,
-          Guests = new List<GuestModel>() { new GuestModel() },
-          Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
-        }
-      );
-      await ctx.SaveChangesAsync();
-
-      var actual = await bookings.SelectAsync("1");
-
-      Assert.NotEmpty(actual);
-    }
-
-    [Fact]
-    public async void Test_Repository_SelectAsync_ByLodgingIdNotExists()
-    {
-      using var ctx = new BookingContext(Options);
-      var bookings = new Repository<BookingModel>(ctx);
-
-      ctx.Bookings.Add(
-        new BookingModel()
-        {
-         AccountEmail = "",
-          LodgingId = 1,
-          CheckIn = DateTime.Now.Date,
-          CheckOut = DateTime.Now.AddDays(3).Date,
-          Guests = new List<GuestModel>() { new GuestModel() },
-          Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
-        }
-      );
-      await ctx.SaveChangesAsync();
-
-      var actual = await bookings.SelectAsync("2");
-
-      Assert.Empty(actual);
     }
 
     [Fact]

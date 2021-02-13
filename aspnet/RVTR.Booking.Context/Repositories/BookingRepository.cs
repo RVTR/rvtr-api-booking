@@ -47,40 +47,35 @@ namespace RVTR.Booking.Context.Repositories
 
       //Search for all bookings with bookingnumber == input
 
+
       //SEARCH FOR ALL Bookings with lodgingnumber == input
+      int parsed;
+      bool isParsable = Int32.TryParse(input, out parsed);
+      if(isParsable){
         IEnumerable<BookingModel> bookingsByBookingNumber =
         await Db
         .Include(x => x.Rentals)
         .Include(x => x.Guests)
-        .Where(x => x.LodgingId.ToString() == input)
+        .Where(x => x.LodgingId == parsed)
         .ToListAsync();
 
-
-      // return the collection with values, otherwise return bookingsByEmail
-        if(bookingsByBookingNumber.Count() >= 1){
+        if(bookingsByBookingNumber.Count() >= 1)
+        {
           return bookingsByBookingNumber;
         }
+      }
+
+      if(bookingsByEmail.Count() >= 1)
+      {
         return bookingsByEmail;
+      }
 
+      IEnumerable<BookingModel> returnModel = null;
+
+      return returnModel;
 
     }
-/*
-    /// <summary>
-    /// Selects a booking model by id and .include the attached rental and guest lists
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public override async Task<BookingModel> SelectAsync(int id)
-    {
-      var booking =
-        await Db
-        .Include(x => x.Rentals)
-        .Include(x => x.Guests)
-        .Where(x => x.Id == id)
-        .FirstOrDefaultAsync();
-      return booking;
-    }
-*/
+
     public virtual async Task<IEnumerable<BookingModel>> GetByAccountEmail(string email)
     {
 

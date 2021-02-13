@@ -92,6 +92,7 @@ namespace RVTR.Booking.Testing.Tests
       Assert.IsAssignableFrom<BadRequestResult>(resultBookingDates);
     }
 
+    /*
     [Fact]
     public async void Test_Controller_GetById()
     {
@@ -105,6 +106,7 @@ namespace RVTR.Booking.Testing.Tests
       IActionResult resultFail = await _controller.Get("0");
       Assert.IsAssignableFrom<NotFoundObjectResult>(resultFail);
     }
+    */
 
     [Fact]
     public async void Test_Controller_Post()
@@ -137,7 +139,7 @@ namespace RVTR.Booking.Testing.Tests
       IActionResult resultPass = await _controller.Put(booking);
       Assert.IsAssignableFrom<NoContentResult>(resultPass);
     }
-
+/*
     [Fact]
     public async void Test_Controller_GetByAccountId()
     {
@@ -151,5 +153,6 @@ namespace RVTR.Booking.Testing.Tests
       IActionResult resultNotFound = await _controller.Get("NotEmail");
       Assert.IsAssignableFrom<NotFoundObjectResult>(resultNotFound);
     }
+    */
   }
 }

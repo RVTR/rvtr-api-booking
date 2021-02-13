@@ -95,26 +95,27 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
-          AccountEmail = "",
+          AccountEmail = "email",
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
           Guests = new List<GuestModel>() { new GuestModel() },
           Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
+
         }
       );
       await ctx.SaveChangesAsync();
 
-      var actual = await bookings.SelectAsync("1");
+      var actual = await bookings.SelectAsync("email");
 
-      Assert.NotEmpty(actual.ToList()[0].Rentals);
+      Assert.NotEmpty(actual);
     }
 
     /// <summary>
     /// Tests that a selecting a single booking db.includes the rental list as well
     /// </summary>
     [Fact]
-    public async void Test_Repository_SelectAsyncById_HasRentals()
+    public async void Test_Repository_SelectAsync_HasNOTRentals()
     {
 
       using var ctx = new BookingContext(Options);
@@ -123,7 +124,33 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
-          AccountEmail = "",
+          AccountEmail = "email",
+          LodgingId = 1,
+          CheckIn = DateTime.Now.Date,
+          CheckOut = DateTime.Now.AddDays(3).Date,
+          Guests = new List<GuestModel>() { new GuestModel() },
+
+        }
+      );
+      await ctx.SaveChangesAsync();
+
+      var actual = await bookings.SelectAsync("email");
+
+      Assert.Empty(actual.First().Rentals);
+    }
+
+      /////////////////////////////
+
+     [Fact]
+    public async void Test_Repository_SelectAsync_ByEmailNotExists()
+    {
+      using var ctx = new BookingContext(Options);
+      var bookings = new BookingRepository(ctx);
+
+      ctx.Bookings.Add(
+        new BookingModel()
+        {
+          AccountEmail = "Test1",
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
@@ -133,9 +160,63 @@ namespace RVTR.Booking.Testing.Tests
       );
       await ctx.SaveChangesAsync();
 
-      var actual = await bookings.SelectAsync("1");
+      IEnumerable<BookingModel> actual = await bookings.SelectAsync("NOTTHERE");
 
-      Assert.NotEmpty(actual.First().Rentals);
+      Assert.Null(actual);
     }
+
+
+    [Fact]
+    public async void Test_Repository_SelectAsync_ByLodgingIdExists()
+    {
+      using var ctx = new BookingContext(Options);
+      var bookings = new BookingRepository(ctx);
+
+      ctx.Bookings.Add(
+        new BookingModel()
+        {
+         AccountEmail = "",
+          LodgingId = 1,
+          CheckIn = DateTime.Now.Date,
+          CheckOut = DateTime.Now.AddDays(3).Date,
+          Guests = new List<GuestModel>() { new GuestModel() },
+          Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
+        }
+      );
+      await ctx.SaveChangesAsync();
+
+      IEnumerable<BookingModel> actual = await bookings.SelectAsync("1");
+
+      Assert.NotNull(actual.First());
+    }
+
+    [Fact]
+    public async void Test_Repository_SelectAsync_ByLodgingIdNotExists()
+    {
+      using var ctx = new BookingContext(Options);
+      var bookings = new BookingRepository(ctx);
+
+      ctx.Bookings.Add(
+        new BookingModel()
+        {
+         AccountEmail = "",
+          LodgingId = 1,
+          CheckIn = DateTime.Now.Date,
+          CheckOut = DateTime.Now.AddDays(3).Date,
+          Guests = new List<GuestModel>() { new GuestModel() },
+          Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
+        }
+      );
+      await ctx.SaveChangesAsync();
+
+      var actual = await bookings.SelectAsync("2");
+
+      Assert.Null(actual);
+    }
+
+
+
+
+
   }
 }
