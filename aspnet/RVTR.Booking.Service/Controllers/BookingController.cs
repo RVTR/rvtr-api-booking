@@ -163,6 +163,9 @@ namespace RVTR.Booking.Service.Controllers
     [ProducesResponseType(typeof(BookingModel), StatusCodes.Status200OK)]
     public async Task<IActionResult> Post(BookingModel booking)
     {
+      //Create a Unique number 18 digit type long for Booking Number using Tick
+      var TempId = DateTime.Now.Ticks;
+      booking.BookingNumber = TempId.ToString();
       _logger.LogInformation($"Successfully added the booking with accountID: '{booking.AccountId}' and lodgingID: {booking.LodgingId}'.");
       await _unitOfWork.Booking.InsertAsync(booking);
       await _unitOfWork.CommitAsync();
