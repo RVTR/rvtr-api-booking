@@ -163,12 +163,11 @@ namespace RVTR.Booking.Service.Controllers
     [ProducesResponseType(typeof(BookingModel), StatusCodes.Status200OK)]
     public async Task<IActionResult> Post(BookingModel booking)
     {
-      //Create a Unique number 20 digit type long for Booking Number using Tick and Ramdon
+      //Create a Unique number 18 digit type long for Booking Number using Tick and Ramdon
       //Random was added to avoid duplicate value when two users dothe booking
       // at the same time
       var TempId = DateTime.Now.Ticks;
-      var TempRd = new Random();
-      booking.BookingNumber = TempId.ToString()+TempRd.Next(10,99).ToString();
+      booking.BookingNumber = TempId.ToString();
       _logger.LogInformation($"Successfully added the booking with accountID: '{booking.AccountId}' and lodgingID: {booking.LodgingId}'.");
       await _unitOfWork.Booking.InsertAsync(booking);
       await _unitOfWork.CommitAsync();
