@@ -12,6 +12,7 @@ namespace RVTR.Booking.Testing.Tests
     {
       new object[]
       {
+        //This test has to be modified
         // This model will need to be updated on January 1st, 2021, becasue the BookingModel class checks
       // to make sure that the check in date is not earlier than "today's date"
         new BookingModel()
@@ -65,6 +66,7 @@ namespace RVTR.Booking.Testing.Tests
     [Fact]
     public void Test_Validate_BookingModel_Fail()
     {
+      //This test has to be modified
       // This test method will need to be updated on January 1st, 2021, becasue the BookingModel class checks
       // to make sure that the check in date is not earlier than "today's date"
       BookingModel booking = new BookingModel()
