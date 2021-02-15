@@ -35,6 +35,7 @@ namespace RVTR.Booking.Service.Controllers
       _unitOfWork = unitOfWork;
     }
 
+    /*
     /// <summary>
     /// Action method for deleting a booking by booking id.
     /// Needs to be refactored to account for changes to select Async
@@ -61,7 +62,8 @@ namespace RVTR.Booking.Service.Controllers
         return NoContent();
       }
     }
-
+  */
+  
     /// <summary>
     /// Takes in two dates and retrieves bookings between the two dates,
     /// returns all bookings if no checkin/checkout date specified.

@@ -24,8 +24,11 @@ namespace RVTR.Booking.Testing.Tests
       var repositoryMock = new Mock<IBookingRepository>();
       var unitOfWorkMock = new Mock<IUnitOfWork>();
 
-      IEnumerable<BookingModel> bookings = new List<BookingModel> { new BookingModel() };
+      IEnumerable<BookingModel> bookings = new List<BookingModel> { new BookingModel() {
+        AccountEmail = "Test@email.com"
+      }};
       var booking = new BookingModel();
+      
 
     //  repositoryMock.Setup(m => m.DeleteAsync(0)).Returns(Task.CompletedTask);
    //   repositoryMock.Setup(m => m.DeleteAsync(1)).Returns(Task.CompletedTask);
@@ -35,7 +38,7 @@ namespace RVTR.Booking.Testing.Tests
    //   repositoryMock.Setup(m => m.SelectAsync(1)).ReturnsAsync(booking);
       repositoryMock.Setup(m => m.Update(It.IsAny<BookingModel>()));
       repositoryMock.Setup(m => m.GetBookingsByDatesAsync(It.IsAny<DateTime>(), It.IsAny<DateTime>())).ReturnsAsync(bookings);
-   //   repositoryMock.Setup(m => m.GetByAccountEmail("")).ReturnsAsync(Enumerable.Empty<BookingModel>());
+      repositoryMock.Setup(m => m.SelectAsync("")).ReturnsAsync(Enumerable.Empty<BookingModel>());
    //   repositoryMock.Setup(m => m.GetByAccountEmail("")).ReturnsAsync(bookings);
 
       unitOfWorkMock.Setup(m => m.Booking).Returns(repositoryMock.Object);
@@ -139,13 +142,6 @@ namespace RVTR.Booking.Testing.Tests
       IActionResult resultPass = await _controller.Put(booking);
       Assert.IsAssignableFrom<NoContentResult>(resultPass);
     }
-/*
-    [Fact]
-    public async void Test_Controller_GetByAccountId()
-    {
-      IActionResult resultOk = await _controller.Get("");
-      Assert.IsAssignableFrom<OkObjectResult>(resultOk);
-    }
 
     [Fact]
     public async void Test_Controller_GetByAccountId_NotFound()
@@ -153,6 +149,11 @@ namespace RVTR.Booking.Testing.Tests
       IActionResult resultNotFound = await _controller.Get("NotEmail");
       Assert.IsAssignableFrom<NotFoundObjectResult>(resultNotFound);
     }
-    */
+     [Fact]
+    public async void Test_Controller_GetByAccountId()
+    {
+      IActionResult resultNotFound = await _controller.Get("Test@email.com");
+      Assert.IsAssignableFrom<OkObjectResult>(resultNotFound);
+    }
   }
 }
