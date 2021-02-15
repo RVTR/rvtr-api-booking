@@ -35,12 +35,13 @@ namespace RVTR.Booking.Testing.Tests
       repositoryMock.Setup(m => m.InsertAsync(It.IsAny<BookingModel>())).Returns(Task.CompletedTask);
    //   repositoryMock.Setup(m => m.SelectAsync()).ReturnsAsync((IEnumerable<BookingModel>)null);
    //   repositoryMock.Setup(m => m.SelectAsync(0)).ReturnsAsync((BookingModel)null);
-   //   repositoryMock.Setup(m => m.SelectAsync(1)).ReturnsAsync(booking);
+    //  repositoryMock.Setup(m => m.SelectAsync("")).ReturnsAsync(booking);
       repositoryMock.Setup(m => m.Update(It.IsAny<BookingModel>()));
       repositoryMock.Setup(m => m.GetBookingsByDatesAsync(It.IsAny<DateTime>(), It.IsAny<DateTime>())).ReturnsAsync(bookings);
-      repositoryMock.Setup(m => m.SelectAsync("")).ReturnsAsync(Enumerable.Empty<BookingModel>());
+   //   repositoryMock.Setup(m => m.SelectAsync("Test@email.com")).ReturnsAsync(bookings.First());
    //   repositoryMock.Setup(m => m.GetByAccountEmail("")).ReturnsAsync(bookings);
 
+      unitOfWorkMock.Setup(m => m.Booking).Returns(repositoryMock.Object);
       unitOfWorkMock.Setup(m => m.Booking).Returns(repositoryMock.Object);
 
       _logger = loggerMock.Object;
@@ -149,11 +150,6 @@ namespace RVTR.Booking.Testing.Tests
       IActionResult resultNotFound = await _controller.Get("NotEmail");
       Assert.IsAssignableFrom<NotFoundObjectResult>(resultNotFound);
     }
-     [Fact]
-    public async void Test_Controller_GetByAccountId()
-    {
-      IActionResult resultNotFound = await _controller.Get("Test@email.com");
-      Assert.IsAssignableFrom<OkObjectResult>(resultNotFound);
-    }
+
   }
 }
