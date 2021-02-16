@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using RVTR.Booking.Domain.CustomValidations;
 
 namespace RVTR.Booking.Domain.Models
 {
@@ -16,12 +17,16 @@ namespace RVTR.Booking.Domain.Models
     [Required(ErrorMessage = "Rentals object is required")]
     public int LodgingId { get; set; }
 
+    [Required]
     public IEnumerable<GuestModel> Guests { get; set; }
 
+    [Required]
     public IEnumerable<RentalModel> Rentals { get; set; }
 
+    [ValidCheckIn]
     public DateTime CheckIn { get; set; }
 
+    [ValidCheckOut]
     public DateTime CheckOut { get; set; }
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
