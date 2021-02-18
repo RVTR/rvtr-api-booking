@@ -23,7 +23,15 @@ namespace RVTR.Booking.Testing.Tests
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
-          Guests = new List<GuestModel>() { new GuestModel() },
+          Guests = new List<GuestModel>() { new GuestModel()
+            {
+              Id = 0,
+              BookingModelId = 0,
+              FirstName = "First Name User",
+              LastName = "Last Name User",
+              IsMinor = false
+            }
+          },
           Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
         }
       );
@@ -47,7 +55,15 @@ namespace RVTR.Booking.Testing.Tests
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
-          Guests = new List<GuestModel>() { new GuestModel() },
+          Guests = new List<GuestModel>() { new GuestModel()
+            {
+              Id = 0,
+              BookingModelId = 0,
+              FirstName = "First Name User",
+              LastName = "Last Name User",
+              IsMinor = false
+            }
+          },
           Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
         }
       );
@@ -71,7 +87,15 @@ namespace RVTR.Booking.Testing.Tests
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
-          Guests = new List<GuestModel>() { new GuestModel() },
+          Guests = new List<GuestModel>() { new GuestModel()
+            {
+              Id = 0,
+              BookingModelId = 0,
+              FirstName = "First Name User",
+              LastName = "Last Name User",
+              IsMinor = false
+            }
+          },
           Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
         }
       );
@@ -99,7 +123,15 @@ namespace RVTR.Booking.Testing.Tests
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
-          Guests = new List<GuestModel>() { new GuestModel() },
+          Guests = new List<GuestModel>() { new GuestModel()
+            {
+              Id = 0,
+              BookingModelId = 0,
+              FirstName = "First Name User",
+              LastName = "Last Name User",
+              IsMinor = false
+            }
+          },
           Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
         }
       );
@@ -127,7 +159,15 @@ namespace RVTR.Booking.Testing.Tests
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
-          Guests = new List<GuestModel>() { new GuestModel() },
+          Guests = new List<GuestModel>() { new GuestModel()
+            {
+              Id = 0,
+              BookingModelId = 0,
+              FirstName = "First Name User",
+              LastName = "Last Name User",
+              IsMinor = false
+            }
+          },
           Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
         }
       );
