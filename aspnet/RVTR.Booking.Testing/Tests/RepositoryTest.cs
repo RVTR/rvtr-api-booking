@@ -10,7 +10,7 @@ namespace RVTR.Booking.Testing.Tests
 {
   public class RepositoryTest : DataTest
   {
-    private readonly BookingModel _booking = new BookingModel { Id = 3, AccountId = 1, LodgingId = 1 };
+    private readonly BookingModel _booking = new BookingModel { EntityId = 0, AccountId = 1, LodgingId = 1 };
 
     [Fact]
     public async void Test_Repository_DeleteAsync()
@@ -21,6 +21,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
+          EntityId = 0,
           AccountId = 1,
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
@@ -32,7 +33,7 @@ namespace RVTR.Booking.Testing.Tests
       await ctx.SaveChangesAsync();
 
       var booking = await ctx.Bookings.FirstAsync();
-      await bookings.DeleteAsync(booking.Id);
+      await bookings.DeleteAsync(booking.EntityId);
 
       Assert.Equal(EntityState.Deleted, ctx.Entry(booking).State);
     }
@@ -57,6 +58,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
+          EntityId = 0,
           AccountId = 1,
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
@@ -81,6 +83,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
+          EntityId = 0,
           AccountId = 1,
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
@@ -105,6 +108,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
+          EntityId = 0,
           AccountId = 1,
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
@@ -120,7 +124,7 @@ namespace RVTR.Booking.Testing.Tests
       booking.CheckOut = DateTime.Now;
       bookings.Update(booking);
 
-      var result = ctx.Bookings.Find(booking.Id);
+      var result = ctx.Bookings.Find(booking.EntityId);
       Assert.Equal(booking.CheckOut, result.CheckOut);
       Assert.Equal(EntityState.Modified, ctx.Entry(result).State);
     }

@@ -16,7 +16,7 @@ namespace RVTR.Booking.Testing.Tests
       // to make sure that the check in date is not earlier than "today's date"
         new BookingModel()
         {
-          Id = 0,
+          EntityId = 0,
           AccountId = 0,
           LodgingId = 0,
           Guests = new List<GuestModel>(),
@@ -42,7 +42,7 @@ namespace RVTR.Booking.Testing.Tests
     {
       BookingModel booking = new BookingModel()
       {
-        Id = 0,
+        EntityId = 0,
         AccountId = 0,
         LodgingId = 0,
         Guests = null,
@@ -69,7 +69,7 @@ namespace RVTR.Booking.Testing.Tests
       // to make sure that the check in date is not earlier than "today's date"
       BookingModel booking = new BookingModel()
       {
-        Id = 0,
+        EntityId = 0,
         AccountId = 0,
         LodgingId = 0,
         Guests = null,
