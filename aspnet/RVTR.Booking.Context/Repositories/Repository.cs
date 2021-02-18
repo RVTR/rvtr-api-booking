@@ -18,19 +18,16 @@ namespace RVTR.Booking.Context.Repositories
       Db = context.Set<TEntity>();
     }
 
- //   public virtual async Task DeleteAsync(int id) => Db.Remove(await SelectAsync(id));
+    public Task DeleteAsync(int id)
+    {
+      throw new System.NotImplementedException();
+    }
 
     public virtual async Task InsertAsync(TEntity entry) => await Db.AddAsync(entry).ConfigureAwait(true);
 
 
     public virtual async Task<IEnumerable<TEntity>> SelectAsync(string input) => await Db.ToListAsync();
 
-/*
-    public virtual async Task<TEntity> SelectAsync<T>(T t){
-
-      return await Db.FindAsync(t).ConfigureAwait(true);
-    }
-*/
     public virtual void Update(TEntity entry) => Db.Update(entry);
   }
 }

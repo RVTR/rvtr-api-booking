@@ -10,6 +10,8 @@ namespace RVTR.Booking.Domain.Models
   public class BookingModel : IValidatableObject
   {
     public int Id { get; set; }
+
+    [Required(ErrorMessage = "Account email is required")]
     public string AccountEmail{get; set;}
 
     [Required(ErrorMessage = "Rentals object is required")]

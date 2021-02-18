@@ -35,35 +35,6 @@ namespace RVTR.Booking.Service.Controllers
       _unitOfWork = unitOfWork;
     }
 
-    /*
-    /// <summary>
-    /// Action method for deleting a booking by booking id.
-    /// Needs to be refactored to account for changes to select Async
-    /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(string input)
-    {
-      _logger.LogDebug("Deleting a booking by its ID...");
-      var booking = await _unitOfWork.Booking.SelectAsync(input);
-      if (booking == null)
-      {
-        _logger.LogInformation($"Could not find booking to delete @ id = {input}.");
-        return NotFound(input);
-      }
-      else
-      {
-    //  await _unitOfWork.Booking.DeleteAsync(id);
-        await _unitOfWork.CommitAsync();
-        _logger.LogInformation($"Succesfully deleted booking @ id = {input}.");
-        return NoContent();
-      }
-    }
-  */
-  
     /// <summary>
     /// Takes in two dates and retrieves bookings between the two dates,
     /// returns all bookings if no checkin/checkout date specified.

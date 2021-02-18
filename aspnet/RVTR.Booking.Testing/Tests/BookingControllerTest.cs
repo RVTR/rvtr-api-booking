@@ -28,19 +28,10 @@ namespace RVTR.Booking.Testing.Tests
         AccountEmail = "Test@email.com"
       }};
       var booking = new BookingModel();
-      
 
-    //  repositoryMock.Setup(m => m.DeleteAsync(0)).Returns(Task.CompletedTask);
-   //   repositoryMock.Setup(m => m.DeleteAsync(1)).Returns(Task.CompletedTask);
       repositoryMock.Setup(m => m.InsertAsync(It.IsAny<BookingModel>())).Returns(Task.CompletedTask);
-   //   repositoryMock.Setup(m => m.SelectAsync()).ReturnsAsync((IEnumerable<BookingModel>)null);
-   //   repositoryMock.Setup(m => m.SelectAsync(0)).ReturnsAsync((BookingModel)null);
-    //  repositoryMock.Setup(m => m.SelectAsync("")).ReturnsAsync(booking);
       repositoryMock.Setup(m => m.Update(It.IsAny<BookingModel>()));
       repositoryMock.Setup(m => m.GetBookingsByDatesAsync(It.IsAny<DateTime>(), It.IsAny<DateTime>())).ReturnsAsync(bookings);
-   //   repositoryMock.Setup(m => m.SelectAsync("Test@email.com")).ReturnsAsync(bookings.First());
-   //   repositoryMock.Setup(m => m.GetByAccountEmail("")).ReturnsAsync(bookings);
-
       unitOfWorkMock.Setup(m => m.Booking).Returns(repositoryMock.Object);
       unitOfWorkMock.Setup(m => m.Booking).Returns(repositoryMock.Object);
 
@@ -49,21 +40,6 @@ namespace RVTR.Booking.Testing.Tests
       _controller = new BookingController(_logger, _unitOfWork);
     }
 
-    /*
-    [Fact]
-    public async void Test_Controller_Delete()
-    {
-      IActionResult resultPass = await _controller.Delete(1);
-      Assert.IsAssignableFrom<NoContentResult>(resultPass);
-    }
-
-    [Fact]
-    public async void Test_Controller_Delete_NotFound()
-    {
-      IActionResult resultNotFound = await _controller.Delete(-1);
-      Assert.IsAssignableFrom<NotFoundObjectResult>(resultNotFound);
-    }
-    */
     [Fact]
     public async void Test_Controller_Get_Null_DateRange()
     {
@@ -95,22 +71,6 @@ namespace RVTR.Booking.Testing.Tests
       IActionResult resultBookingDates = await _controller.GetByDates(new DateTime(2021, 1, 2), new DateTime(2021, 1, 1));
       Assert.IsAssignableFrom<BadRequestResult>(resultBookingDates);
     }
-
-    /*
-    [Fact]
-    public async void Test_Controller_GetById()
-    {
-      IActionResult resultOne = await _controller.Get("1");
-      Assert.IsAssignableFrom<OkObjectResult>(resultOne);
-    }
-
-    [Fact]
-    public async void Test_Controller_GetById_Fail()
-    {
-      IActionResult resultFail = await _controller.Get("0");
-      Assert.IsAssignableFrom<NotFoundObjectResult>(resultFail);
-    }
-    */
 
     [Fact]
     public async void Test_Controller_Post()
