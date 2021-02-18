@@ -17,7 +17,7 @@ namespace RVTR.Booking.Testing.Tests
         new BookingModel()
         {
           Id = 0,
-          AccountEmail = "",
+          AccountEmail = "Fake@email.com",
           LodgingId = 0,
           Guests = new List<GuestModel>(),
           Rentals = new List<RentalModel>(),

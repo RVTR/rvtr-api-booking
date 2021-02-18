@@ -37,42 +37,24 @@ namespace RVTR.Booking.Context.Repositories
     /// <returns></returns>
     public override async Task<IEnumerable<BookingModel>> SelectAsync(string input)
     {
-      //Search for all bookings with account email == input
-      IEnumerable<BookingModel> bookingsByEmail =
-        await Db
-        .Include(x => x.Rentals)
-        .Include(x => x.Guests)
-        .Where(x => x.AccountEmail == input)
-        .ToListAsync();
-
-      //Search for all bookings with bookingnumber == input
-
-
       //SEARCH FOR ALL Bookings with lodgingnumber == input
-      int parsed;
+      int parsed = -1;
       bool isParsable = Int32.TryParse(input, out parsed);
-      if(isParsable){
-        IEnumerable<BookingModel> bookingsByBookingNumber =
-        await Db
-        .Include(x => x.Rentals)
-        .Include(x => x.Guests)
-        .Where(x => x.LodgingId == parsed)
-        .ToListAsync();
 
-        if(bookingsByBookingNumber.Count() >= 1)
-        {
-          return bookingsByBookingNumber;
-        }
-      }
+      IEnumerable<BookingModel> bookingsByBookingNumberAndEmail =
+      await Db
+      .Include(x => x.Rentals)
+      .Include(x => x.Guests)
+      .Where(x => x.LodgingId == parsed || x.AccountEmail == input)
+      .ToListAsync();
 
-      if(bookingsByEmail.Count() >= 1)
+      if(bookingsByBookingNumberAndEmail.Count() >= 1)
       {
-        return bookingsByEmail;
+        return bookingsByBookingNumberAndEmail;
       }
 
-      IEnumerable<BookingModel> returnModel = null;
 
-      return returnModel;
+      return null;
 
     }
 
