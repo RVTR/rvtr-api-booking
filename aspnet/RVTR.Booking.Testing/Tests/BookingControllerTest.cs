@@ -115,15 +115,14 @@ namespace RVTR.Booking.Testing.Tests
         LodgingId = 0,
         Guests = new List<GuestModel>(),
         Rentals = new List<RentalModel>(),
-        BookingNumber = ""
+        BookingNumber = Guid.NewGuid()
 
       };
       IActionResult resultPass = await _controller.Post(booking);
 
       var sut = booking.BookingNumber;
-      Assert.IsType<string>(sut);
+      Assert.IsType<Guid>(sut);
       Assert.NotNull(sut);
-      Assert.NotEmpty(sut);
       Assert.IsAssignableFrom<OkObjectResult>(resultPass);
 
     }
