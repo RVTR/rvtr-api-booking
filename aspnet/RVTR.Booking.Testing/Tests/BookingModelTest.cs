@@ -46,7 +46,8 @@ namespace RVTR.Booking.Testing.Tests
         AccountId = 0,
         LodgingId = 0,
         Guests = null,
-        Rentals = null
+        Rentals = null,
+        BookingNumber = ""
       };
       var validationContext = new ValidationContext(booking);
       var actual = Validator.TryValidateObject(booking, validationContext, null, true);
@@ -75,7 +76,8 @@ namespace RVTR.Booking.Testing.Tests
         Guests = null,
         Rentals = null,
         CheckIn = new DateTime(2020, 12, 1),
-        CheckOut = new DateTime(2021, 12, 2)
+        CheckOut = new DateTime(2021, 12, 2),
+        BookingNumber = ""
       };
       var validationContext = new ValidationContext(booking);
       Assert.NotEmpty(booking.Validate(validationContext));
