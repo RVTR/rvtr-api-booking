@@ -6,9 +6,6 @@ namespace RVTR.Booking.Domain
       /// Leverage abstraction to the Id for models. All models need to be inherited from AEntity
       /// </summary>
       public int EntityId { get; set; }
-      public AEntity()
-      {
-
-      }
+      
    }
 }
