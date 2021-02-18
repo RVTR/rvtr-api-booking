@@ -29,6 +29,14 @@ namespace RVTR.Booking.Testing.Tests
       var validationContext = new ValidationContext(guest);
       var actual = Validator.TryValidateObject(guest, validationContext, null, true);
 
+      var sut = guest;
+
+      Assert.NotEmpty(guest.FirstName);
+      Assert.IsType<string>(guest.FirstName);
+      Assert.NotEmpty(guest.LastName);
+      Assert.IsType<string>(guest.LastName);
+      Assert.IsType<bool>(guest.IsMinor);
+
       Assert.True(actual);
     }
 
