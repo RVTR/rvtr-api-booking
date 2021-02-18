@@ -164,8 +164,7 @@ namespace RVTR.Booking.Service.Controllers
     public async Task<IActionResult> Post(BookingModel booking)
     {
       //Create and assign a unique number of GUID format for the Booking Number
-      var TempId = Guid.NewGuid();
-      booking.BookingNumber = TempId.ToString();
+      booking.BookingNumber = Guid.NewGuid();
       _logger.LogInformation($"Successfully added the booking with accountID: '{booking.AccountId}' and lodgingID: {booking.LodgingId}'.");
       await _unitOfWork.Booking.InsertAsync(booking);
       await _unitOfWork.CommitAsync();
