@@ -18,10 +18,7 @@ namespace RVTR.Booking.Context.Repositories
       Db = context.Set<TEntity>();
     }
 
-    public Task DeleteAsync(int id)
-    {
-      throw new System.NotImplementedException();
-    }
+   // public virtual async Task DeleteAsync(int id) => Db.Remove(await SelectAsync(id.ToString());
 
     public virtual async Task InsertAsync(TEntity entry) => await Db.AddAsync(entry).ConfigureAwait(true);
 

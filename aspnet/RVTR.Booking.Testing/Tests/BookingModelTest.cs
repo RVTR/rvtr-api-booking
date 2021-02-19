@@ -19,7 +19,6 @@ namespace RVTR.Booking.Testing.Tests
 
           AccountEmail = "Fake@email.com",
           EntityId = 0,
-          AccountId = 0,
           LodgingId = 0,
           Guests = new List<GuestModel>(),
           Rentals = new List<RentalModel>(),
@@ -46,7 +45,6 @@ namespace RVTR.Booking.Testing.Tests
       {
         AccountEmail = "",
         EntityId = 0,
-        AccountId = 0,
         LodgingId = 0,
         Guests = null,
         Rentals = null
@@ -75,7 +73,6 @@ namespace RVTR.Booking.Testing.Tests
 
         AccountEmail = "",
         EntityId = 0,
-        AccountId = 0,
         LodgingId = 0,
         Guests = null,
         Rentals = null,
