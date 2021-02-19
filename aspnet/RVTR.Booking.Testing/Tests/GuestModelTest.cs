@@ -13,7 +13,7 @@ namespace RVTR.Booking.Testing.Tests
       {
         new GuestModel()
         {
-          Id = 0,
+          EntityId = 0,
           BookingModelId = 0,
         }
       }

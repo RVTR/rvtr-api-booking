@@ -11,7 +11,35 @@ namespace RVTR.Booking.Testing.Tests
 {
   public class RepositoryTest : DataTest
   {
-    private readonly BookingModel _booking = new BookingModel { Id = 3, AccountEmail = "", LodgingId = 1 };
+
+    private readonly BookingModel _booking = new BookingModel { EntityId = 0, AccountId = 1, LodgingId = 1 };
+
+    [Fact]
+    public async void Test_Repository_DeleteAsync()
+    {
+      using var ctx = new BookingContext(Options);
+      var bookings = new Repository<BookingModel>(ctx);
+
+      ctx.Bookings.Add(
+        new BookingModel()
+        {
+          AccountEmail = "Test1",
+          EntityId = 0,
+          LodgingId = 1,
+          CheckIn = DateTime.Now.Date,
+          CheckOut = DateTime.Now.AddDays(3).Date,
+          Guests = new List<GuestModel>() { new GuestModel() },
+          Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
+        }
+      );
+      await ctx.SaveChangesAsync();
+
+      var booking = await ctx.Bookings.FirstAsync();
+      await bookings.DeleteAsync(booking.EntityId);
+
+      Assert.Equal(EntityState.Deleted, ctx.Entry(booking).State);
+    }
+
 
     [Fact]
     public async void Test_Repository_InsertAsync()
@@ -34,6 +62,7 @@ namespace RVTR.Booking.Testing.Tests
         new BookingModel()
         {
           AccountEmail = "Test1",
+          EntityId = 0,
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
@@ -49,6 +78,31 @@ namespace RVTR.Booking.Testing.Tests
     }
 
     [Fact]
+    public async void Test_Repository_SelectAsync_ById()
+    {
+      using var ctx = new BookingContext(Options);
+      var bookings = new Repository<BookingModel>(ctx);
+
+      ctx.Bookings.Add(
+        new BookingModel()
+        {
+          EntityId = 0,
+          AccountId = 1,
+          LodgingId = 1,
+          CheckIn = DateTime.Now.Date,
+          CheckOut = DateTime.Now.AddDays(3).Date,
+          Guests = new List<GuestModel>() { new GuestModel() },
+          Rentals = new List<RentalModel>() { new RentalModel() { LodgingRentalId = 1 } }
+        }
+      );
+      await ctx.SaveChangesAsync();
+
+      var actual = await bookings.SelectAsync("1");
+
+      Assert.NotNull(actual);
+    }
+
+    [Fact]
     public async void Test_Repository_Update()
     {
       using var ctx = new BookingContext(Options);
@@ -58,6 +112,7 @@ namespace RVTR.Booking.Testing.Tests
         new BookingModel()
         {
           AccountEmail = "",
+          EntityId = 0,
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
           CheckOut = DateTime.Now.AddDays(3).Date,
@@ -72,7 +127,7 @@ namespace RVTR.Booking.Testing.Tests
       booking.CheckOut = DateTime.Now;
       bookings.Update(booking);
 
-      var result = ctx.Bookings.Find(booking.Id);
+      var result = ctx.Bookings.Find(booking.EntityId);
       Assert.Equal(booking.CheckOut, result.CheckOut);
       Assert.Equal(EntityState.Modified, ctx.Entry(result).State);
     }
