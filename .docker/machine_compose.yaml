@@ -1,0 +1,33 @@
+networks:
+  locally:
+
+services:
+  rest:
+    build:
+      context: ../aspnet
+      dockerfile: ../.docker/machine.dockerfile
+    depends_on:
+      - data
+    environment:
+      ConnectionStrings__pgsql: 'Host=data;Database=BookingData;Username=postgres;Password=BookingData@2020;'
+      ConnectionStrings__zipkin: 'http://trace:9411/'
+    networks:
+      - locally
+    ports:
+      - 8002:80
+
+  data:
+    environment:
+      POSTGRES_PASSWORD: BookingData@2020
+    image: postgres:12
+    networks:
+      - locally
+
+  trace:
+    image: openzipkin/zipkin-slim
+    networks:
+      - locally
+    ports:
+      - 9002:9411
+
+version: '3.8'

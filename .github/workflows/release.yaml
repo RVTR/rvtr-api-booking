@@ -146,25 +146,20 @@ jobs:
         run: docker logout
 
   deploy:
-    env:
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     needs: pack
     runs-on: ubuntu-20.04
     steps:
       - name: actions_checkout
         uses: actions/checkout@v2.3.4
       - name: az_login
-        run: az login --password ${AZURE_CLIENT_SECRET} --service-principal --tenant ${AZURE_TENANT_ID} --username ${AZURE_CLIENT_ID}
-      - name: az_aks
-        run: az aks get-credentials --name rvtr-k8s-main --overwrite-existing --resource-group rvtr-grp-main
-      - name: kubectl_apply
-        run: kubectl apply --filename .kubernetes/
-      - name: kubectl_rollout
-        run: kubectl rollout restart --filename .kubernetes/k8s_deployment.yaml
-      - name: az_logout
-        run: az logout
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: az_webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: campgroundbookingapi
+          configuration-file: .docker/pipeline_compose.yaml
 
 name: release
 

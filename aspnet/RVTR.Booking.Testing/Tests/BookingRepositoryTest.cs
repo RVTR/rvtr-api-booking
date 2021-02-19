@@ -19,6 +19,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
+          EntityId = 0,
           AccountId = 1,
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
@@ -51,6 +52,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
+          EntityId = 0,
           AccountId = 1,
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
@@ -83,6 +85,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
+          EntityId = 0,
           AccountId = 1,
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
@@ -119,6 +122,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
+          EntityId = 0,
           AccountId = 1,
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
@@ -155,6 +159,7 @@ namespace RVTR.Booking.Testing.Tests
       ctx.Bookings.Add(
         new BookingModel()
         {
+          EntityId = 0,
           AccountId = 1,
           LodgingId = 1,
           CheckIn = DateTime.Now.Date,
