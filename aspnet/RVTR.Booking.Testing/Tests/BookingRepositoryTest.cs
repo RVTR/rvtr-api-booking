@@ -26,7 +26,7 @@ namespace RVTR.Booking.Testing.Tests
           CheckOut = DateTime.Now.AddDays(3).Date,
           Guests = new List<GuestModel>() { new GuestModel()
             {
-              Id = 0,
+              EntityId = 0,
               BookingModelId = 0,
               FirstName = "First Name User",
               LastName = "Last Name User",
@@ -59,7 +59,7 @@ namespace RVTR.Booking.Testing.Tests
           CheckOut = DateTime.Now.AddDays(3).Date,
           Guests = new List<GuestModel>() { new GuestModel()
             {
-              Id = 0,
+              EntityId = 0,
               BookingModelId = 0,
               FirstName = "First Name User",
               LastName = "Last Name User",
@@ -92,7 +92,7 @@ namespace RVTR.Booking.Testing.Tests
           CheckOut = DateTime.Now.AddDays(3).Date,
           Guests = new List<GuestModel>() { new GuestModel()
             {
-              Id = 0,
+              EntityId = 0,
               BookingModelId = 0,
               FirstName = "First Name User",
               LastName = "Last Name User",
@@ -129,7 +129,7 @@ namespace RVTR.Booking.Testing.Tests
           CheckOut = DateTime.Now.AddDays(3).Date,
           Guests = new List<GuestModel>() { new GuestModel()
             {
-              Id = 0,
+              EntityId = 0,
               BookingModelId = 0,
               FirstName = "First Name User",
               LastName = "Last Name User",
@@ -166,7 +166,7 @@ namespace RVTR.Booking.Testing.Tests
           CheckOut = DateTime.Now.AddDays(3).Date,
           Guests = new List<GuestModel>() { new GuestModel()
             {
-              Id = 0,
+              EntityId = 0,
               BookingModelId = 0,
               FirstName = "First Name User",
               LastName = "Last Name User",

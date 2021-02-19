@@ -10,7 +10,7 @@ namespace RVTR.Booking.Testing.Tests
 {
   public class RepositoryTest : DataTest
   {
-  
+
     private readonly BookingModel _booking = new BookingModel { EntityId = 0, AccountId = 1, LodgingId = 1 };
 
     [Fact]
@@ -29,7 +29,7 @@ namespace RVTR.Booking.Testing.Tests
           CheckOut = DateTime.Now.AddDays(3).Date,
           Guests = new List<GuestModel>() { new GuestModel()
             {
-              Id = 0,
+              EntityId = 0,
               BookingModelId = 0,
               FirstName = "First Name User",
               LastName = "Last Name User",
@@ -74,7 +74,7 @@ namespace RVTR.Booking.Testing.Tests
           CheckOut = DateTime.Now.AddDays(3).Date,
           Guests = new List<GuestModel>() { new GuestModel()
             {
-              Id = 0,
+              EntityId = 0,
               BookingModelId = 0,
               FirstName = "First Name User",
               LastName = "Last Name User",
@@ -107,7 +107,7 @@ namespace RVTR.Booking.Testing.Tests
           CheckOut = DateTime.Now.AddDays(3).Date,
           Guests = new List<GuestModel>() { new GuestModel()
             {
-              Id = 0,
+              EntityId = 0,
               BookingModelId = 0,
               FirstName = "First Name User",
               LastName = "Last Name User",
@@ -140,7 +140,7 @@ namespace RVTR.Booking.Testing.Tests
           CheckOut = DateTime.Now.AddDays(3).Date,
           Guests = new List<GuestModel>() { new GuestModel()
             {
-              Id = 0,
+              EntityId = 0,
               BookingModelId = 0,
               FirstName = "First Name User",
               LastName = "Last Name User",
