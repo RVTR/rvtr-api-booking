@@ -55,6 +55,7 @@ namespace RVTR.Booking.Context.Repositories
 
 
       return null;
+    }
 
     public virtual async Task<IEnumerable<BookingModel>> GetByAccountEmail(string email)
     {
