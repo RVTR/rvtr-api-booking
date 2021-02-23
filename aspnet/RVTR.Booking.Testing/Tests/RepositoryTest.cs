@@ -119,7 +119,7 @@ namespace RVTR.Booking.Testing.Tests
       );
       await ctx.SaveChangesAsync();
 
-      var actual = await bookings.SelectAsync(1);
+      var actual = await bookings.SelectAsync(e => e.EntityId == 1);
 
       Assert.NotNull(actual);
     }

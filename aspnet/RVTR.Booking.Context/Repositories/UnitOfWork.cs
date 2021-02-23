@@ -1,47 +1,33 @@
 using System;
 using System.Threading.Tasks;
 using RVTR.Booking.Domain.Interfaces;
+using RVTR.Booking.Domain.Models;
 
 namespace RVTR.Booking.Context.Repositories
 {
   /// <summary>
-  /// Represents the _UnitOfWork_ repository
+  /// Represents the _UnitOfWork_ class
   /// </summary>
-  public class UnitOfWork : IUnitOfWork, IDisposable
+  public class UnitOfWork : IUnitOfWork
   {
     private readonly BookingContext _context;
-    private bool _disposedValue;
 
-    public IBookingRepository Booking { get; }
+    public IRepository<BookingModel> Booking { get; }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="context"></param>
     public UnitOfWork(BookingContext context)
     {
       _context = context;
-      Booking = new BookingRepository(context);
+      Booking = new Repository<BookingModel>(context);
     }
 
     /// <summary>
-    /// Represents the _UnitOfWork_ `Commit` method
+    /// Represents the _UnitOfWork_ `CommitAsync` method
     /// </summary>
     /// <returns></returns>
     public async Task<int> CommitAsync() => await _context.SaveChangesAsync();
-
-    protected virtual void Dispose(bool disposing)
-    {
-      if (!_disposedValue)
-      {
-        if (disposing)
-        {
-          _context.Dispose();
-        }
-        _disposedValue = true;
-      }
-    }
-
-    public void Dispose()
-    {
-      Dispose(disposing: true);
-      GC.SuppressFinalize(this);
-    }
   }
 }

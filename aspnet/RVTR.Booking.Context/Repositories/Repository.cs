@@ -1,31 +1,75 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using RVTR.Booking.Domain;
 using RVTR.Booking.Domain.Interfaces;
 
 namespace RVTR.Booking.Context.Repositories
 {
   /// <summary>
-  /// Represents the _Repository_ generic
+  /// Represents the _Repository_ class
   /// </summary>
   /// <typeparam name="TEntity"></typeparam>
-  public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+  public class Repository<TEntity> : IRepository<TEntity> where TEntity : AEntity
   {
-    public readonly DbSet<TEntity> Db;
+    public readonly DbSet<TEntity> _dbSet;
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="context"></param>
     public Repository(BookingContext context)
     {
-      Db = context.Set<TEntity>();
+      _dbSet = context.Set<TEntity>();
     }
 
-    public virtual async Task DeleteAsync(int id) => Db.Remove(await SelectAsync(id));
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public virtual async Task DeleteAsync(int id) => _dbSet.Remove((await SelectAsync(e => e.EntityId == id)).FirstOrDefault());
 
-    public virtual async Task InsertAsync(TEntity entry) => await Db.AddAsync(entry).ConfigureAwait(true);
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="entry"></param>
+    /// <returns></returns>
+    public virtual async Task InsertAsync(TEntity entry) => await _dbSet.AddAsync(entry).ConfigureAwait(true);
 
-    public virtual async Task<IEnumerable<TEntity>> SelectAsync() => await Db.ToListAsync();
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    public virtual async Task<IEnumerable<TEntity>> SelectAsync() => await _dbSet.ToListAsync();
 
-    public virtual async Task<TEntity> SelectAsync(int id) => await Db.FindAsync(id).ConfigureAwait(true);
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    public virtual async Task<IEnumerable<TEntity>> SelectAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+      var entities = await _dbSet.Where(predicate).ToListAsync().ConfigureAwait(true);
 
-    public virtual void Update(TEntity entry) => Db.Update(entry);
+      foreach (var entity in entities)
+      {
+          foreach (var navigation in _dbSet.Attach(entity).Navigations)
+          {
+              await navigation.LoadAsync();
+          }
+      }
+
+      return entities;
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="entry"></param>
+    public virtual void Update(TEntity entry) => _dbSet.Update(entry);
   }
 }

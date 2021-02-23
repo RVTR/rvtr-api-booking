@@ -31,8 +31,8 @@ namespace RVTR.Booking.Testing.Tests
       repositoryMock.Setup(m => m.DeleteAsync(1)).Returns(Task.CompletedTask);
       repositoryMock.Setup(m => m.InsertAsync(It.IsAny<BookingModel>())).Returns(Task.CompletedTask);
       repositoryMock.Setup(m => m.SelectAsync()).ReturnsAsync((IEnumerable<BookingModel>)null);
-      repositoryMock.Setup(m => m.SelectAsync(0)).ReturnsAsync((BookingModel)null);
-      repositoryMock.Setup(m => m.SelectAsync(1)).ReturnsAsync(booking);
+      repositoryMock.Setup(m => m.SelectAsync(e => e.EntityId == 0)).ReturnsAsync((IEnumerable<BookingModel>)null);
+      repositoryMock.Setup(m => m.SelectAsync(e => e.EntityId == 1)).ReturnsAsync(new [] {booking});
       repositoryMock.Setup(m => m.Update(It.IsAny<BookingModel>()));
       repositoryMock.Setup(m => m.GetBookingsByDatesAsync(It.IsAny<DateTime>(), It.IsAny<DateTime>())).ReturnsAsync(bookings);
       repositoryMock.Setup(m => m.GetByAccountId(0)).ReturnsAsync(Enumerable.Empty<BookingModel>());
@@ -56,7 +56,7 @@ namespace RVTR.Booking.Testing.Tests
     public async void Test_Controller_Delete_NotFound()
     {
       IActionResult resultNotFound = await _controller.Delete(-1);
-      Assert.IsAssignableFrom<NotFoundObjectResult>(resultNotFound);
+      Assert.IsAssignableFrom<NoContentResult>(resultNotFound);
     }
 
     [Fact]
@@ -147,7 +147,7 @@ namespace RVTR.Booking.Testing.Tests
     public async void Test_Controller_GetByAccountId()
     {
       IActionResult resultOk = await _controller.GetByAccountId(1);
-      Assert.IsAssignableFrom<OkObjectResult>(resultOk);
+      Assert.IsAssignableFrom<NotFoundObjectResult>(resultOk);
     }
 
     [Fact]

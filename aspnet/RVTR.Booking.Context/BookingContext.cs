@@ -4,7 +4,7 @@ using RVTR.Booking.Domain.Models;
 namespace RVTR.Booking.Context
 {
   /// <summary>
-  /// Represents the _Booking_ context
+  /// Represents the _BookingContext_ class
   /// </summary>
   public class BookingContext : DbContext
   {
@@ -12,6 +12,10 @@ namespace RVTR.Booking.Context
 
     public BookingContext(DbContextOptions<BookingContext> options) : base(options) { }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="modelBuilder"></param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.Entity<BookingModel>().HasKey(e => e.EntityId);

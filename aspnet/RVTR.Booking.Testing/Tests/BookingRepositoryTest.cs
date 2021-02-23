@@ -14,7 +14,7 @@ namespace RVTR.Booking.Testing.Tests
     public async void Test_GetBookingsById()
     {
       using var ctx = new BookingContext(Options);
-      var bookings = new BookingRepository(ctx);
+      var bookings = new Repository<BookingModel>(ctx);
 
       ctx.Bookings.Add(
         new BookingModel()
@@ -38,7 +38,7 @@ namespace RVTR.Booking.Testing.Tests
       );
       await ctx.SaveChangesAsync();
 
-      var actual = await bookings.GetByAccountId(1);
+      var actual = await bookings.SelectAsync(e => e.EntityId == 1);
 
       Assert.NotEmpty(actual);
     }
@@ -47,7 +47,7 @@ namespace RVTR.Booking.Testing.Tests
     public async void Test_Repository_GetBookingsAsync_ByDate()
     {
       using var ctx = new BookingContext(Options);
-      var bookings = new BookingRepository(ctx);
+      var bookings = new Repository<BookingModel>(ctx);
 
       ctx.Bookings.Add(
         new BookingModel()
@@ -71,7 +71,13 @@ namespace RVTR.Booking.Testing.Tests
       );
       await ctx.SaveChangesAsync();
 
-      var actual = await bookings.GetBookingsByDatesAsync(DateTime.Now.Date, DateTime.Now.AddDays(3).Date);
+      var checkIn = DateTime.Now.Date;
+      var checkOut = DateTime.Now.AddDays(3).Date;
+      var actual = await bookings.SelectAsync(e =>
+        (checkIn <= e.CheckIn && checkOut >= e.CheckIn) ||
+        (checkIn <= e.CheckOut && checkOut >= e.CheckOut) ||
+        (checkIn <= e.CheckIn && checkOut >= e.CheckOut) ||
+        (checkIn >= e.CheckIn && checkOut <= e.CheckOut));
 
       Assert.NotEmpty(actual);
     }
@@ -80,7 +86,7 @@ namespace RVTR.Booking.Testing.Tests
     public async void Test_Repository_GetBookingsWithRentalsAsync_ByDates()
     {
       using var ctx = new BookingContext(Options);
-      var bookings = new BookingRepository(ctx);
+      var bookings = new Repository<BookingModel>(ctx);
 
       ctx.Bookings.Add(
         new BookingModel()
@@ -104,7 +110,13 @@ namespace RVTR.Booking.Testing.Tests
       );
       await ctx.SaveChangesAsync();
 
-      var actual = await bookings.GetBookingsByDatesAsync(DateTime.Now.Date, DateTime.Now.AddDays(3).Date);
+      var checkIn = DateTime.Now.Date;
+      var checkOut = DateTime.Now.AddDays(3).Date;
+      var actual = await bookings.SelectAsync(e =>
+        (checkIn <= e.CheckIn && checkOut >= e.CheckIn) ||
+        (checkIn <= e.CheckOut && checkOut >= e.CheckOut) ||
+        (checkIn <= e.CheckIn && checkOut >= e.CheckOut) ||
+        (checkIn >= e.CheckIn && checkOut <= e.CheckOut));
 
       Assert.NotEmpty(actual.ToList()[0].Rentals);
     }
@@ -117,7 +129,7 @@ namespace RVTR.Booking.Testing.Tests
     {
 
       using var ctx = new BookingContext(Options);
-      var bookings = new BookingRepository(ctx);
+      var bookings = new Repository<BookingModel>(ctx);
 
       ctx.Bookings.Add(
         new BookingModel()
@@ -154,7 +166,7 @@ namespace RVTR.Booking.Testing.Tests
     {
 
       using var ctx = new BookingContext(Options);
-      var bookings = new BookingRepository(ctx);
+      var bookings = new Repository<BookingModel>(ctx);
 
       ctx.Bookings.Add(
         new BookingModel()
@@ -178,7 +190,7 @@ namespace RVTR.Booking.Testing.Tests
       );
       await ctx.SaveChangesAsync();
 
-      var actual = await bookings.SelectAsync(1);
+      var actual = (await bookings.SelectAsync(e => e.EntityId == 1)).FirstOrDefault();
 
       Assert.NotEmpty(actual.Rentals);
     }

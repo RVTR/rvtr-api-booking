@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +45,7 @@ namespace RVTR.Booking.Service.Controllers
     public async Task<IActionResult> Delete(int id)
     {
       _logger.LogDebug("Deleting a booking by its ID...");
-      var booking = await _unitOfWork.Booking.SelectAsync(id);
+      var booking = await _unitOfWork.Booking.SelectAsync(e => e.EntityId == id);
       if (booking == null)
       {
         _logger.LogInformation($"Could not find booking to delete @ id = {id}.");
@@ -89,8 +88,13 @@ namespace RVTR.Booking.Service.Controllers
           _logger.LogInformation($"Check In Date cannot be earlier than Today's Date.");
           return BadRequest();
         }
-        // Good Request
-        var bookings = await _unitOfWork.Booking.GetBookingsByDatesAsync((DateTime)checkIn, (DateTime)checkOut);
+
+        var bookings = await _unitOfWork.Booking.SelectAsync(e =>
+        (checkIn <= e.CheckIn && checkOut >= e.CheckIn) ||
+        (checkIn <= e.CheckOut && checkOut >= e.CheckOut) ||
+        (checkIn <= e.CheckIn && checkOut >= e.CheckOut) ||
+        (checkIn >= e.CheckIn && checkOut <= e.CheckOut));
+
         return Ok(bookings);
       }
       else if (checkIn == null && checkOut == null)
@@ -117,7 +121,7 @@ namespace RVTR.Booking.Service.Controllers
     public async Task<IActionResult> GetById(int id)
     {
       _logger.LogDebug("Getting a booking by booking ID..");
-      var booking = await _unitOfWork.Booking.SelectAsync(id);
+      var booking = await _unitOfWork.Booking.SelectAsync(e => e.EntityId == id);
       if (booking == null)
       {
         _logger.LogInformation($"Could not find booking to get @ id = {id}.");
@@ -141,7 +145,7 @@ namespace RVTR.Booking.Service.Controllers
     public async Task<IActionResult> GetByAccountId(int id)
     {
       _logger.LogDebug("Getting a booking by account ID..");
-      var bookings = await _unitOfWork.Booking.GetByAccountId(id);
+      var bookings = await _unitOfWork.Booking.SelectAsync(e => e.AccountId == id);
       if (bookings.Count() == 0)
       {
         _logger.LogInformation($"Could not find bookings to get @ account id = {id}.");
