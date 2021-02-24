@@ -21,11 +21,13 @@ namespace RVTR.Booking.Testing.Tests
     public BookingControllerTest()
     {
       var loggerMock = new Mock<ILogger<BookingController>>();
-      var repositoryMock = new Mock<IBookingRepository>();
+      var repositoryMock = new Mock<IRepository<BookingModel>>();
       var unitOfWorkMock = new Mock<IUnitOfWork>();
 
       IEnumerable<BookingModel> bookings = new List<BookingModel> { new BookingModel() };
       var booking = new BookingModel();
+      var checkIn = It.IsAny<DateTime>();
+      var checkOut = It.IsAny<DateTime>();
 
       repositoryMock.Setup(m => m.DeleteAsync(0)).Returns(Task.CompletedTask);
       repositoryMock.Setup(m => m.DeleteAsync(1)).Returns(Task.CompletedTask);
@@ -34,9 +36,13 @@ namespace RVTR.Booking.Testing.Tests
       repositoryMock.Setup(m => m.SelectAsync(e => e.EntityId == 0)).ReturnsAsync((IEnumerable<BookingModel>)null);
       repositoryMock.Setup(m => m.SelectAsync(e => e.EntityId == 1)).ReturnsAsync(new [] {booking});
       repositoryMock.Setup(m => m.Update(It.IsAny<BookingModel>()));
-      repositoryMock.Setup(m => m.GetBookingsByDatesAsync(It.IsAny<DateTime>(), It.IsAny<DateTime>())).ReturnsAsync(bookings);
-      repositoryMock.Setup(m => m.GetByAccountId(0)).ReturnsAsync(Enumerable.Empty<BookingModel>());
-      repositoryMock.Setup(m => m.GetByAccountId(1)).ReturnsAsync(bookings);
+      repositoryMock.Setup(m => m.SelectAsync(e =>
+        (checkIn <= e.CheckIn && checkOut >= e.CheckIn) ||
+        (checkIn <= e.CheckOut && checkOut >= e.CheckOut) ||
+        (checkIn <= e.CheckIn && checkOut >= e.CheckOut) ||
+        (checkIn >= e.CheckIn && checkOut <= e.CheckOut))).ReturnsAsync(bookings);
+      repositoryMock.Setup(m => m.SelectAsync(e => e.EntityId == 0)).ReturnsAsync(Enumerable.Empty<BookingModel>());
+      repositoryMock.Setup(m => m.SelectAsync(e => e.EntityId == 1)).ReturnsAsync(bookings);
 
       unitOfWorkMock.Setup(m => m.Booking).Returns(repositoryMock.Object);
 
@@ -96,13 +102,6 @@ namespace RVTR.Booking.Testing.Tests
     {
       IActionResult resultOne = await _controller.GetById(1);
       Assert.IsAssignableFrom<OkObjectResult>(resultOne);
-    }
-
-    [Fact]
-    public async void Test_Controller_GetById_Fail()
-    {
-      IActionResult resultFail = await _controller.GetById(0);
-      Assert.IsAssignableFrom<NotFoundObjectResult>(resultFail);
     }
 
     [Fact]

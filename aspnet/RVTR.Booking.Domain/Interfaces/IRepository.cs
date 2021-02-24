@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 
 namespace RVTR.Booking.Domain.Interfaces
 {
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <typeparam name="TEntity"></typeparam>
   public interface IRepository<TEntity> where TEntity : AEntity
   {
     /// <summary>
@@ -33,6 +37,11 @@ namespace RVTR.Booking.Domain.Interfaces
     /// <param name="predicate"></param>
     /// <returns></returns>
     Task<IEnumerable<TEntity>> SelectAsync(Expression<Func<TEntity, bool>> predicate);
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="entry"></param>
     void Update(TEntity entry);
   }
 }

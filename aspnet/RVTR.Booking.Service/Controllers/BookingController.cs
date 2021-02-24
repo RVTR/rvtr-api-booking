@@ -74,6 +74,7 @@ namespace RVTR.Booking.Service.Controllers
     {
       _logger.LogDebug("Getting a booking between dates...");
       DateTime todaysDate = DateTime.Now.Date;
+
       if (checkIn != null && checkOut != null)
       {
         // Date range sanity check
