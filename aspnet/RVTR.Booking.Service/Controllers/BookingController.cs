@@ -100,14 +100,14 @@ namespace RVTR.Booking.Service.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(int id)
     {
-      var booking = (await _unitOfWork.Booking.SelectAsync(e => e.EntityId == id)).FirstOrDefault();
+      var bookings = await _unitOfWork.Booking.SelectAsync(e => e.EntityId == id);
 
-      if (booking == null)
+      if (!bookings.Any())
       {
         return NotFound(id);
       }
 
-      return Ok(booking);
+      return Ok(bookings);
     }
 
     /// <summary>
