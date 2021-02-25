@@ -9,8 +9,7 @@ services:
     depends_on:
       - data
     environment:
-      ConnectionStrings__pgsql: 'Host=data;Database=BookingData;Username=postgres;Password=BookingData@2020;'
-      ConnectionStrings__zipkin: 'http://trace:9411/'
+      ConnectionStrings__pgsql: 'Host=data;Database=BookingData;Username=postgres;Password=LocalState@2021;'
     networks:
       - locally
     ports:
@@ -18,16 +17,14 @@ services:
 
   data:
     environment:
-      POSTGRES_PASSWORD: BookingData@2020
-    image: postgres:12
+      POSTGRES_PASSWORD: LocalState@2021
+    image: postgres:13-alpine
     networks:
       - locally
-
-  trace:
-    image: openzipkin/zipkin-slim
-    networks:
-      - locally
-    ports:
-      - 9001:9411
+    volumes:
+      - bookingstore:/var/lib/postgresql/data
 
 version: '3.8'
+
+volumes:
+  bookingstore:

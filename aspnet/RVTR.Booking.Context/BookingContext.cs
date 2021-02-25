@@ -10,6 +10,11 @@ namespace RVTR.Booking.Context
   {
     public DbSet<BookingModel> Bookings { get; set; }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="options"></param>
+    /// <returns></returns>
     public BookingContext(DbContextOptions<BookingContext> options) : base(options) { }
 
     /// <summary>
