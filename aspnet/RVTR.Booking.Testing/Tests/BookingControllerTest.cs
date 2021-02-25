@@ -62,7 +62,7 @@ namespace RVTR.Booking.Testing.Tests
     public async void Test_Controller_Delete_NotFound()
     {
       IActionResult resultNotFound = await _controller.Delete(-1);
-      Assert.IsAssignableFrom<NoContentResult>(resultNotFound);
+      Assert.IsAssignableFrom<NotFoundObjectResult>(resultNotFound);
     }
 
     [Fact]
@@ -121,7 +121,6 @@ namespace RVTR.Booking.Testing.Tests
 
       var sut = booking.BookingNumber;
       Assert.IsType<Guid>(sut);
-      Assert.NotNull(sut);
       Assert.IsAssignableFrom<OkObjectResult>(resultPass);
 
     }
