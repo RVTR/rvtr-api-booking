@@ -12,7 +12,7 @@ using RVTR.Booking.Domain.Models;
 namespace RVTR.Booking.Service.Controllers
 {
   /// <summary>
-  /// Booking controller
+  /// Represents the _BookingController_ class
   /// </summary>
   [ApiController]
   [ApiVersion("0.0")]
@@ -44,20 +44,17 @@ namespace RVTR.Booking.Service.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
-      _logger.LogDebug("Deleting a booking by its ID...");
-      var booking = await _unitOfWork.Booking.SelectAsync(e => e.EntityId == id);
+      var booking = (await _unitOfWork.Booking.SelectAsync(e => e.EntityId == id)).FirstOrDefault();
+
       if (booking == null)
       {
-        _logger.LogInformation($"Could not find booking to delete @ id = {id}.");
         return NotFound(id);
       }
-      else
-      {
-        await _unitOfWork.Booking.DeleteAsync(id);
-        await _unitOfWork.CommitAsync();
-        _logger.LogInformation($"Succesfully deleted booking @ id = {id}.");
-        return NoContent();
-      }
+
+      await _unitOfWork.Booking.DeleteAsync(id);
+      await _unitOfWork.CommitAsync();
+
+      return NoContent();
     }
 
     /// <summary>
@@ -72,46 +69,28 @@ namespace RVTR.Booking.Service.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Get(DateTime? checkIn, DateTime? checkOut)
     {
-      _logger.LogDebug("Getting a booking between dates...");
-      DateTime todaysDate = DateTime.Now.Date;
+      var todaysDate = DateTime.Now.Date;
 
-      if (checkIn != null && checkOut != null)
+      if (checkIn == null || checkOut == null)
       {
-        // Date range sanity check
-        if (checkIn >= checkOut)
-        {
-          _logger.LogInformation($"Check In Date cannot be later than or equal to Check Out Date.");
-          return BadRequest();
-        }
-        // Cannot time travel (yet) sanity check
-        else if (checkIn < todaysDate)
-        {
-          _logger.LogInformation($"Check In Date cannot be earlier than Today's Date.");
-          return BadRequest();
-        }
-
-        var bookings = await _unitOfWork.Booking.SelectAsync(e =>
-        (checkIn <= e.CheckIn && checkOut >= e.CheckIn) ||
-        (checkIn <= e.CheckOut && checkOut >= e.CheckOut) ||
-        (checkIn <= e.CheckIn && checkOut >= e.CheckOut) ||
-        (checkIn >= e.CheckIn && checkOut <= e.CheckOut));
-
-        return Ok(bookings);
-      }
-      else if (checkIn == null && checkOut == null)
-      {
-        _logger.LogInformation($"Returning bookings with null Check In and Check Out");
         return Ok(await _unitOfWork.Booking.SelectAsync());
       }
-      else
+
+      if (checkIn < DateTime.Now || checkIn >= checkOut)
       {
-        _logger.LogWarning($"Failed to get bookings - invalid range given..");
         return BadRequest();
       }
+
+      var bookings = await _unitOfWork.Booking.SelectAsync(e =>
+      (checkIn <= e.CheckIn && checkOut >= e.CheckIn) ||
+      (checkIn <= e.CheckOut && checkOut >= e.CheckOut) ||
+      (checkIn <= e.CheckIn && checkOut >= e.CheckOut) ||
+      (checkIn >= e.CheckIn && checkOut <= e.CheckOut));
+
+      return Ok(bookings);
     }
 
     /// <summary>
-    ///
     /// Action method that returns a single booking by booking id.
     /// </summary>
     /// <param name="id"></param>
@@ -121,18 +100,14 @@ namespace RVTR.Booking.Service.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(int id)
     {
-      _logger.LogDebug("Getting a booking by booking ID..");
-      var booking = await _unitOfWork.Booking.SelectAsync(e => e.EntityId == id);
+      var booking = (await _unitOfWork.Booking.SelectAsync(e => e.EntityId == id)).FirstOrDefault();
+
       if (booking == null)
       {
-        _logger.LogInformation($"Could not find booking to get @ id = {id}.");
         return NotFound(id);
       }
-      else
-      {
-        _logger.LogInformation($"Succesfully found booking to get @ id = {id}.");
-        return Ok(booking);
-      }
+
+      return Ok(booking);
     }
 
     /// <summary>
@@ -145,18 +120,14 @@ namespace RVTR.Booking.Service.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByAccountId(int id)
     {
-      _logger.LogDebug("Getting a booking by account ID..");
       var bookings = await _unitOfWork.Booking.SelectAsync(e => e.AccountId == id);
-      if (bookings.Count() == 0)
+
+      if (!bookings.Any())
       {
-        _logger.LogInformation($"Could not find bookings to get @ account id = {id}.");
         return NotFound(id);
       }
-      else
-      {
-        _logger.LogInformation($"Succesfully found bookings to get @ account id = {id}.");
-        return Ok(bookings);
-      }
+
+      return Ok(bookings);
     }
 
     /// <summary>
@@ -168,9 +139,8 @@ namespace RVTR.Booking.Service.Controllers
     [ProducesResponseType(typeof(BookingModel), StatusCodes.Status200OK)]
     public async Task<IActionResult> Post(BookingModel booking)
     {
-      //Create and assign a unique number of GUID format for the Booking Number
       booking.BookingNumber = Guid.NewGuid();
-      _logger.LogInformation($"Successfully added the booking with accountID: '{booking.AccountId}' and lodgingID: {booking.LodgingId}'.");
+
       await _unitOfWork.Booking.InsertAsync(booking);
       await _unitOfWork.CommitAsync();
 
@@ -186,9 +156,10 @@ namespace RVTR.Booking.Service.Controllers
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Put(BookingModel booking)
     {
-      _logger.LogInformation($"Successfully updated the booking with accountID: '{booking.AccountId}' and lodgingID: '{booking.LodgingId}'.");
       _unitOfWork.Booking.Update(booking);
+
       await _unitOfWork.CommitAsync();
+
       return NoContent();
     }
   }
