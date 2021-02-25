@@ -4,16 +4,17 @@ using System.Linq;
 using RVTR.Booking.Context;
 using RVTR.Booking.Context.Repositories;
 using RVTR.Booking.Domain.Models;
+using RVTR.Booking.Integrations;
 using Xunit;
 
 namespace RVTR.Booking.Testing.Tests
 {
-  public class BookingRepositoryTest : DataTest
+  public class BookingRepositoryTest : SqliteIntegration
   {
     [Fact]
     public async void Test_GetBookingsById()
     {
-      using var ctx = new BookingContext(Options);
+      using var ctx = new BookingContext(options);
       var bookings = new Repository<BookingModel>(ctx);
 
       ctx.Bookings.Add(
@@ -46,7 +47,7 @@ namespace RVTR.Booking.Testing.Tests
     [Fact]
     public async void Test_Repository_GetBookingsAsync_ByDate()
     {
-      using var ctx = new BookingContext(Options);
+      using var ctx = new BookingContext(options);
       var bookings = new Repository<BookingModel>(ctx);
 
       ctx.Bookings.Add(
@@ -85,7 +86,7 @@ namespace RVTR.Booking.Testing.Tests
     [Fact]
     public async void Test_Repository_GetBookingsWithRentalsAsync_ByDates()
     {
-      using var ctx = new BookingContext(Options);
+      using var ctx = new BookingContext(options);
       var bookings = new Repository<BookingModel>(ctx);
 
       ctx.Bookings.Add(
@@ -128,7 +129,7 @@ namespace RVTR.Booking.Testing.Tests
     public async void Test_Repository_SelectAsync_HasRentals()
     {
 
-      using var ctx = new BookingContext(Options);
+      using var ctx = new BookingContext(options);
       var bookings = new Repository<BookingModel>(ctx);
 
       ctx.Bookings.Add(
@@ -165,7 +166,7 @@ namespace RVTR.Booking.Testing.Tests
     public async void Test_Repository_SelectAsyncById_HasRentals()
     {
 
-      using var ctx = new BookingContext(Options);
+      using var ctx = new BookingContext(options);
       var bookings = new Repository<BookingModel>(ctx);
 
       ctx.Bookings.Add(

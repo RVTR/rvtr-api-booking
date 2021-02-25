@@ -4,19 +4,22 @@ using Microsoft.EntityFrameworkCore;
 using RVTR.Booking.Context;
 using RVTR.Booking.Context.Repositories;
 using RVTR.Booking.Domain.Models;
+using RVTR.Booking.Integrations;
 using Xunit;
 
 namespace RVTR.Booking.Testing.Tests
 {
-  public class RepositoryTest : DataTest
+  /// <summary>
+  ///
+  /// </summary>
+  public class RepositoryTest : SqliteIntegration
   {
-
     private readonly BookingModel _booking = new BookingModel { EntityId = 0, AccountId = 1, LodgingId = 1 };
 
     [Fact]
     public async void Test_Repository_DeleteAsync()
     {
-      using var ctx = new BookingContext(Options);
+      using var ctx = new BookingContext(options);
       var bookings = new Repository<BookingModel>(ctx);
 
       ctx.Bookings.Add(
@@ -50,7 +53,7 @@ namespace RVTR.Booking.Testing.Tests
     [Fact]
     public async void Test_Repository_InsertAsync()
     {
-      using var ctx = new BookingContext(Options);
+      using var ctx = new BookingContext(options);
       var bookings = new Repository<BookingModel>(ctx);
 
       await bookings.InsertAsync(_booking);
@@ -61,7 +64,7 @@ namespace RVTR.Booking.Testing.Tests
     [Fact]
     public async void Test_Repository_SelectAsync()
     {
-      using var ctx = new BookingContext(Options);
+      using var ctx = new BookingContext(options);
       var bookings = new Repository<BookingModel>(ctx);
 
       ctx.Bookings.Add(
@@ -94,7 +97,7 @@ namespace RVTR.Booking.Testing.Tests
     [Fact]
     public async void Test_Repository_SelectAsync_ById()
     {
-      using var ctx = new BookingContext(Options);
+      using var ctx = new BookingContext(options);
       var bookings = new Repository<BookingModel>(ctx);
 
       ctx.Bookings.Add(
@@ -127,7 +130,7 @@ namespace RVTR.Booking.Testing.Tests
     [Fact]
     public async void Test_Repository_Update()
     {
-      using var ctx = new BookingContext(Options);
+      using var ctx = new BookingContext(options);
       var bookings = new Repository<BookingModel>(ctx);
 
       ctx.Bookings.Add(
